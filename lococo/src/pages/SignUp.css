@@ -1,0 +1,61 @@
+.signup-container {
+  max-width: 400px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signup-form label {
+  text-align: left;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.signup-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.email-input {
+  margin-bottom: 8px;
+}
+
+.verify-button {
+  background-color: #e7a55f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.verify-button:hover {
+  background-color: #d8964e;
+}
+
+.submit-btn {
+  background-color: #ccc;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.card-link {
+  text-decoration: none; /* 텍스트 밑줄 제거 */
+  color: inherit; /* 부모 요소의 글자 색상을 상속받음 */
+}
