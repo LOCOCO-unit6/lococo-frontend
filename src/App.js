@@ -4,6 +4,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignUpChoice from "./pages/SignUpChoice.jsx";
+import SignUp_General from "./pages/SignUp_General.jsx";
 import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<div>메인 페이지입니다.</div>} />
             <Route path="/signup-choice" element={<SignUpChoice />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup_general" element={<SignUp_General />} />
           </Routes>
         </div>
         <Footer />

@@ -3,7 +3,6 @@
   margin: 20px auto;
   text-align: center;
 }
-
 .subtitle {
   color: #000000;
   margin-bottom: 20px;
@@ -15,34 +14,41 @@
   gap: 12px;
 }
 
-.signup-form label {
+label {
   text-align: left;
   font-weight: bold;
   margin-top: 5px;
 }
 
-.signup-form input {
+input,
+select {
   padding: 10px;
   border: 1px solid #595959;
   border-radius: 10px;
   font-size: 14px;
 }
 
-.email-input {
+.email-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.email-section input {
   margin-bottom: 10px;
 }
 
-.verify-button {
+.auth-btn {
   background-color: #ffa552;
   color: white;
   border: none;
+  padding: 10px;
   border-radius: 10px;
   padding: 12px 0;
   font-size: 14px;
   cursor: pointer;
 }
 
-.verify-button:hover {
+.auth-btn:hover {
   background-color: #d8964e;
 }
 
@@ -55,7 +61,7 @@
   margin-top: 20px;
   cursor: pointer;
 }
-.card-link {
-  text-decoration: none;
-  color: inherit;
+
+.submit-btn:hover {
+  background-color: #ffa552;
 }
