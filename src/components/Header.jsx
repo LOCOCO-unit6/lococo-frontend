@@ -18,7 +18,7 @@ function Header() {
         <a href="#">마이페이지</a>
       </nav>
       <div className="header-right">
-        <Link to="/signup-choice" className="login-btn-link">
+        <Link to="/Login" className="login-btn-link">
           <button className="login-btn">로그인/가입</button>
         </Link>
       </div>
