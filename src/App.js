@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 import MainPage from "./pages/MainPage.jsx";
 import Login from "./pages/Login.jsx";
@@ -17,6 +18,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <ScrollToTop />
         <Header />
         <div className="content-wrap">
           <Routes>

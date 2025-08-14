@@ -8,8 +8,6 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: 로그인 로직 처리 후 원하는 경로로 이동
-    // navigate("/");
   };
 
   return (
