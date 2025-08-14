@@ -11,7 +11,7 @@ function ReviewCarousel() {
     { id: 4, text: "축제 동선 깔끔, 혼잡도 정보 도움됐습니다." },
     { id: 5, text: "부모님 모시고 힐링 코스 성공 ✨" },
   ];
-  const items = [...base, ...base, ...base]; // 끊김 줄이기용 복제
+  const items = [...base, ...base, ...base];
 
   const settings = {
     infinite: true,
