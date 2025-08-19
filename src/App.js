@@ -26,7 +26,9 @@ function AppChrome() {
     <div className="App">
       <ScrollToTop />
 
-      <Header mode={isOrganizer ? "organizer" : "default"} />
+      <Header
+        mode={pathname.startsWith("/organizer") ? "organizer" : "default"}
+      />
 
       <div className="content-wrap">
         <Routes>

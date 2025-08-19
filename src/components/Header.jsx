@@ -1,56 +1,63 @@
-// src/components/Header.jsx
+// src/App.js
 import React from "react";
-import "./Header.css";
-import Logo from "../image/Logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
-export default function Header({ mode = "default" }) {
-  const isOrganizer = mode === "organizer";
-  const nav = useNavigate();
+import MainPage from "./pages/MainPage.jsx";
+import Login from "./pages/Login.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import SignUpChoice from "./pages/SignUpChoice.jsx";
+import SignUp_General from "./pages/SignUp_General.jsx";
+import Ai_Festival_Recommend from "./pages/Ai_Festival_Recommend.jsx";
+import FestivalDetail from "./pages/FestivalDetail.jsx";
 
-  const navLinks = isOrganizer
-    ? [
-        { to: "/organizer", label: "홈" },
-        { to: "/organizer/mypage", label: "마이페이지" },
-      ]
-    : [
-        { to: "/AiFestivalRecommend", label: "AI맞춤형축제추천" },
-        { to: "#", label: "개인맞춤여정" },
-        { to: "#", label: "서비스안내" },
-        { to: "/login", label: "마이페이지" },
-      ];
+import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
+import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
 
-  const handleLogout = () => {
-    nav("/"); // 임시로 홈으로 보냄
-  };
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./App.css";
+
+function AppChrome() {
+  const { pathname } = useLocation();
+  const isOrganizer = pathname.startsWith("/organizer");
 
   return (
-    <header className="header">
-      <Link to={isOrganizer ? "/organizer" : "/"}>
-        <div className="header-left">
-          <img src={Logo} alt="로고" className="logo" />
-        </div>
-      </Link>
+    <div className="App">
+      <ScrollToTop />
+      <Header mode={isOrganizer ? "organizer" : "default"} />
 
-      <nav className="nav">
-        {navLinks.map(({ to, label }) => (
-          <Link key={label} to={to}>
-            {label}
-          </Link>
-        ))}
-      </nav>
+      <div className="content-wrap">
+        <Routes>
+          {/* 일반 */}
+          <Route path="/" element={<MainPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup-choice" element={<SignUpChoice />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup_general" element={<SignUp_General />} />
+          <Route
+            path="/AiFestivalRecommend"
+            element={<Ai_Festival_Recommend />}
+          />
+          <Route path="/festival/:id" element={<FestivalDetail />} />
 
-      <div className="header-right">
-        {isOrganizer ? (
-          <button className="login-btn" onClick={handleLogout}>
-            로그아웃
-          </button>
-        ) : (
-          <Link to="/login" className="login-btn-link">
-            <button className="login-btn">로그인/가입</button>
-          </Link>
-        )}
+          {/* 주최자 */}
+          <Route path="/organizer" element={<OrganizerMainPage />} />
+          <Route path="/organizer/mypage" element={<OrganizerMyPage />} />
+        </Routes>
       </div>
-    </header>
+
+      <Footer />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppChrome />
+    </BrowserRouter>
   );
 }
