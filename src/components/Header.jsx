@@ -10,7 +10,10 @@ export default function Header({ mode = "default" }) {
 
   const navLinks = isOrganizer
     ? [
-        { to: "/organizer", label: "홈" },
+        { to: "/organizer", label: "AI기획도우미" },
+        { to: "/organizer", label: "AI홍보콘텐츠생성" },
+        { to: "/organizer", label: "콘텐츠등록" },
+        { to: "/organizer", label: "서비스안내" },
         { to: "/organizer/mypage", label: "마이페이지" },
       ]
     : [
@@ -21,7 +24,7 @@ export default function Header({ mode = "default" }) {
       ];
 
   const handleLogout = () => {
-    nav("/"); // 임시로 홈으로 보냄
+    nav("/");
   };
 
   return (

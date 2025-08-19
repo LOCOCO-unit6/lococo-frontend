@@ -1,6 +1,12 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
@@ -14,18 +20,19 @@ import SignUp_General from "./pages/SignUp_General.jsx";
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
 
+import OrganizerReviewDetail from "./pages/OrganizerReviewDetail.jsx";
+import OrganizerContentDetail from "./pages/OrganizerContentDetail.jsx";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 
 function AppChrome() {
   const { pathname } = useLocation();
-  const isOrganizer = pathname.startsWith("/organizer");
 
   return (
     <div className="App">
       <ScrollToTop />
-
       <Header
         mode={pathname.startsWith("/organizer") ? "organizer" : "default"}
       />
@@ -38,10 +45,21 @@ function AppChrome() {
           <Route path="/signup-choice" element={<SignUpChoice />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signup_general" element={<SignUp_General />} />
+          <Route path="/Login" element={<Navigate to="/login" replace />} />
 
           {/* 주최자 */}
           <Route path="/organizer" element={<OrganizerMainPage />} />
           <Route path="/organizer/mypage" element={<OrganizerMyPage />} />
+
+          {/* 상세 페이지 */}
+          <Route
+            path="/organizer/mypage/review/:id"
+            element={<OrganizerReviewDetail />}
+          />
+          <Route
+            path="/organizer/mypage/content/:id"
+            element={<OrganizerContentDetail />}
+          />
         </Routes>
       </div>
 

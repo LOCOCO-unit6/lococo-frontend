@@ -1,150 +1,172 @@
-/* 색상 토큰 (오렌지 포인트) */
+/* =========================================================
+   OrganizerMyPage.css  —  FULL
+   (모든 규칙은 .omp-wrap 하위에만 적용되어 전역과 충돌 최소화)
+   ========================================================= */
+
+/* ====== 색상/토큰 ====== */
 :root {
-  --omp-orange: #ff7a00;
-  --omp-orange-weak: #fff3e8;
-  --omp-line: #ececec;
+  --omp-orange: #ff7f30;
+  --omp-orange-weak: #fff2e8;
+  --omp-line: #e9e9ee;
+  --omp-sub: #8a8a96;
   --omp-text: #222;
-  --omp-sub: #7a7a7a;
-  --omp-bg: #fbfbfb;
-  --omp-card: #fff;
 }
 
-/* 레이아웃 */
+/* ====== 페이지 래퍼/레이아웃 ====== */
 .omp-wrap {
-  min-height: 100vh;
-  background: var(--omp-bg);
-  color: var(--omp-text);
+  padding: 48px 0 72px;
 }
-
-.omp-main {
-  max-width: 1100px;
-  margin: 28px auto;
-  padding: 0 16px;
+.omp-wrap .omp-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
-.omp-title {
-  font-size: 22px;
-  margin: 4px 0 2px;
-}
-.omp-sub {
-  color: var(--omp-sub);
-  margin-bottom: 18px;
-}
-
-.omp-grid {
+.omp-wrap .omp-grid {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 20px;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
 }
-@media (max-width: 900px) {
-  .omp-grid {
+@media (max-width: 980px) {
+  .omp-wrap .omp-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* 카드 */
-.omp-card {
-  background: var(--omp-card);
+/* ====== 카드 공통 ====== */
+.omp-wrap .omp-card {
+  background: #fff;
   border: 1px solid var(--omp-line);
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-.omp-card-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 18px 6px;
-}
-.omp-card-head h2 {
-  font-size: 16px;
+  border-radius: 16px;
+  padding: 18px 20px;
 }
 
-/* 사이드 프로필 */
-.omp-side .omp-card {
-  padding: 18px;
+/* ====== 섹션 타이틀 ====== */
+.omp-wrap .omp-title {
+  font-size: 22px;
+  font-weight: 900;
+  margin: 4px 0 6px;
+  color: var(--omp-text);
 }
-.omp-profile {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.omp-wrap .omp-sub {
+  color: var(--omp-sub);
+  margin-bottom: 14px;
 }
-.omp-avatar {
-  width: 54px;
-  height: 54px;
+
+/* ====== 좌측 프로필 카드 ====== */
+.omp-wrap .omp-profile {
+  display: grid;
+  gap: 14px;
+}
+.omp-wrap .omp-avatar {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  display: grid;
+  place-items: center;
   background: var(--omp-orange-weak);
   color: var(--omp-orange);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
+  font-weight: 900;
 }
-.omp-profile-info .omp-name {
-  font-weight: 700;
+.omp-wrap .omp-profile-info .omp-name {
+  font-weight: 900;
 }
-.omp-profile-info .omp-role {
-  color: var(--omp-sub);
-  font-size: 13px;
-  margin-top: 2px;
-}
-.omp-menu {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0 0;
-}
-.omp-menu-head {
+.omp-wrap .omp-profile-info .omp-role {
   color: var(--omp-sub);
   font-size: 12px;
-  margin-bottom: 8px;
-}
-.omp-menu li {
-  padding: 8px 0;
-  border-top: 1px dashed var(--omp-line);
+  margin-top: 2px;
 }
 
-/* 탭 */
-.omp-tabs {
-  display: flex;
-  gap: 8px;
+/* ====== 좌측 메뉴 ====== */
+.omp-wrap .omp-menu {
+  margin-top: 16px;
 }
-.omp-tab {
-  border: none;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #f5f5f5;
+.omp-wrap .omp-menu-head {
+  color: var(--omp-sub);
+  font-size: 13px;
+  margin: 12px 0 6px;
+}
+.omp-wrap .omp-menu-item {
+  padding: 8px 10px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
+  transition: background 0.15s ease;
 }
-.omp-tab.is-active {
+.omp-wrap .omp-menu-item:hover {
+  background: #f7f7fb;
+}
+.omp-wrap .omp-menu-item.is-active {
   background: var(--omp-orange-weak);
   color: var(--omp-orange);
+  font-weight: 700;
 }
 
-/* 리스트 */
-.omp-list {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0 12px 12px;
+/* ====== 우측 콘텐츠 컨테이너 간격 ====== */
+.omp-wrap .omp-content > .omp-card + .omp-card {
+  margin-top: 18px;
+}
+
+/* ================== 탭/링크 공통 ================== */
+.omp-wrap .omp-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0;
+  flex-wrap: wrap;
+}
+.omp-wrap .omp-tab {
+  padding: 8px 14px;
+  border: 1px solid var(--omp-line);
+  border-radius: 999px;
+  background: #fff;
+  color: #555;
+  font-weight: 600;
+  cursor: pointer;
+}
+.omp-wrap .omp-tab.is-active {
+  background: var(--omp-orange-weak);
+  color: var(--omp-orange);
+  border-color: var(--omp-orange);
+}
+.omp-wrap .omp-link {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-right: 12px;
+  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+}
+.omp-wrap .omp-link:hover {
+  text-decoration: underline;
+}
+.omp-wrap .omp-link.danger {
+  color: #c0392b;
+}
+
+/* ====== 리스트 레이아웃(카드) ====== */
+.omp-wrap .omp-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 12px;
 }
-.omp-list-item {
+.omp-wrap .omp-list-item {
   display: grid;
-  grid-template-columns: 96px 1fr 260px;
-  gap: 14px;
-  padding: 14px;
+  grid-template-columns: 110px 1fr 280px;
+  gap: 16px;
+  padding: 16px;
   border: 1px solid var(--omp-line);
   border-radius: 12px;
   background: #fff;
 }
-@media (max-width: 900px) {
-  .omp-list-item {
+@media (max-width: 980px) {
+  .omp-wrap .omp-list-item {
     grid-template-columns: 1fr;
   }
 }
 
-.omp-badge {
-  align-self: flex-start;
+.omp-wrap .omp-badge {
+  align-self: start;
   background: var(--omp-orange-weak);
   color: var(--omp-orange);
   font-weight: 700;
@@ -152,27 +174,26 @@
   border-radius: 10px;
   font-size: 12px;
 }
-
-.omp-list-mid {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.omp-wrap .omp-list-title {
+  font-weight: 800;
 }
-.omp-list-title {
-  font-weight: 700;
-}
-.omp-list-desc {
+.omp-wrap .omp-list-desc {
   color: var(--omp-sub);
-  font-size: 13px;
+}
+.omp-wrap .omp-list-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.omp-meta {
+/* ====== 메타 정보 박스 ====== */
+.omp-wrap .omp-meta {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   align-content: start;
 }
-.omp-meta-row {
+.omp-wrap .omp-meta-row {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
@@ -181,6 +202,219 @@
   border: 1px solid var(--omp-line);
   border-radius: 8px;
 }
-.omp-meta-row span {
+.omp-wrap .omp-meta-row span {
   color: var(--omp-sub);
 }
+
+/* ================ 홍보 콘텐츠 그리드 ================ */
+.omp-wrap .promo-grid {
+  margin-top: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 1100px) {
+  .omp-wrap .promo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .omp-wrap .promo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.omp-wrap .promo-card {
+  border: 1px solid var(--omp-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.omp-wrap .promo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+.omp-wrap .promo-thumb {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+.omp-wrap .promo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.omp-wrap .promo-kind {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--omp-orange);
+  margin: 10px 12px 2px;
+}
+.omp-wrap .promo-title {
+  font-weight: 800;
+  margin: 0 12px;
+}
+.omp-wrap .promo-date {
+  color: var(--omp-sub);
+  font-size: 12px;
+  margin: 8px 12px 12px;
+}
+
+/* ================ 프로필 폼 ================ */
+.omp-wrap .profile-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 14px;
+}
+.omp-wrap .profile-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
+}
+.omp-wrap .profile-form input {
+  border: 1px solid var(--omp-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.omp-wrap .profile-form .primary-btn {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--omp-orange);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+@media (max-width: 820px) {
+  .omp-wrap .profile-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================ 리뷰 상세 ================ */
+.omp-wrap .review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+.omp-wrap .review-item {
+  border: 1px solid var(--omp-line);
+  border-radius: 12px;
+  background: #fff;
+  padding: 14px;
+}
+.omp-wrap .stars {
+  font-size: 14px;
+  color: #ddd;
+}
+.omp-wrap .star.on {
+  color: #ffb400;
+}
+.omp-wrap .review-user {
+  font-weight: 800;
+  margin-top: 6px;
+}
+.omp-wrap .review-text {
+  margin-top: 4px;
+  color: var(--omp-text);
+}
+.omp-wrap .review-date {
+  color: var(--omp-sub);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* ================ 상세 부가요소 ================ */
+.omp-wrap .detail-meta {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 360px;
+}
+.omp-wrap .detail-actions .primary-btn {
+  margin-right: 10px;
+}
+/* ===== 불릿(점) 제거 & 좌측 메뉴 여백 초기화 ===== */
+.omp-wrap .omp-menu,
+.omp-wrap .omp-menu ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.omp-wrap .omp-menu-item {
+  list-style: none; /* li 앞 점 제거 */
+}
+
+/* 프로필 박스 안에 실수로 들어간 li(회원 정보 수정)도 점 제거 */
+.omp-wrap .omp-profile-info li {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* ===== 박스/카드 사이즈 업그레이드 ===== */
+/* 페이지 여백 조금 더 넉넉하게 */
+.omp-wrap {
+  padding: 64px 0 96px;
+}
+
+/* 카드(우측/좌측 공통) 더 크게 */
+.omp-wrap .omp-card {
+  padding: 24px 28px;
+  border-radius: 20px;
+}
+
+/* 리스트 카드 사이즈 업: 패딩/그리드 넓힘 */
+.omp-wrap .omp-list-item {
+  grid-template-columns: 130px 1fr 320px; /* 110|1fr|280 → 130|1fr|320 */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* 배지/타이틀/메타 폰트 및 패딩 키움 */
+.omp-wrap .omp-badge {
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+.omp-wrap .omp-list-title {
+  font-size: 18px;
+} /* 제목 조금 더 큼 */
+.omp-wrap .omp-meta-row {
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+/* 탭/버튼도 약간 크게 */
+.omp-wrap .omp-tab {
+  padding: 10px 16px;
+}
+
+/* 홍보 카드 간격 및 썸네일 비율 확대 */
+.omp-wrap .promo-grid {
+  gap: 22px;
+}
+.omp-wrap .promo-thumb {
+  aspect-ratio: 16/10;
+} /* 4/3 → 16/10로 조금 더 와이드 */
+
+/* 프로필 폼 입력/버튼도 조금 키움 */
+.omp-wrap .profile-form input {
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+.omp-wrap .profile-form .primary-btn {
+  padding: 14px 18px;
+  font-size: 15px;
+}
+/* SIZE-UP ONLY (스타일 유지, 폭만 확대) */
+.omp-wrap .omp-main {
+  max-width: 1440px;
+} /* 기존 1200px → 1440px */
