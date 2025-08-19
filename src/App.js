@@ -10,6 +10,8 @@ import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignUpChoice from "./pages/SignUpChoice.jsx";
 import SignUp_General from "./pages/SignUp_General.jsx";
+import Ai_Festival_Recommend from "./pages/Ai_Festival_Recommend.jsx";
+import FestivalDetail from "./pages/FestivalDetail.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
@@ -53,7 +55,6 @@ function AppChrome() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppChrome />
     </BrowserRouter>
   );
 }

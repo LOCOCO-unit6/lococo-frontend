@@ -33,11 +33,7 @@ export default function Header({ mode = "default" }) {
       </Link>
 
       <nav className="nav">
-        {navLinks.map(({ to, label }) => (
-          <Link key={label} to={to}>
-            {label}
-          </Link>
-        ))}
+
       </nav>
 
       <div className="header-right">

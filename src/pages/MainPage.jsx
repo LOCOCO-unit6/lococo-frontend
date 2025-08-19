@@ -3,6 +3,46 @@ import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "./MainPage.css";
 
+function BannerCarousel() {
+  const banners = [
+    {
+      id: 1,
+      img: "/image/banner1.png",
+      text: "경기도 용인시 가나다 축제",
+    },
+    { id: 2, img: "/image/banner2.jpg", text: "베너 2" },
+    { id: 3, img: "/image/banner3.jpg", text: "베너 3" },
+    { id: 4, img: "/image/banner4.jpg", text: "베너 4" },
+  ];
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    arrows: true,
+  };
+
+  return (
+    <Slider {...settings}>
+      {banners.map((banner) => (
+        <div key={banner.id}>
+          <div className="banner-slide">
+            <img src={banner.img} alt={banner.text} className="banner-image" />
+            <div className="banner-overlay">
+              <h2 style={{ margin: 0, fontSize: "1.5rem", fontWeight: 700 }}>
+                {banner.text}
+              </h2>
+            </div>
+          </div>
+        </div>
+      ))}
+    </Slider>
+  );
+}
 function ReviewCarousel() {
   const base = [
     { id: 1, text: "로코코 추천으로 가족 여행 다녀왔어요! 강추 👍" },
@@ -60,20 +100,9 @@ export default function MainPage() {
 
   return (
     <main className="main-page">
-      {/* 배너 */}
+      {/* 배너 섹션 */}
       <section className="banner-section">
-        <div style={{ position: "relative" }}>
-          <img
-            src="/images/banner1.jpg"
-            alt="메인 배너"
-            className="banner-image"
-          />
-          <div className="banner-overlay">
-            <h2 style={{ margin: 0, fontSize: "1.5rem", fontWeight: 700 }}>
-              경기도 용인시 가나다 축제
-            </h2>
-          </div>
-        </div>
+        <BannerCarousel />
       </section>
 
       {/* 추천 코스 */}
