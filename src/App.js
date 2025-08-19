@@ -22,6 +22,8 @@ import PersonalJourney from "./pages/PersonalJourney.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
+import OrganizerReviewDetail from "./pages/OrganizerReviewDetail.jsx";
+import OrganizerContentDetail from "./pages/OrganizerContentDetail.jsx";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -33,9 +35,8 @@ function AppChrome() {
   return (
     <div className="App">
       <ScrollToTop />
-      <Header
-        mode={pathname.startsWith("/organizer") ? "organizer" : "default"}
-      />
+
+      <Header mode={pathname.startsWith("/organizer") ? "organizer" : "default"} />
 
       <div className="content-wrap">
         <Routes>
@@ -45,19 +46,25 @@ function AppChrome() {
           <Route path="/signup-choice" element={<SignUpChoice />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signup_general" element={<SignUp_General />} />
-          <Route
-            path="/AiFestivalRecommend"
-            element={<AiFestivalRecommend />}
-          />
+          <Route path="/AiFestivalRecommend" element={<AiFestivalRecommend />} />
           <Route path="/festival/:id" element={<FestivalDetail />} />
           <Route path="/PersonalJourney" element={<PersonalJourney />} />
 
-          {/* Redirects */}
           <Route path="/Login" element={<Navigate to="/login" replace />} />
 
           {/* 주최자 */}
           <Route path="/organizer" element={<OrganizerMainPage />} />
           <Route path="/organizer/mypage" element={<OrganizerMyPage />} />
+
+          {/* 주최자 상세 페이지 */}
+          <Route
+            path="/organizer/mypage/review/:id"
+            element={<OrganizerReviewDetail />}
+          />
+          <Route
+            path="/organizer/mypage/content/:id"
+            element={<OrganizerContentDetail />}
+          />
         </Routes>
       </div>
 
