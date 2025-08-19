@@ -18,7 +18,7 @@ export default function Header({ mode = "default" }) {
       ]
     : [
         { to: "/AiFestivalRecommend", label: "AI맞춤형축제추천" },
-        { to: "#", label: "개인맞춤여정" },
+        { to: "/PersonalJourney", label: "개인맞춤여정" },
         { to: "#", label: "서비스안내" },
         { to: "/login", label: "마이페이지" },
       ];
@@ -36,7 +36,11 @@ export default function Header({ mode = "default" }) {
       </Link>
 
       <nav className="nav">
-
+        {navLinks.map(({ to, label }) => (
+          <Link key={label} to={to}>
+            {label}
+          </Link>
+        ))}
       </nav>
 
       <div className="header-right">

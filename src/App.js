@@ -16,12 +16,12 @@ import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignUpChoice from "./pages/SignUpChoice.jsx";
 import SignUp_General from "./pages/SignUp_General.jsx";
-import Ai_Festival_Recommend from "./pages/Ai_Festival_Recommend.jsx";
+import AiFestivalRecommend from "./pages/Ai_Festival_Recommend.jsx";
 import FestivalDetail from "./pages/FestivalDetail.jsx";
+import PersonalJourney from "./pages/PersonalJourney.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
-
 import OrganizerReviewDetail from "./pages/OrganizerReviewDetail.jsx";
 import OrganizerContentDetail from "./pages/OrganizerContentDetail.jsx";
 
@@ -35,9 +35,8 @@ function AppChrome() {
   return (
     <div className="App">
       <ScrollToTop />
-      <Header
-        mode={pathname.startsWith("/organizer") ? "organizer" : "default"}
-      />
+
+      <Header mode={pathname.startsWith("/organizer") ? "organizer" : "default"} />
 
       <div className="content-wrap">
         <Routes>
@@ -47,13 +46,17 @@ function AppChrome() {
           <Route path="/signup-choice" element={<SignUpChoice />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signup_general" element={<SignUp_General />} />
+          <Route path="/AiFestivalRecommend" element={<AiFestivalRecommend />} />
+          <Route path="/festival/:id" element={<FestivalDetail />} />
+          <Route path="/PersonalJourney" element={<PersonalJourney />} />
+
           <Route path="/Login" element={<Navigate to="/login" replace />} />
 
           {/* 주최자 */}
           <Route path="/organizer" element={<OrganizerMainPage />} />
           <Route path="/organizer/mypage" element={<OrganizerMyPage />} />
 
-          {/* 상세 페이지 */}
+          {/* 주최자 상세 페이지 */}
           <Route
             path="/organizer/mypage/review/:id"
             element={<OrganizerReviewDetail />}
@@ -73,6 +76,7 @@ function AppChrome() {
 export default function App() {
   return (
     <BrowserRouter>
+      <AppChrome />
     </BrowserRouter>
   );
 }
