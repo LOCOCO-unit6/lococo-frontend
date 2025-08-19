@@ -1,0 +1,126 @@
+/* 공용 헤더 느낌: sticky, border-bottom, scroll shadow, 컨테이너 폭 동일 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  transition: box-shadow 0.2s ease;
+}
+.site-header.is-scrolled {
+  box-shadow: var(--shadow-sm);
+}
+
+/* 공용 레이아웃과 동일한 폭을 맞춤 (MainPage의 max-width 1200 + 패딩) */
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px var(--space);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* 로고 */
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+.logo-img {
+  height: 36px;
+  object-fit: contain;
+}
+
+/* 네비 */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+  border-radius: 8px;
+}
+.nav-link:hover {
+  background: #f6f7f8;
+}
+.nav-link.active {
+  color: var(--brand);
+}
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
+  height: 2px;
+  background: var(--brand);
+  border-radius: 999px;
+}
+
+/* 우측 액션 + 햄버거 */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 공용 헤더와 유사한 햄버거 버튼 */
+.hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  height: 2px;
+  background: #333;
+  margin: 5px 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* 반응형: 모바일에서 네비를 드로어처럼 */
+@media (max-width: 920px) {
+  .nav {
+    position: absolute;
+    top: 56px; /* 헤더 높이 아래로 */
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    display: none;
+    padding: 8px var(--space) 12px;
+    gap: 4px;
+  }
+  .nav.open {
+    display: grid;
+  }
+  .nav-link {
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+  .hamburger {
+    display: inline-block;
+  }
+}

@@ -1,3 +1,4 @@
+// src/pages/Login.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../image/Logo.png";
@@ -8,6 +9,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // 일반 로그인 로직
   };
 
   return (
@@ -26,6 +28,7 @@ export default function Login() {
         </button>
       </form>
 
+      {/* 회원가입 링크 */}
       <p
         className="signup-link"
         onClick={() => navigate("/signup-choice")}
@@ -35,6 +38,16 @@ export default function Login() {
       >
         회원가입 하기
       </p>
+
+      {/* 주최자용 로그인 버튼 추가 */}
+      <button
+        type="button"
+        className="login-btn"
+        style={{ marginTop: "12px", background: "#444" }}
+        onClick={() => navigate("/organizer")}
+      >
+        주최자용 로그인
+      </button>
     </div>
   );
 }
