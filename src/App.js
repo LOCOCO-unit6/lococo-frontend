@@ -11,6 +11,7 @@ import SignUpChoice from "./pages/SignUpChoice.jsx";
 import SignUp_General from "./pages/SignUp_General.jsx";
 import Ai_Festival_Recommend from "./pages/Ai_Festival_Recommend.jsx";
 import FestivalDetail from "./pages/FestivalDetail.jsx";
+import PersonalJourney from "./pages/PersonalJourney.jsx";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,6 +35,7 @@ export default function App() {
               element={<Ai_Festival_Recommend />}
             />
             <Route path="/festival/:id" element={<FestivalDetail />} />
+            <Route path="/personal-journey" element={<PersonalJourney />} />
           </Routes>
         </div>
         <Footer />

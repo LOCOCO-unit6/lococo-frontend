@@ -13,7 +13,7 @@ function Header() {
       </Link>
       <nav className="nav">
         <Link to="/AiFestivalRecommend">AI맞춤형축제추천</Link>
-        <Link>개인맞춤여정</Link>
+        <Link to="/personal-journey">개인맞춤여정</Link>
         <Link>서비스안내</Link>
         <Link>마이페이지</Link>
       </nav>
