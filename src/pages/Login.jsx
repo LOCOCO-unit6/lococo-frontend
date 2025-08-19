@@ -1,7 +1,7 @@
 // src/pages/Login.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../image/Logo.png";
+import Logo from "../image/Logo2.png";
 import "./Login.css";
 
 export default function Login() {
