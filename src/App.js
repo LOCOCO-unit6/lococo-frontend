@@ -19,6 +19,7 @@ import SignUp_General from "./pages/SignUp_General.jsx";
 import AiFestivalRecommend from "./pages/Ai_Festival_Recommend.jsx";
 import FestivalDetail from "./pages/FestivalDetail.jsx";
 import PersonalJourney from "./pages/PersonalJourney.jsx";
+import ServiceGuide from "./pages/Service_Guide.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
@@ -51,7 +52,7 @@ function AppChrome() {
           />
           <Route path="/festival/:id" element={<FestivalDetail />} />
           <Route path="/PersonalJourney" element={<PersonalJourney />} />
-
+          <Route path="/Service_Guide" element={<ServiceGuide />} />
           {/* Redirects */}
           <Route path="/Login" element={<Navigate to="/login" replace />} />
 

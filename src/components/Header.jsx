@@ -16,7 +16,7 @@ export default function Header({ mode = "default" }) {
     : [
         { to: "/AiFestivalRecommend", label: "AI맞춤형축제추천" },
         { to: "/PersonalJourney", label: "개인맞춤여정" },
-        { to: "#", label: "서비스안내" },
+        { to: "/Service_Guide", label: "서비스안내" },
         { to: "/login", label: "마이페이지" },
       ];
 
