@@ -55,6 +55,7 @@ function AppChrome() {
           />
           <Route path="/festival/:id" element={<FestivalDetail />} />
           <Route path="/PersonalJourney" element={<PersonalJourney />} />
+          <Route path="/Service_Guide" element={<ServiceGuide />} />
 
           {/* Redirects */}
           <Route path="/Login" element={<Navigate to="/login" replace />} />
