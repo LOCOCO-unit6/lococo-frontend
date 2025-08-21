@@ -1,8 +1,3 @@
-/*
- * 이 CSS 파일은 MyPage.jsx에만 관련된 스타일을 포함합니다.
- * 사이드바 관련 스타일은 MyPageSidebar.css로 이동했습니다.
- */
-
 .my-page-container {
   max-width: 1200px;
   margin: 50px auto;
@@ -10,6 +5,149 @@
 }
 
 .my-page-header {
+  .my-page-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+
+  .my-page-header {
+    margin-bottom: 40px;
+  }
+
+  .my-page-header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .my-page-header p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+  }
+
+  .my-page-content {
+    display: flex;
+    gap: 40px;
+  }
+
+  .my-page-main-content {
+    flex-grow: 1;
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ffa552;
+    padding-bottom: 10px;
+  }
+
+  .no-content {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+    margin-top: 50px;
+  }
+
+  .festival-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .festival-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .festival-card {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .festival-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .heart-button-wrap {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+  }
+
+  .heart-icon {
+    font-size: 24px;
+    color: #ff6f61;
+  }
+
+  .festival-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 15px;
+    text-align: left;
+  }
+
+  .festival-location {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px;
+  }
+
+  .festival-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 0 5px;
+  }
+
+  .festival-date {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+  }
+
+  .more-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .show-more-btn {
+    padding: 10px 30px;
+    background-color: #ffa552;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .show-more-btn:hover {
+    background-color: #d8964e;
+  }
   margin-bottom: 40px;
 }
 

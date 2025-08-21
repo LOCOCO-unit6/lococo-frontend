@@ -22,6 +22,8 @@ import PersonalJourney from "./pages/PersonalJourney.jsx";
 import ServiceGuide from "./pages/Service_Guide.jsx";
 import MyPage from "./pages/MyPage.jsx";
 import MyPage_My_Journey_Management from "./pages/MyPage_My_Journey_Management.jsx";
+import MyPage_Review_Write from "./pages/MyPage_Review_Write.jsx";
+import MyPage_Review_Management from "./pages/MyPage_Review_Management.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
@@ -60,8 +62,13 @@ function AppChrome() {
           <Route path="/Service_Guide" element={<ServiceGuide />} />
           <Route path="/MyPage/liked-contents" element={<MyPage />} />
           <Route
-            path="MyPage_My_Journey_Management"
+            path="/MyPage_My_Journey_Management"
             element={<MyPage_My_Journey_Management />}
+          />
+          <Route path="/review-write" element={<MyPage_Review_Write />} />
+          <Route
+            path="/MyPage/reviews"
+            element={<MyPage_Review_Management />}
           />
 
           {/* Redirects */}
