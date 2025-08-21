@@ -1,0 +1,67 @@
+.my-page-sidebar-box {
+  width: 250px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 20px;
+  height: 400px;
+}
+
+.user-info {
+  padding: 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.user-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.user-status-link {
+  font-size: 13px;
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.user-status-link:hover {
+  color: #ffa552;
+  font-weight: bold;
+}
+.user-status-link.active {
+  color: #ffa552;
+}
+
+.my-page-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.my-page-menu li {
+  margin-bottom: 10px;
+}
+
+.my-page-menu a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #000000;
+  font-weight: 400;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.my-page-menu li:hover a {
+  color: #ffa552;
+  font-weight: bold;
+}
+
+.my-page-menu .active a {
+  color: #ffa552;
+  font-weight: bold;
+}

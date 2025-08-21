@@ -20,7 +20,7 @@ export default function Header({ mode = "default" }) {
         { to: "/AiFestivalRecommend", label: "AI맞춤형축제추천" },
         { to: "/PersonalJourney", label: "개인맞춤여정" },
         { to: "/Service_Guide", label: "서비스안내" },
-        { to: "/login", label: "마이페이지" },
+        { to: "/MyPage/liked-contents", label: "마이페이지" },
       ];
 
   const handleLogout = () => {

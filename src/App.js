@@ -20,6 +20,8 @@ import AiFestivalRecommend from "./pages/Ai_Festival_Recommend.jsx";
 import FestivalDetail from "./pages/FestivalDetail.jsx";
 import PersonalJourney from "./pages/PersonalJourney.jsx";
 import ServiceGuide from "./pages/Service_Guide.jsx";
+import MyPage from "./pages/MyPage.jsx";
+import MyPage_My_Journey_Management from "./pages/MyPage_My_Journey_Management.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
@@ -56,6 +58,11 @@ function AppChrome() {
           <Route path="/festival/:id" element={<FestivalDetail />} />
           <Route path="/PersonalJourney" element={<PersonalJourney />} />
           <Route path="/Service_Guide" element={<ServiceGuide />} />
+          <Route path="/MyPage/liked-contents" element={<MyPage />} />
+          <Route
+            path="MyPage_My_Journey_Management"
+            element={<MyPage_My_Journey_Management />}
+          />
 
           {/* Redirects */}
           <Route path="/Login" element={<Navigate to="/login" replace />} />
