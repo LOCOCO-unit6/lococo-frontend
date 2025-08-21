@@ -10,7 +10,7 @@ export default function Header({ mode = "default" }) {
 
   const navLinks = isOrganizer
     ? [
-        { to: "/organizer", label: "AI기획도우미" },
+        { to: "/organizer/ai", label: "AI기획도우미" },
         { to: "/organizer", label: "AI홍보콘텐츠생성" },
         { to: "/organizer", label: "콘텐츠등록" },
         { to: "/organizer", label: "서비스안내" },
