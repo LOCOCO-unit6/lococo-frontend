@@ -30,7 +30,11 @@ import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
 import OrganizerReviewDetail from "./pages/OrganizerReviewDetail.jsx";
 import OrganizerContentDetail from "./pages/OrganizerContentDetail.jsx";
 import AiPlanner from "./pages/AiPlanner.jsx";
-
+import AiPromoStart from "./pages/AiPromoStart.jsx";
+import AiPromoForm from "./pages/AiPromoForm.jsx";
+import AiPromoLoading from "./pages/AiPromoLoading.jsx";
+import AiPromoResults from "./pages/AiPromoResults.jsx";
+import AiPromoEditor from "./pages/AiPromoEditor.jsx";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
@@ -71,14 +75,11 @@ function AppChrome() {
             path="/MyPage/reviews"
             element={<MyPage_Review_Management />}
           />
-
           {/* Redirects */}
           <Route path="/Login" element={<Navigate to="/login" replace />} />
-
           {/* 주최자 */}
           <Route path="/organizer" element={<OrganizerMainPage />} />
           <Route path="/organizer/mypage" element={<OrganizerMyPage />} />
-
           {/* 주최자 상세 페이지 */}
           <Route
             path="/organizer/mypage/review/:id"
@@ -89,6 +90,20 @@ function AppChrome() {
             element={<OrganizerContentDetail />}
           />
           <Route path="/organizer/ai" element={<AiPlanner />} />
+          <Route path="/organizer/ai-promo" element={<AiPromoStart />} />
+          <Route path="/organizer/ai-promo/form" element={<AiPromoForm />} />
+          <Route
+            path="/organizer/ai-promo/loading"
+            element={<AiPromoLoading />}
+          />
+          <Route
+            path="/organizer/ai-promo/results"
+            element={<AiPromoResults />}
+          />
+          <Route
+            path="/organizer/ai-promo/editor"
+            element={<AiPromoEditor />}
+          />
         </Routes>
       </div>
 

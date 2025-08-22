@@ -56,7 +56,6 @@ export default function OrganizerMainPage() {
   const navigate = useNavigate();
   const [isAuthed, setIsAuthed] = useState(false);
 
-  // 로그인 전: 버튼으로 바로 진입
   if (!isAuthed) {
     return (
       <main className="login-page">
@@ -70,7 +69,6 @@ export default function OrganizerMainPage() {
 
   return (
     <main className="main-page organizer">
-      {/* 상단 그리드: 좌측 2카드 + 우측 콜라주 */}
       <section className="hero-grid">
         <div className="left-cards">
           <div className="feature-card">
@@ -111,13 +109,11 @@ export default function OrganizerMainPage() {
         </div>
       </section>
 
-      {/* 이용후기 가로 스트립 */}
       <section className="reviews-section">
         <h3>로코코 이용후기</h3>
         <ReviewStrip />
       </section>
 
-      {/* 중간 카드형 안내 2행 */}
       <section className="mid-articles">
         <div className="article">
           <div className="article-meta">시작가이드</div>
@@ -137,7 +133,6 @@ export default function OrganizerMainPage() {
         </div>
       </section>
 
-      {/* 베이지 톤 대형 섹션 */}
       <section className="beige-band">
         <div className="band-inner">
           <div className="band-icon">➤</div>
@@ -153,7 +148,6 @@ export default function OrganizerMainPage() {
         </div>
       </section>
 
-      {/* 하단 안내 (콘텐츠 등록 & 통합홍보) */}
       <section className="bottom-info">
         <div className="info-left">
           <div className="info-meta">콘텐츠 등록</div>
