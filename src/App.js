@@ -35,6 +35,7 @@ import AiPromoForm from "./pages/AiPromoForm.jsx";
 import AiPromoLoading from "./pages/AiPromoLoading.jsx";
 import AiPromoResults from "./pages/AiPromoResults.jsx";
 import AiPromoEditor from "./pages/AiPromoEditor.jsx";
+import ContentCreate from "./pages/ContentCreate.jsx";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
@@ -104,6 +105,7 @@ function AppChrome() {
             path="/organizer/ai-promo/editor"
             element={<AiPromoEditor />}
           />
+          <Route path="/organizer/content/create" element={<ContentCreate />} />
         </Routes>
       </div>
 

@@ -12,8 +12,8 @@ export default function Header({ mode = "default" }) {
     ? [
         { to: "/organizer/ai", label: "AI기획도우미" },
         { to: "/organizer/ai-promo/", label: "AI홍보콘텐츠생성" },
-        { to: "/organizer", label: "콘텐츠등록" },
-        { to: "/Service_Guide", label: "서비스안내" },
+        { to: "/organizer/content/create", label: "콘텐츠등록" },
+        { to: "/Service_Guide", label: "서비스안내(이용자용 페이지)" },
         { to: "/organizer/mypage", label: "마이페이지" },
       ]
     : [
