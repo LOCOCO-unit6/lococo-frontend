@@ -43,6 +43,56 @@ function BannerCarousel() {
     </Slider>
   );
 }
+const recommendedCourses = [
+  {
+    id: 1,
+    img: "/image/course1.jpg",
+    location: "경기도 수원시",
+    title: "행궁동 골목여행",
+  },
+  {
+    id: 2,
+    img: "/image/course2.jpg",
+    location: "경기도 수원시",
+    title: "행궁동 골목여행",
+  },
+  {
+    id: 3,
+    img: "/image/course3.jpg",
+    location: "경기도 수원시",
+    title: "행궁동 골목여행",
+  },
+  {
+    id: 4,
+    img: "/image/course4.jpg",
+    location: "경기도 수원시",
+    title: "행궁동 골목여행",
+  },
+  {
+    id: 5,
+    img: "/image/course5.jpg",
+    location: "경기도 수원시",
+    title: "행궁동 골목여행",
+  },
+];
+
+const settings = {
+  dots: false,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 4,
+  slidesToScroll: 1,
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: { slidesToShow: 3, slidesToScroll: 1 },
+    },
+    { breakpoint: 600, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+    { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+  ],
+};
+
 function ReviewCarousel() {
   const base = [
     { id: 1, text: "로코코 추천으로 가족 여행 다녀왔어요! 강추 👍" },
@@ -108,18 +158,22 @@ export default function MainPage() {
       {/* 추천 코스 */}
       <section className="recommend-section">
         <h3>추천 코스</h3>
-        <div className="recommend-grid">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="recommend-card">
-              <img src={`/images/course${i}.jpg`} alt={`코스 ${i}`} />
-              <div className="card-body">
-                <p style={{ color: "var(--brand)", fontSize: 14 }}>
-                  경기도 수원시
-                </p>
-                <p style={{ fontWeight: 600 }}>행궁동 골목여행</p>
+        <div className="recommend-carousel-container">
+          <Slider {...settings}>
+            {recommendedCourses.map((course) => (
+              <div key={course.id}>
+                <div className="recommend-card">
+                  <img src={course.img} alt={course.title} />
+                  <div className="card-body">
+                    <p style={{ color: "var(--brand)", fontSize: 14 }}>
+                      {course.location}
+                    </p>
+                    <p style={{ fontWeight: 600 }}>{course.title}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </Slider>
         </div>
       </section>
 
