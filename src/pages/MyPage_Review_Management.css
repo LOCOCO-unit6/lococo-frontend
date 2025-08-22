@@ -1,0 +1,124 @@
+/*
+ * 이 CSS 파일은 MyPage_Review_Management.jsx에 특화된 스타일을 포함합니다.
+ */
+
+.my-page-main-content {
+  flex-grow: 1;
+}
+
+.review-page-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ffa552;
+  padding-bottom: 10px;
+}
+
+/* 후기 목록 컨테이너 */
+.review-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 후기 카드 */
+.review-card-wrapper {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+/* 후기 카드 상단 (날짜, 제목, 버튼) */
+.review-card-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.review-date {
+  font-size: 16px; /* 폰트 크기 키움 */
+  color: #000000; /* 색상 변경 */
+  margin-bottom: 20px; /* 아래쪽 여백 추가 */
+}
+
+.review-location {
+  font-size: 14px;
+  color: #ffa552;
+  margin: 0;
+}
+
+.review-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.review-star-rating {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  color: #e4e5e9;
+  font-size: 20px;
+}
+
+.star.active {
+  color: #ffc107;
+}
+
+.review-buttons-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-delete-btn,
+.review-edit-btn {
+  background: none;
+  border: 1px solid #dbdbdb;
+  color: #888;
+  font-size: 14px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 200px;
+}
+
+.review-edit-btn {
+  border-color: #ffa552;
+  color: #ffa552;
+}
+
+/* 후기 내용 및 사진 */
+.review-card-content-section {
+  padding-top: 20px;
+}
+
+.review-text {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-bottom: 15px;
+}
+
+.review-photos-container {
+  display: flex;
+  gap: 10px;
+}
+
+.review-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}

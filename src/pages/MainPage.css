@@ -39,23 +39,24 @@
 }
 .slick-prev:before,
 .slick-next:before {
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 30px;
   opacity: 0.8;
 }
 
+/* 추천 코스 캐러셀 관련 스타일 */
 .recommend-section {
-  margin: 3rem 0;
+  margin: 50px 0;
 }
 .recommend-section h3 {
   font-size: 1.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
-.recommend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--gap);
-  align-items: stretch;
+.recommend-carousel-container {
+  position: relative;
+}
+.slick-slide > div {
+  padding: 0 10px;
 }
 .recommend-card {
   background: var(--card);
@@ -85,6 +86,17 @@
 }
 .card-body p {
   margin: 4px 0;
+}
+.slick-next {
+  right: 0px;
+}
+.slick-prev {
+  left: 0px;
+}
+.slick-next:before,
+.slick-prev:before {
+  color: black;
+  opacity: 0.8;
 }
 
 .ai-section {
@@ -192,7 +204,7 @@
 }
 
 .slick-slide > div {
-  padding: 0 10px;
+  padding: 20px;
 }
 
 .slick-dots li button:before {
@@ -201,9 +213,6 @@
 }
 .slick-dots li.slick-active button:before {
   opacity: 0.9;
-}
-.slick-arrow {
-  display: none !important;
 }
 
 @media (max-width: 1024px) {
