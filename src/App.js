@@ -29,6 +29,7 @@ import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
 import OrganizerReviewDetail from "./pages/OrganizerReviewDetail.jsx";
 import OrganizerContentDetail from "./pages/OrganizerContentDetail.jsx";
+import AiPlanner from "./pages/AiPlanner.jsx";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -87,6 +88,7 @@ function AppChrome() {
             path="/organizer/mypage/content/:id"
             element={<OrganizerContentDetail />}
           />
+          <Route path="/organizer/ai" element={<AiPlanner />} />
         </Routes>
       </div>
 
