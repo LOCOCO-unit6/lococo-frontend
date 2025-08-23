@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import "./PersonalJourney.css";
+import { Link } from "react-router-dom";
+import "./Survey.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { FaRegCalendarAlt, FaTimes } from "react-icons/fa";
 
-import { FaRegCalendarAlt } from "react-icons/fa";
-
-const PersonalJourney = () => {
+const Survey = () => {
   const regions = {
     cities: [
       "서울특별시",
@@ -267,7 +267,6 @@ const PersonalJourney = () => {
       제주특별자치도: ["제주시", "서귀포시"],
     },
   };
-
   const [formData, setFormData] = useState({
     startDate: null,
     endDate: null,
@@ -276,8 +275,11 @@ const PersonalJourney = () => {
     keywords: [],
     age: [],
     companion: [],
-    time: [],
+    filters: [],
+    travelStyles: [],
   });
+
+  const [photos, setPhotos] = useState([]);
 
   const keywordOptions = [
     "음식",
@@ -296,11 +298,21 @@ const PersonalJourney = () => {
     "60대 이상",
   ];
   const companionOptions = ["나홀로", "가족", "연인", "친구"];
-  const timeOptions = ["오전", "오후", "상관없음"];
+  const filterOptions = ["무료만", "실내만"];
+  const travelStyleOptions = ["축제형", "계획형"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setFormData((prev) => ({
+      ...prev,
+      startDate: start,
+      endDate: end,
+    }));
   };
 
   const handleCheckboxClick = (category, value) => {
@@ -317,86 +329,94 @@ const PersonalJourney = () => {
     });
   };
 
-  const handleSubmit = () => {
-    console.log("선택된 여정 데이터:", formData);
-  };
-
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setFormData((prev) => ({
-      ...prev,
-      startDate: start,
-      endDate: end,
+  const handlePhotoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newPhotos = files.map((file) => ({
+      url: URL.createObjectURL(file),
+      file: file,
     }));
+    setPhotos((prev) => [...prev, ...newPhotos]);
   };
 
-  const CustomDateInput = React.forwardRef(({ value, onClick }, ref) => (
+  const handleRemovePhoto = (photoToRemoveUrl) => {
+    setPhotos((prevPhotos) =>
+      prevPhotos.filter((photo) => photo.url !== photoToRemoveUrl)
+    );
+    URL.revokeObjectURL(photoToRemoveUrl);
+  };
+
+  const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
     <button className="custom-date-input-btn" onClick={onClick} ref={ref}>
       {value || "날짜를 선택하세요"}
-
       <FaRegCalendarAlt className="calendar-svg-icon" />
     </button>
   ));
 
+  const handleSubmit = () => {
+    console.log("선택된 설문조사 데이터:", formData);
+  };
+
   return (
-    <div className="journey-container">
-      <h2 className="journey-title_1">개인 맞춤 여정</h2>
-      <div className="journey-form-box">
-        <div className="form-group-row">
+    <div className="survey-page-container">
+      <div className="survey-header">
+        <h2 className="survey-title">설문조사</h2>
+        <p className="survey-subtitle">
+          입력해 주신 정보를 바탕으로 맞춤형 축제와 여정을 안내해 드립니다
+        </p>
+      </div>
+
+      <div className="survey-form-box">
+        <div className="survey-section form-group-row">
           <div className="form-group-item">
-            <label>기간</label>
-            <div className="date-input-wrap">
-              <DatePicker
-                selectsRange={true}
-                startDate={formData.startDate}
-                endDate={formData.endDate}
-                onChange={handleDateChange}
-                dateFormat="yyyy.MM.dd"
-                customInput={<CustomDateInput />}
-                isClearable={true}
-              />
-            </div>
+            <label className="input-label">기간</label>
+            <DatePicker
+              selectsRange={true}
+              startDate={formData.startDate}
+              endDate={formData.endDate}
+              onChange={handleDateChange}
+              dateFormat="yyyy.MM.dd"
+              customInput={<CustomInput />}
+              isClearable={true}
+            />
           </div>
           <div className="form-group-item">
-            <label>장소 (시)</label>
-            <div className="select-wrap">
-              <select
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-              >
-                <option value="">시 선택</option>
-                {regions.cities.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
+            <label className="input-label">장소 (시)</label>
+            <select
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="select-input"
+            >
+              <option value="">시 선택</option>
+              {regions.cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group-item">
+            <label className="input-label">장소 (구)</label>
+            <select
+              name="district"
+              value={formData.district}
+              onChange={handleInputChange}
+              disabled={!formData.city}
+              className="select-input"
+            >
+              <option value="">구 선택</option>
+              {formData.city &&
+                regions.districts[formData.city]?.map((district) => (
+                  <option key={district} value={district}>
+                    {district}
                   </option>
                 ))}
-              </select>
-            </div>
-          </div>
-          <div className="form-group-item">
-            <label>장소 (구)</label>
-            <div className="select-wrap">
-              <select
-                name="district"
-                value={formData.district}
-                onChange={handleInputChange}
-                disabled={!formData.city}
-              >
-                <option value="">구 선택</option>
-                {formData.city &&
-                  regions.districts[formData.city]?.map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-              </select>
-            </div>
+            </select>
           </div>
         </div>
 
-        <div className="form-section">
-          <label>관심 키워드</label>
+        <div className="survey-section">
+          <label className="input-label">관심 키워드</label>
           <div className="checkbox-group">
             {keywordOptions.map((option) => (
               <button
@@ -412,8 +432,8 @@ const PersonalJourney = () => {
           </div>
         </div>
 
-        <div className="form-section">
-          <label>연령</label>
+        <div className="survey-section">
+          <label className="input-label">연령</label>
           <div className="checkbox-group">
             {ageOptions.map((option) => (
               <button
@@ -429,48 +449,137 @@ const PersonalJourney = () => {
           </div>
         </div>
 
-        <div className="form-section">
-          <label>동반자 유형</label>
-          <div className="checkbox-group">
-            {companionOptions.map((option) => (
-              <button
-                key={option}
-                className={`checkbox-btn ${
-                  formData.companion.includes(option) ? "checked" : ""
-                }`}
-                onClick={() => handleCheckboxClick("companion", option)}
-              >
-                {option}
-              </button>
+        <div className="survey-section companion-filter-section">
+          <div className="companion-group">
+            <label className="input-label">동반자 유형</label>
+            <div className="checkbox-group">
+              {companionOptions.map((option) => (
+                <button
+                  key={option}
+                  className={`checkbox-btn ${
+                    formData.companion.includes(option) ? "checked" : ""
+                  }`}
+                  onClick={() => handleCheckboxClick("companion", option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="filter-group">
+            <label className="input-label">필터</label>
+            <div className="checkbox-group">
+              {filterOptions.map((option) => (
+                <button
+                  key={option}
+                  className={`checkbox-btn ${
+                    formData.filters.includes(option) ? "checked" : ""
+                  }`}
+                  onClick={() => handleCheckboxClick("filters", option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="survey-section style-budget-section">
+          <div className="travel-style-group">
+            <label className="input-label">여행 스타일</label>
+            <div className="checkbox-group">
+              {travelStyleOptions.map((option) => (
+                <button
+                  key={option}
+                  className={`checkbox-btn ${
+                    formData.travelStyles.includes(option) ? "checked" : ""
+                  }`}
+                  onClick={() => handleCheckboxClick("travelStyles", option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="budget-group">
+            <label className="input-label">하루 예산 범위</label>
+            <div className="budget-input-wrap">
+              <input
+                type="text"
+                className="budget-input"
+                placeholder="숫자 입력"
+              />
+              <span>원</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="survey-section record-section">
+          <label className="input-label">참여한 축제/여정 기록</label>
+          <div className="record-input-group">
+            <div className="select-wrap">
+              <select name="record" className="record-select-input">
+                <option value="">기록 불러오기</option>
+                <option value="record1">2023년 제주도 여행</option>
+                <option value="record2">2024년 서울 축제</option>
+              </select>
+            </div>
+            <input
+              type="text"
+              className="record-custom-input"
+              placeholder="직접 입력"
+            />
+            <button className="record-add-btn">입력</button>
+          </div>
+        </div>
+
+        <div className="survey-section photo-upload-section">
+          <label className="input-label">
+            사진 첨부<span className="optional">(선택)</span>
+            <p className="photo-info-text">
+              사진 분석을 바탕으로 AI가 맞춤 추천을 해드립니다
+            </p>
+          </label>
+
+          <div className="photo-upload-btn-wrap">
+            <label htmlFor="photo-upload-input" className="photo-upload-btn">
+              사진 첨부
+            </label>
+            <input
+              type="file"
+              id="photo-upload-input"
+              multiple
+              style={{ display: "none" }}
+              onChange={handlePhotoUpload}
+            />
+          </div>
+          <div className="photo-preview-container">
+            {photos.map((photo, index) => (
+              <div key={index} className="photo-preview-wrap">
+                <img
+                  src={photo.url}
+                  alt={`preview-${index}`}
+                  className="photo-preview-img"
+                />
+                <button
+                  className="remove-photo-btn"
+                  onClick={() => handleRemovePhoto(photo.url)}
+                >
+                  &times;
+                </button>
+              </div>
             ))}
           </div>
         </div>
 
-        <div className="form-section">
-          <label>시간대</label>
-          <div className="checkbox-group">
-            {timeOptions.map((option) => (
-              <button
-                key={option}
-                className={`checkbox-btn ${
-                  formData.time.includes(option) ? "checked" : ""
-                }`}
-                onClick={() => handleCheckboxClick("time", option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="search-button-wrap">
-          <button className="search-journey-btn" onClick={handleSubmit}>
-            여정 찾기
-          </button>
+        <div className="submit-btn-sections">
+          <Link to="/AiFestivalRecommend">
+            <button className="submit-btns">추천 받기</button>
+          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default PersonalJourney;
+export default Survey;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Slider from "react-slick";
 import "./MainPage.css";
 
@@ -43,55 +43,6 @@ function BannerCarousel() {
     </Slider>
   );
 }
-const recommendedCourses = [
-  {
-    id: 1,
-    img: "/image/course1.jpg",
-    location: "경기도 수원시",
-    title: "행궁동 골목여행",
-  },
-  {
-    id: 2,
-    img: "/image/course2.jpg",
-    location: "경기도 수원시",
-    title: "행궁동 골목여행",
-  },
-  {
-    id: 3,
-    img: "/image/course3.jpg",
-    location: "경기도 수원시",
-    title: "행궁동 골목여행",
-  },
-  {
-    id: 4,
-    img: "/image/course4.jpg",
-    location: "경기도 수원시",
-    title: "행궁동 골목여행",
-  },
-  {
-    id: 5,
-    img: "/image/course5.jpg",
-    location: "경기도 수원시",
-    title: "행궁동 골목여행",
-  },
-];
-
-const settings = {
-  dots: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 4,
-  slidesToScroll: 1,
-  arrows: true,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: { slidesToShow: 3, slidesToScroll: 1 },
-    },
-    { breakpoint: 600, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-    { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-  ],
-};
 
 function ReviewCarousel() {
   const base = [
@@ -106,8 +57,8 @@ function ReviewCarousel() {
   const settings = {
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 0, // 연속 흐름 핵심
-    speed: 6000, // 흐르는 속도
+    autoplaySpeed: 0,
+    speed: 6000,
     cssEase: "linear",
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -148,6 +99,57 @@ function ReviewCarousel() {
 export default function MainPage() {
   const navigate = useNavigate();
 
+  // 추천 코스 데이터 배열을 MainPage 컴포넌트 내부에 정의합니다.
+  const recommendedCourses = [
+    {
+      id: 1,
+      img: "/images/course1.jpg",
+      location: "경기도 수원시",
+      title: "행궁동 골목여행",
+    },
+    {
+      id: 2,
+      img: "/images/course2.jpg",
+      location: "경기도 수원시",
+      title: "행궁동 골목여행",
+    },
+    {
+      id: 3,
+      img: "/images/course3.jpg",
+      location: "경기도 수원시",
+      title: "행궁동 골목여행",
+    },
+    {
+      id: 4,
+      img: "/images/course4.jpg",
+      location: "경기도 수원시",
+      title: "행궁동 골목여행",
+    },
+    {
+      id: 5,
+      img: "/images/course5.jpg",
+      location: "경기도 수원시",
+      title: "행궁동 골목여행",
+    },
+  ];
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 3, slidesToScroll: 1 },
+      },
+      { breakpoint: 600, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+      { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+    ],
+  };
+
   return (
     <main className="main-page">
       {/* 배너 섹션 */}
@@ -162,15 +164,20 @@ export default function MainPage() {
           <Slider {...settings}>
             {recommendedCourses.map((course) => (
               <div key={course.id}>
-                <div className="recommend-card">
-                  <img src={course.img} alt={course.title} />
-                  <div className="card-body">
-                    <p style={{ color: "var(--brand)", fontSize: 14 }}>
-                      {course.location}
-                    </p>
-                    <p style={{ fontWeight: 600 }}>{course.title}</p>
+                <Link
+                  to={`/recommended-course/${course.id}`}
+                  className="recommend-card-link"
+                >
+                  <div className="recommend-card">
+                    <img src={course.img} alt={course.title} />
+                    <div className="card-body">
+                      <p style={{ color: "var(--brand)", fontSize: 14 }}>
+                        {course.location}
+                      </p>
+                      <p style={{ fontWeight: 600 }}>{course.title}</p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </Slider>

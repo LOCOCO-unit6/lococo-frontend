@@ -1,5 +1,7 @@
 /* src/pages/PersonalJourney.css */
 
+@import "react-datepicker/dist/react-datepicker.css";
+
 .journey-container {
   max-width: 1200px;
   margin: 50px auto;
@@ -7,8 +9,8 @@
   text-align: center;
 }
 
-.journey-title {
-  font-size: 30px;
+.journey-title_1 {
+  font-size: 25px;
   font-weight: bold;
   margin-bottom: 20px;
   text-align: left;
@@ -16,7 +18,7 @@
 }
 
 .journey-form-box {
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 15px;
   padding: 40px;
@@ -38,31 +40,38 @@
   margin-bottom: 8px;
 }
 
+/* DatePicker input and wrap styles */
 .date-input-wrap {
   position: relative;
 }
 
-.date-picker-input {
-  width: 300px;
+.calendar-svg-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.custom-date-input-btn {
+  width: 350px;
   padding: 12px;
-  padding-right: 40px;
+  padding-right: 40px; /* 아이콘 공간 확보 */
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
   font-size: 14px;
   background-color: white;
+  cursor: pointer;
+  text-align: left;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
 }
 
-.calendar-icon {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  pointer-events: none;
-}
-
-input,
+/* Select input styles */
 select {
   width: 100%;
   padding: 12px;
@@ -71,6 +80,14 @@ select {
   box-sizing: border-box;
   font-size: 14px;
   background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+  cursor: pointer;
 }
 
 .form-section {
@@ -124,6 +141,7 @@ select {
 .search-journey-btn:hover {
   background-color: #e69548;
 }
+
 .search-button-wrap {
   display: flex;
   justify-content: flex-end;
