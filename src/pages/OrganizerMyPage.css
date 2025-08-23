@@ -53,28 +53,70 @@
   margin-bottom: 14px;
 }
 
-/* ====== 좌측 프로필 카드 ====== */
-.omp-wrap .omp-profile {
-  display: grid;
-  gap: 14px;
+/* 기존 .my-page-sidebar-box → 현재 구조에 맞게 */
+.omp-side .omp-card.omp-profile {
+  width: 250px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 20px;
+  height: 400px;
 }
-.omp-wrap .omp-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--omp-orange-weak);
-  color: var(--omp-orange);
-  font-weight: 900;
+
+/* .user-info → .omp-profile-info */
+.omp-profile-info {
+  padding: 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
 }
-.omp-wrap .omp-profile-info .omp-name {
-  font-weight: 900;
+
+/* .user-name → .omp-name */
+.omp-profile-info .omp-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
-.omp-wrap .omp-profile-info .omp-role {
-  color: var(--omp-sub);
-  font-size: 12px;
-  margin-top: 2px;
+
+/* .user-status-link → .omp-role(링크면 a로 교체 권장) */
+.omp-profile-info .omp-role {
+  font-size: 13px;
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.omp-profile-info .omp-role:hover {
+  color: #ffa552;
+  font-weight: bold;
+}
+
+/* .my-page-menu → .omp-menu (a가 없으면 li에 hover 적용) */
+.omp-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+.omp-menu li {
+  margin-bottom: 10px;
+}
+.omp-menu a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #000000;
+  font-weight: 400;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+.omp-menu li:hover a {
+  color: #ffa552;
+  font-weight: bold;
+}
+.omp-menu .active a {
+  color: #ffa552;
+  font-weight: bold;
 }
 
 /* ====== 좌측 메뉴 ====== */

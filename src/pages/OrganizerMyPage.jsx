@@ -1,19 +1,77 @@
 // src/pages/OrganizerMyPage.jsx
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./OrganizerMyPage.css";
 
-export default function OrganizerMyPage() {
-  const [search, setSearch] = useSearchParams();
-  const navigate = useNavigate();
+/** 좌측 사이드바 — CSS(.omp-*) 네이밍과 일치 */
+function OmpSidebar({ active, onSelect, userName = "운영자" }) {
+  const navItem = (key, label) => (
+    <li className={active === key ? "active" : ""}>
+      <Link
+        to={`?section=${key}`}
+        onClick={(e) => {
+          e.preventDefault();
+          onSelect(key);
+        }}
+      >
+        {label}
+      </Link>
+    </li>
+  );
 
-  // 좌측 메뉴 섹션: proposal(제안/등록), promo(홍보콘텐츠), review(리뷰관리), profile(회원정보)
-  const section = search.get("sec") || "proposal";
-  const setSection = (sec) => {
-    const next = new URLSearchParams(search);
-    next.set("sec", sec);
-    setSearch(next, { replace: false });
-  };
+  return (
+    <aside className="omp-side">
+      <div className="omp-card omp-profile">
+        <div className="omp-profile-info">
+          <div className="omp-name">{userName} 님</div>
+          <Link
+            to="?section=profile"
+            className="omp-role"
+            onClick={(e) => {
+              e.preventDefault();
+              onSelect("profile");
+            }}
+          >
+            회원 정보 수정
+          </Link>
+        </div>
+
+        <ul className="omp-menu">
+          <li className="omp-menu-head">메뉴</li>
+          {navItem("proposal", "제안/등록 콘텐츠")}
+          {navItem("promo", "홍보 콘텐츠")}
+          {navItem("review", "후기 관리")}
+          <li>
+            <Link to="/logout" className="logout-link">
+              로그아웃
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  );
+}
+
+export default function OrganizerMyPage() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // ---------- 섹션 상태 (좌측 메뉴) ----------
+  // URL ?section=proposal|promo|review|profile
+  const initialSection = searchParams.get("section") || "proposal";
+  const [section, setSection] = useState(
+    ["proposal", "promo", "review", "profile"].includes(initialSection)
+      ? initialSection
+      : "proposal"
+  );
+
+  // 섹션 변경 시 URL 쿼리 동기화
+  useEffect(() => {
+    const next = new URLSearchParams(searchParams);
+    next.set("section", section);
+    setSearchParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [section]);
 
   // ---------- 데모 데이터 ----------
   const proposalItems = useMemo(
@@ -145,13 +203,13 @@ export default function OrganizerMyPage() {
   const [proposalTab, setProposalTab] = useState("all"); // all | proposal | contents
   const [promoTab, setPromoTab] = useState("전체"); // 전체 | 포스터 | 인스타 | 블로그
 
-  // 섹션 바뀌면 탭 초기화(디자인 스펙 편의)
+  // 섹션 바뀌면 탭 초기화
   useEffect(() => {
     setProposalTab("all");
     setPromoTab("전체");
   }, [section]);
 
-  // 필터링
+  // ---------- 필터링 ----------
   const filteredProposal = proposalItems.filter((it) =>
     proposalTab === "all"
       ? true
@@ -159,151 +217,111 @@ export default function OrganizerMyPage() {
       ? it.type === "제안서"
       : it.type === "등록 콘텐츠"
   );
+
   const filteredPromo = promoItems.filter((it) =>
     promoTab === "전체" ? true : it.kind === promoTab
   );
 
-  // 공통 작은 헤더
-  const TopTitle = ({ title, sub }) => (
-    <>
-      <h1 className="omp-title">{title}</h1>
-      <p className="omp-sub">{sub}</p>
-    </>
+  // ---------- 공통 제목 ----------
+  const TopTitle = useCallback(
+    ({ title, sub }) => (
+      <>
+        <h1 className="omp-title">{title}</h1>
+        <p className="omp-sub">{sub}</p>
+      </>
+    ),
+    []
   );
 
-  // -------------------- UI --------------------
   return (
     <div className="omp-wrap">
       <main className="omp-main">
-        <h1 className="omp-title">마이페이지</h1>
-        <p className="omp-sub">
-          사용자 정보 확인과 맞춤 기능을 이용하실 수 있습니다.
-        </p>
+        <h2>마이페이지</h2>
+        <p>사용자 정보 관리 및 각종 기능을 이용하실 수 있습니다.</p>
+        <div className="omp-grid">
+          {/* 좌측 사이드바 */}
+          <OmpSidebar
+            active={section}
+            onSelect={setSection}
+            userName="lococo25"
+          />
 
-        {/* 좌측 메뉴 */}
-        <section className="omp-grid">
-          <aside className="omp-side">
-            <div className="omp-card omp-profile">
-              <div className="omp-avatar">홍</div>
-              <div className="omp-profile-info">
-                <div className="omp-name">홍길동 님</div>
-                <li
-                  className={`omp-menu-item ${
-                    section === "profile" ? "is-active" : ""
-                  }`}
-                  onClick={() => setSection("profile")}
-                >
-                  회원 정보 수정
-                </li>
-              </div>
-
-              <ul className="omp-menu">
-                <li
-                  className={`omp-menu-item ${
-                    section === "proposal" ? "is-active" : ""
-                  }`}
-                  onClick={() => setSection("proposal")}
-                >
-                  제안서 및 등록 리스트
-                </li>
-
-                <li
-                  className={`omp-menu-item ${
-                    section === "promo" ? "is-active" : ""
-                  }`}
-                  onClick={() => setSection("promo")}
-                >
-                  홍보 콘텐츠 리스트
-                </li>
-                <li
-                  className={`omp-menu-item ${
-                    section === "review" ? "is-active" : ""
-                  }`}
-                  onClick={() => setSection("review")}
-                >
-                  리뷰 관리
-                </li>
-
-                <li className="omp-menu-item" onClick={() => navigate("/")}>
-                  로그아웃
-                </li>
-              </ul>
-            </div>
-          </aside>
-
-          {/* 우측 컨텐트 */}
+          {/* 우측 컨텐츠 */}
           <section className="omp-content">
-            {/* ① 제안서 및 등록 콘텐츠 리스트 */}
+            {/* ① 제안/등록 콘텐츠 */}
             {section === "proposal" && (
               <div className="omp-card">
                 <TopTitle
-                  title="제안서 및 등록 콘텐츠 리스트"
-                  sub="작성한 제안서와 등록한 콘텐츠를 확인하세요."
+                  title="제안/등록 콘텐츠"
+                  sub="내가 작성한 제안서 및 등록된 콘텐츠를 확인하세요."
                 />
+
                 <div className="omp-tabs">
-                  <button
-                    className={`omp-tab ${
-                      proposalTab === "all" ? "is-active" : ""
-                    }`}
-                    onClick={() => setProposalTab("all")}
-                  >
-                    전체
-                  </button>
-                  <button
-                    className={`omp-tab ${
-                      proposalTab === "proposal" ? "is-active" : ""
-                    }`}
-                    onClick={() => setProposalTab("proposal")}
-                  >
-                    제안서
-                  </button>
-                  <button
-                    className={`omp-tab ${
-                      proposalTab === "contents" ? "is-active" : ""
-                    }`}
-                    onClick={() => setProposalTab("contents")}
-                  >
-                    등록 콘텐츠
-                  </button>
+                  {[
+                    { key: "all", label: "전체" },
+                    { key: "proposal", label: "제안서" },
+                    { key: "contents", label: "등록 콘텐츠" },
+                  ].map((t) => (
+                    <button
+                      key={t.key}
+                      className={`omp-tab ${
+                        proposalTab === t.key ? "is-active" : ""
+                      }`}
+                      onClick={() => setProposalTab(t.key)}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
                 </div>
 
                 <ul className="omp-list">
-                  {filteredProposal.map((it) => (
-                    <li key={it.id} className="omp-list-item">
-                      <div className="omp-badge">{it.type}</div>
-
+                  {filteredProposal.map((p) => (
+                    <li key={p.id} className="omp-list-item">
+                      <div className="omp-badge">{p.type}</div>
                       <div className="omp-list-mid">
-                        <div className="omp-list-title">{it.title}</div>
+                        <div className="omp-list-title">{p.title}</div>
                         <div className="omp-list-desc">
-                          지역: {it.area} 　시즌: {it.season} 　타깃:{" "}
-                          {it.target}
+                          지역: {p.area} 　시즌: {p.season} 　타깃: {p.target}
                         </div>
                         <div className="omp-list-actions">
                           <button
                             className="omp-link"
                             onClick={() =>
-                              navigate(`/organizer/mypage/content/${it.id}`)
+                              navigate(
+                                `/organizer/mypage/${
+                                  p.type === "제안서" ? "proposal" : "content"
+                                }/${p.id}`
+                              )
                             }
                           >
-                            상세보기
+                            상세 보기
                           </button>
-                          <button className="omp-link">수정</button>
-                          <button className="omp-link danger">삭제</button>
+                          <button
+                            className="omp-link weak"
+                            onClick={() =>
+                              navigate(
+                                `/organizer/mypage/${
+                                  p.type === "제안서" ? "proposal" : "content"
+                                }/${p.id}/edit`
+                              )
+                            }
+                          >
+                            수정
+                          </button>
                         </div>
                       </div>
-
                       <div className="omp-meta">
                         <div className="omp-meta-row">
-                          <span>등록일</span>
-                          {it.date}
-                        </div>
-                        <div className="omp-meta-row">
                           <span>조회</span>
-                          {it.views}
+                          {p.views}
                         </div>
                         <div className="omp-meta-row">
                           <span>좋아요</span>
-                          {it.likes}
+                          {p.likes}
+                        </div>
+                        <div className="omp-meta-row">
+                          <span>등록일</span>
+                          {p.date}
                         </div>
                       </div>
                     </li>
@@ -312,7 +330,7 @@ export default function OrganizerMyPage() {
               </div>
             )}
 
-            {/* ② 홍보 콘텐츠 리스트(그리드) */}
+            {/* ② 홍보 콘텐츠 리스트 */}
             {section === "promo" && (
               <div className="omp-card">
                 <TopTitle
@@ -341,8 +359,13 @@ export default function OrganizerMyPage() {
                       }
                     >
                       <div className="promo-thumb">
-                        {/* 프로젝트 이미지 자산에 맞춰 교체 */}
-                        <img src={p.img} alt={p.title} />
+                        <img
+                          src={p.img}
+                          alt={p.title}
+                          onError={(e) => {
+                            e.currentTarget.src = "/img/placeholder.jpg";
+                          }}
+                        />
                       </div>
                       <div className="promo-kind">{p.kind}</div>
                       <div className="promo-title">{p.title}</div>
@@ -353,7 +376,7 @@ export default function OrganizerMyPage() {
               </div>
             )}
 
-            {/* ③ 리뷰 관리(리스트) */}
+            {/* ③ 리뷰 관리 */}
             {section === "review" && (
               <div className="omp-card">
                 <TopTitle
@@ -397,7 +420,7 @@ export default function OrganizerMyPage() {
               </div>
             )}
 
-            {/* ④ 회원 정보 수정(폼) */}
+            {/* ④ 회원 정보 수정 */}
             {section === "profile" && (
               <div className="omp-card">
                 <TopTitle
@@ -437,7 +460,7 @@ export default function OrganizerMyPage() {
               </div>
             )}
           </section>
-        </section>
+        </div>
       </main>
     </div>
   );
