@@ -1,0 +1,191 @@
+.pj-result-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.pj-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.pj-result-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffa552;
+  margin: 0;
+}
+
+.pj-survey-btn {
+  padding: 10px 20px;
+  background-color: #ffa552;
+  color: #ffffff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.pj-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pj-result-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.pj-card-content-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pj-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pj-date {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.pj-card-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pj-btn-dislike,
+.pj-btn-add {
+  background: none;
+  border: 1px solid #ccc;
+  color: #888;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 180px;
+}
+
+.pj-btn-add {
+  background-color: #ffa552;
+  border-color: #ffa552;
+  color: white;
+}
+
+.pj-card-body {
+  display: flex;
+  gap: 15px;
+}
+
+.pj-image-wrap {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+}
+
+.pj-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.pj-details-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.pj-location {
+  font-size: 14px;
+  color: #ffa552;
+  margin: 0;
+}
+
+.pj-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.pj-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.pj-expand-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pj-timeline-section {
+  position: relative;
+  margin-top: 20px;
+  padding-left: 20px;
+}
+
+.pj-timeline-section::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.pj-timeline-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.pj-timeline-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #ffa552;
+  border-radius: 50%;
+  position: absolute;
+  left: -8px;
+  z-index: 1;
+}
+
+.pj-timeline-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.pj-timeline-time {
+  font-weight: bold;
+  color: #ffa552;
+}

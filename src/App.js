@@ -26,6 +26,10 @@ import MyPage from "./pages/MyPage.jsx";
 import MyPage_My_Journey_Management from "./pages/MyPage_My_Journey_Management.jsx";
 import MyPage_Review_Write from "./pages/MyPage_Review_Write.jsx";
 import MyPage_Review_Management from "./pages/MyPage_Review_Management.jsx";
+import AI_Customized_Festival_Recommendation_NL from "./components/AI_Customized_Festival_Recommendation_NL.jsx";
+import AI_Customized_Festival_Recommendation_NS from "./components/AI_Customized_Festival_Recommendation_NS.jsx";
+import Personalized_Survey_NA from "./components/Personalized_Survey_NA.jsx";
+import PersonalJourney_Result from "./pages/PersonalJourney_Result.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
@@ -82,8 +86,27 @@ function AppChrome() {
             path="/MyPage/reviews"
             element={<MyPage_Review_Management />}
           />
+          <Route
+            path="PersonalJourney_Result"
+            element={<PersonalJourney_Result />}
+          />
+
           {/* 설문조사 */}
           <Route path="/survey" element={<Survey />} />
+
+          {/*Ai맞춤형 축제 추천, 개인 맞춤 여정(미로그인시/ 회원시)*/}
+          <Route
+            path="/ai-recommendation-nl"
+            element={<AI_Customized_Festival_Recommendation_NL />}
+          />
+          <Route
+            path="/ai-recommendation-ns"
+            element={<AI_Customized_Festival_Recommendation_NS />}
+          />
+          <Route
+            path="/personalized-survey-na"
+            element={<Personalized_Survey_NA />}
+          />
 
           {/* Redirects */}
           <Route path="/Login" element={<Navigate to="/login" replace />} />
