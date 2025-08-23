@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MyPageSidebar from "../components/MyPageSidebar";
 import "./MyPage_My_Journey_Management.css";
-import { FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 
-// MyPage_My_Journey_Management 컴포넌트
 const MyPage_My_Journey_Management = () => {
   const [activeMenu, setActiveMenu] = useState("my-journey");
-  const [activeTab, setActiveTab] = useState("ongoing");
-
+  const [activeTab, setActiveTab] = useState("past");
   const [currentDate, setCurrentDate] = useState(new Date("2025-08-11"));
   const [selectedDate, setSelectedDate] = useState(
     new Date("2025-08-11").getDate()
   );
-
   const [userName, setUserName] = useState("홍길동");
+
+  // 각 여정 카드의 펼침/접힘 상태를 관리하는 상태
+  const [expandedJourneys, setExpandedJourneys] = useState({});
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
@@ -34,7 +39,6 @@ const MyPage_My_Journey_Management = () => {
     setSelectedDate(null);
   };
 
-  // 임시 여정 데이터
   const journeyData = [
     {
       id: 1,
@@ -44,6 +48,11 @@ const MyPage_My_Journey_Management = () => {
       title: "행궁동 골목여행",
       description:
         "가족과 함께 즐기기 좋은 수원시 행궁동의 골목 여행 스팟을 소개합니다. 맛집, 카페, 문화 공간 등 다양한 볼거리가 있습니다.",
+      timeline: [
+        { time: "10:30", text: "수원화성 방화수류정" },
+        { time: "12:00", text: "행리단길 맛집 탐방" },
+        { time: "14:30", text: "행궁동 벽화마을 산책" },
+      ],
     },
     {
       id: 2,
@@ -53,6 +62,11 @@ const MyPage_My_Journey_Management = () => {
       title: "행궁동 골목여행",
       description:
         "가족과 함께 즐기기 좋은 수원시 행궁동의 골목 여행 스팟을 소개합니다. 맛집, 카페, 문화 공간 등 다양한 볼거리가 있습니다.",
+      timeline: [
+        { time: "10:30", text: "수원화성 방화수류정" },
+        { time: "12:00", text: "행리단길 맛집 탐방" },
+        { time: "14:30", text: "행궁동 벽화마을 산책" },
+      ],
     },
   ];
 
@@ -100,6 +114,14 @@ const MyPage_My_Journey_Management = () => {
       );
     }
     return days;
+  };
+
+  // 펼치기/접기 버튼 핸들러
+  const handleToggleExpand = (id) => {
+    setExpandedJourneys((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   return (
@@ -200,10 +222,33 @@ const MyPage_My_Journey_Management = () => {
                       </p>
                     </div>
                   </div>
-                  <Link to="/some-page-to-expand" className="expand-btn">
-                    <span>펼치기</span>
-                    <FaChevronDown />
-                  </Link>
+                  {expandedJourneys[journey.id] && (
+                    <div className="course-timeline-sectionsv1">
+                      {journey.timeline.map((item, index) => (
+                        <div key={index} className="timeline-itemsv1">
+                          <span className="timeline-dot1" />
+                          <span className="timeline-text1">
+                            <span className="timeline-time1">{item.time}</span>{" "}
+                            {item.text}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <button
+                    className="expand-btn"
+                    onClick={() => handleToggleExpand(journey.id)}
+                  >
+                    {expandedJourneys[journey.id] ? (
+                      <>
+                        접기 <FaChevronUp />
+                      </>
+                    ) : (
+                      <>
+                        펼치기 <FaChevronDown />
+                      </>
+                    )}
+                  </button>
                 </div>
               ))}
           </div>
