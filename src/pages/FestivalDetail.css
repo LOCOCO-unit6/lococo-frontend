@@ -1,6 +1,6 @@
 /* src/pages/FestivalDetail.css */
 
-.detail-container {
+.festival-detail-container {
   max-width: 1200px;
   margin: 50px auto;
   padding: 0 20px;
@@ -41,7 +41,6 @@
   color: #000;
 }
 
-/* 하트 아이콘 스타일 */
 .detail-heart-icon {
   font-size: 30px;
   color: #ddd;
@@ -60,7 +59,11 @@
   margin: 5px 0;
 }
 
-/* 요금 섹션 스타일 */
+.detail-divider {
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
 .detail-fee {
   font-size: 16px;
   color: #777;
@@ -72,12 +75,6 @@
   font-weight: normal;
 }
 
-.detail-divider {
-  border-top: 1px solid #ddd;
-  margin: 20px 0;
-}
-
-/* 소개 섹션 스타일 */
 .detail-intro-section p {
   font-size: 16px;
   line-height: 1.6;
@@ -97,72 +94,117 @@
   margin-top: 50px;
 }
 
-.review-section-wrap h2 {
+.review-section-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.review-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.reviews-list {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
-.review-card-detail {
+.review-item-card {
   border: 1px solid #eee;
-  padding: 20px;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  padding: 20px;
+  position: relative;
 }
 
-.review-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.review-rating {
-  color: #ffc107;
-  font-size: 18px;
-  margin: 0;
-}
-
-.review-date-detail {
+.review-date-top {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   font-size: 12px;
-  color: #999;
+  color: #888;
 }
 
-.review-author {
+.review-photos-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.review-photo-thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.review-meta-data {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.review-star-rating {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: #e4e5e9;
+  font-size: 16px;
+}
+
+.star.active {
+  color: #ffc107;
+}
+
+.reviewer-name {
   font-weight: bold;
-  margin: 5px 0;
+  font-size: 16px;
 }
 
 .review-text {
   font-size: 14px;
   color: #555;
   line-height: 1.5;
+  margin: 0;
 }
 
-.pagination {
-  text-align: center;
+/* 페이지네이션 */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 30px;
+  gap: 5px;
 }
 
-.pagination button {
+.pagination-number-btn,
+.pagination-arrow-btn {
   background: none;
-  border: 1px solid #ccc;
-  color: #888;
-  padding: 8px 12px;
-  margin: 0 5px;
+  border: 1px solid #ddd;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 14px;
   cursor: pointer;
-  border-radius: 5px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
 }
 
-.pagination span {
-  color: #555;
+.pagination-number-btn:hover,
+.pagination-arrow-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.pagination-number-btn.active {
+  background-color: #ffa552;
+  color: white;
   font-weight: bold;
+  border-color: #ffa552;
+}
+
+.pagination-arrow-btn {
+  color: #888;
 }
 
 /* 목록으로 돌아가기 버튼 */

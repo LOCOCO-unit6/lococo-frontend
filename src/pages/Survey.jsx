@@ -348,7 +348,6 @@ const Survey = () => {
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
     <button className="custom-date-input-btn" onClick={onClick} ref={ref}>
       {value || "날짜를 선택하세요"}
-      <FaRegCalendarAlt className="calendar-svg-icon" />
     </button>
   ));
 

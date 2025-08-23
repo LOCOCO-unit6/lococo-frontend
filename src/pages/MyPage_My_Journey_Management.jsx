@@ -181,8 +181,8 @@ const MyPage_My_Journey_Management = () => {
             {activeTab === "past" &&
               journeyData.map((journey) => (
                 <div key={journey.id} className="journey-card">
-                  <div className="journey-card-header">
-                    <span className="journey-date">{journey.date}</span>
+                  <div className="journey-card-headersv1">
+                    <span className="journey-datesv1">{journey.date}</span>
                   </div>
                   <div className="journey-buttons-stack">
                     <button className="delete-btn">일정 삭제하기</button>
