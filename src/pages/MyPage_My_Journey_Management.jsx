@@ -21,25 +21,8 @@ const MyPage_My_Journey_Management = () => {
   // 각 여정 카드의 펼침/접힘 상태를 관리하는 상태
   const [expandedJourneys, setExpandedJourneys] = useState({});
 
-  const handleMenuClick = (menu) => {
-    setActiveMenu(menu);
-  };
-
-  const handlePrevMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-    );
-    setSelectedDate(null);
-  };
-
-  const handleNextMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
-    );
-    setSelectedDate(null);
-  };
-
-  const journeyData = [
+  // 여정 데이터를 상태로 관리합니다.
+  const [journeyData, setJourneyData] = useState([
     {
       id: 1,
       type: "past",
@@ -68,7 +51,33 @@ const MyPage_My_Journey_Management = () => {
         { time: "14:30", text: "행궁동 벽화마을 산책" },
       ],
     },
-  ];
+  ]);
+
+  const handleMenuClick = (menu) => {
+    setActiveMenu(menu);
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+    );
+    setSelectedDate(null);
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+    );
+    setSelectedDate(null);
+  };
+
+  // 여정 삭제 함수
+  const handleDeleteJourney = (id) => {
+    // 실제로는 백엔드 API를 호출하여 데이터를 삭제해야 합니다.
+    // 여기서는 화면에서만 여정을 제거합니다.
+    const updatedJourneys = journeyData.filter((journey) => journey.id !== id);
+    setJourneyData(updatedJourneys);
+  };
 
   const completedJourneysCount = journeyData.filter(
     (j) => j.type === "past"
@@ -116,7 +125,6 @@ const MyPage_My_Journey_Management = () => {
     return days;
   };
 
-  // 펼치기/접기 버튼 핸들러
   const handleToggleExpand = (id) => {
     setExpandedJourneys((prev) => ({
       ...prev,
@@ -207,7 +215,12 @@ const MyPage_My_Journey_Management = () => {
                     <span className="journey-datesv1">{journey.date}</span>
                   </div>
                   <div className="journey-buttons-stack">
-                    <button className="delete-btn">일정 삭제하기</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDeleteJourney(journey.id)}
+                    >
+                      일정 삭제하기
+                    </button>
                     <Link to="/review-write" className="review-btn">
                       후기 작성하기
                     </Link>

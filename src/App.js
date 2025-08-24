@@ -31,6 +31,7 @@ import AI_Customized_Festival_Recommendation_NS from "./components/AI_Customized
 import Personalized_Survey_NA from "./components/Personalized_Survey_NA.jsx";
 import PersonalJourney_Result from "./pages/PersonalJourney_Result.jsx";
 import Review_Modify from "./pages/Review_Modify.jsx";
+import Profile from "./pages/Profile.jsx";
 
 import OrganizerMainPage from "./pages/OrganizerMainPage.jsx";
 import OrganizerMyPage from "./pages/OrganizerMyPage.jsx";
@@ -92,7 +93,7 @@ function AppChrome() {
             element={<PersonalJourney_Result />}
           />
           <Route path="/review-modify/:id" element={<Review_Modify />} />
-
+          <Route path="/MyPage/Profile" element={<Profile />} />
           {/* 설문조사 */}
           <Route path="/survey" element={<Survey />} />
 

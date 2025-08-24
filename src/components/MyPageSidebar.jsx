@@ -17,6 +17,7 @@ const MyPageSidebar = ({ activeMenu, onMenuClick, userName }) => {
           회원 정보 수정
         </Link>
       </div>
+
       <ul className="my-page-menu">
         <li
           className={activeMenu === "liked-contents" ? "active" : ""}

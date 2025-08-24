@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./SignUp_General.css";
+import { registerGeneral } from "../utils/Api.js"; // 방금 만든 API 함수를 가져옵니다.
 
 const GeneralSignUp = () => {
   const [form, setForm] = useState({
@@ -105,9 +106,34 @@ const GeneralSignUp = () => {
     alert("인증요청이 전송되었습니다.");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("회원가입 데이터:", form);
+    // 비밀번호와 비밀번호 확인이 일치하는지 먼저 검증합니다.
+    if (form.password !== form.confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    // 명세서에 맞는 데이터 형태로 변환
+    const formData = {
+      identification: form.id,
+      password: form.password,
+      email: form.email,
+      phoneNumber: form.phone,
+      affiliation: form.region, // 지역 정보를 affiliation으로 매핑
+      role: "general", // 역할은 'general'로 고정
+      passwordCheck: form.confirmPassword,
+    };
+
+    try {
+      const response = await registerGeneral(formData); // API 호출
+      console.log("회원가입 성공:", response);
+      alert("회원가입에 성공했습니다!");
+      // 성공 후 다음 페이지로 이동하거나, 로그인 상태를 변경하는 등의 로직을 추가할 수 있습니다.
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert(`회원가입에 실패했습니다: ${error.message}`);
+    }
   };
 
   return (
