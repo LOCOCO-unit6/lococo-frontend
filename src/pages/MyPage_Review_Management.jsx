@@ -8,15 +8,12 @@ const MyPage_Review_Management = () => {
   const [activeMenu, setActiveMenu] = useState("reviews");
   const [userName, setUserName] = useState("홍길동");
 
-  const handleMenuClick = (menu) => {
-    setActiveMenu(menu);
-  };
-
-  const reviewData = [
+  // 후기 데이터를 상태로 관리합니다.
+  const [reviewData, setReviewData] = useState([
     {
       id: 1,
       date: "2025-08-07",
-      location: "경기도 수원시",
+      location: "경기도 수원시111111111",
       title: "행궁동 골목여행",
       rating: 4,
       reviewText:
@@ -30,14 +27,26 @@ const MyPage_Review_Management = () => {
     {
       id: 2,
       date: "2025-08-07",
-      location: "경기도 수원시",
+      location: "경기도 수원시111111112222222222",
       title: "행궁동 골목여행",
       rating: 5,
       reviewText:
         "가족과 함께 즐기기 좋은 수원시 행궁동의 골목 여행 스팟 축제 추천 즐거웠다재밌었다행복했다가 가가가가 가. 왕추강추 너무재밌었당 또 가고 싶다",
       photos: ["/image/review_photo3.jpg", "/image/review_photo4.jpg"],
     },
-  ];
+  ]);
+
+  const handleMenuClick = (menu) => {
+    setActiveMenu(menu);
+  };
+
+  // 후기 삭제 함수
+  const handleDeleteReview = (id) => {
+    // 실제로는 백엔드 API를 호출하여 데이터를 삭제해야 합니다.
+    // 여기서는 화면에서만 후기를 제거합니다.
+    const updatedReviews = reviewData.filter((review) => review.id !== id);
+    setReviewData(updatedReviews);
+  };
 
   return (
     <div className="my-page-container">
@@ -62,7 +71,6 @@ const MyPage_Review_Management = () => {
                 <div className="review-card-info-section">
                   <div className="review-card-header">
                     <div className="review-header-info">
-                      {/* 날짜와 그 아래 내용을 하나의 div로 묶어 간격을 조절합니다. */}
                       <div className="review-date">{review.date}</div>
                       <p className="review-location">{review.location}</p>
                       <h4 className="review-title">{review.title}</h4>
@@ -78,8 +86,18 @@ const MyPage_Review_Management = () => {
                       </div>
                     </div>
                     <div className="review-buttons-stack">
-                      <button className="review-delete-btn">삭제하기</button>
-                      <button className="review-edit-btn">수정하기</button>
+                      <button
+                        className="review-delete-btn"
+                        onClick={() => handleDeleteReview(review.id)} // onClick 이벤트 추가
+                      >
+                        삭제하기
+                      </button>
+                      <Link
+                        to={`/review-modify/${review.id}`}
+                        className="review-edit-btn"
+                      >
+                        수정하기
+                      </Link>
                     </div>
                   </div>
                 </div>
