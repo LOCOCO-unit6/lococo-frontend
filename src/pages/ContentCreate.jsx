@@ -1,7 +1,9 @@
-import React, { useMemo, useRef, useState } from "react";
+// src/pages/ContentCreate.jsx
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ContentCreate.css";
 import Compass from "../image/compass.png";
+import { createContent } from "../api/contents"; // ✅ API 연동 (폴백 없음)
 
 /** 작은 유틸들 */
 const ORANGE = "#ff7f30";
@@ -47,8 +49,26 @@ export default function ContentCreate() {
   // 진행 상태
   const [stage, setStage] = useState(STAGES.FORM);
 
+  // 이탈 방지: 제출 중 새로고침/이동 경고
+  useEffect(() => {
+    const onBeforeUnload = (e) => {
+      if (stage === STAGES.SUBMITTING) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [stage]);
+
+  // 메모리 누수 방지: 썸네일 URL revoke
+  useEffect(() => {
+    return () => {
+      images.forEach((img) => URL.revokeObjectURL(img.src));
+    };
+  }, [images]);
+
   const valid = useMemo(() => {
-    // 필수값 간단 검증
     return (
       title.trim() &&
       category &&
@@ -80,19 +100,43 @@ export default function ContentCreate() {
     e.preventDefault();
     if (!valid) return;
 
+    // 간단한 기간 검증
+    if (new Date(startDate) > new Date(endDate)) {
+      alert("시작일이 종료일보다 늦을 수 없습니다.");
+      return;
+    }
+
     setStage(STAGES.SUBMITTING);
+    try {
+      // ✅ API가 객체 형태(payload: {fields, files})를 받도록 래핑되어 있다고 가정
+      const payload = {
+        fields: {
+          title, // 축제명
+          category, // 카테고리(축제/전시/공연/체험)
+          startDate, // 시작일(YYYY-MM-DD)
+          endDate, // 종료일(YYYY-MM-DD)
+          region, // 지역(서울/경기/인천...)
+          organization: org, // 주관 단체
+          cardTitle, // 카드/홍보 제목
+          description: desc, // 설명(에디터)
+        },
+        files: images.map((i) => i.file), // 이미지 배열
+      };
 
-    // 실제 API 연동 자리
-    // FormData 구성 예시
-    // const form = new FormData();
-    // form.append("title", title);
-    // ...
-    // images.forEach((img) => form.append("files", img.file));
+      // 🔥 폴백 없이 실제 호출
+      await createContent(payload);
 
-    // 데모용 지연
-    await new Promise((r) => setTimeout(r, 1200));
-
-    setStage(STAGES.DONE);
+      setStage(STAGES.DONE);
+    } catch (err) {
+      console.error(err);
+      // 친절한 에러 메시지
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        "등록 중 오류가 발생했습니다";
+      alert(msg);
+      setStage(STAGES.FORM);
+    }
   };
 
   if (stage === STAGES.SUBMITTING) {
@@ -173,6 +217,7 @@ export default function ContentCreate() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={50}
+              required
             />
           </div>
 
@@ -183,6 +228,7 @@ export default function ContentCreate() {
                 className="cc-input"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                required
               >
                 <option value="">카테고리 선택</option>
                 <option value="축제">축제</option>
@@ -199,6 +245,7 @@ export default function ContentCreate() {
                   className="cc-input"
                   value={formatDate(startDate)}
                   onChange={(e) => setStartDate(e.target.value)}
+                  required
                 />
                 <span className="cc-date-dash">~</span>
                 <input
@@ -206,6 +253,7 @@ export default function ContentCreate() {
                   className="cc-input"
                   value={formatDate(endDate)}
                   onChange={(e) => setEndDate(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -218,6 +266,7 @@ export default function ContentCreate() {
                 className="cc-input"
                 value={region}
                 onChange={(e) => setRegion(e.target.value)}
+                required
               >
                 <option value="">지역 선택</option>
                 <option>서울</option>
@@ -251,6 +300,7 @@ export default function ContentCreate() {
               value={cardTitle}
               onChange={(e) => setCardTitle(e.target.value)}
               maxLength={60}
+              required
             />
           </div>
 

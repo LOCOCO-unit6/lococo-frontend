@@ -103,71 +103,56 @@ const GeneralSignUp = () => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleCityChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value, district: "" }));
+    const { value } = e.target;
+    setForm((prev) => ({ ...prev, city: value, district: "" }));
   };
 
   const handleEmailAuth = async () => {
-    if (!form.email) {
-      alert("이메일 주소를 입력해 주세요.");
-      return;
-    }
+    if (!form.email) return alert("이메일 주소를 입력해 주세요.");
     try {
-      console.log(form.email);
       await requestEmailVerification(form.email);
       setIsEmailSent(true);
       alert("인증 메일이 전송되었습니다. 이메일을 확인해 주세요.");
     } catch (error) {
-      console.error("인증요청 실패:", error);
-      alert(`인증요청에 실패했습니다: ${error.message}`);
+      alert(`인증요청 실패: ${error.message || "에러"}`);
     }
   };
 
   const handleEmailConfirm = async () => {
-    if (!form.emailCode) {
-      alert("인증번호를 입력해 주세요.");
-      return;
-    }
+    if (!form.emailCode) return alert("인증번호를 입력해 주세요.");
     try {
       await confirmEmailVerification(form.email, form.emailCode);
       setIsEmailVerified(true);
-      alert("인증이 완료되었습니다!");
+      alert("이메일 인증이 완료되었습니다.");
     } catch (error) {
-      console.error("인증번호 확인 실패:", error);
       alert("인증번호가 올바르지 않습니다.");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-    if (!isEmailVerified) {
-      alert("이메일 인증을 완료해 주세요.");
-      return;
-    }
+    if (form.password !== form.confirmPassword)
+      return alert("비밀번호가 일치하지 않습니다.");
+    if (!isEmailVerified) return alert("이메일 인증을 완료해 주세요.");
 
     const formData = {
       identification: form.id,
       password: form.password,
+      passwordCheck: form.confirmPassword,
       email: form.email,
       phoneNumber: form.phone,
-      affiliation: `${form.city} ${form.district}`,
-      role: "general",
-      passwordCheck: form.confirmPassword,
+      affiliation: `${form.city} ${form.district}`.trim(),
+      // role은 Api에서 USER로 강제 셋팅
+      name: form.name, // 서버가 무시하더라도 프리패스
     };
 
     try {
-      const response = await registerGeneral(formData);
-      console.log("회원가입 성공:", response);
+      await registerGeneral(formData);
       alert("회원가입에 성공했습니다!");
+      // 성공 후 이동 경로가 있으면 여기서 navigate
     } catch (error) {
-      console.error("회원가입 실패:", error);
-      alert(`회원가입에 실패했습니다: ${error.message}`);
+      alert(`회원가입 실패: ${error.message || "에러"}`);
     }
   };
 
@@ -225,8 +210,8 @@ const GeneralSignUp = () => {
           required
         >
           <option value="">시 선택</option>
-          {regions.cities.map((r, idx) => (
-            <option key={idx} value={r}>
+          {regions.cities.map((r) => (
+            <option key={r} value={r}>
               {r}
             </option>
           ))}
@@ -242,8 +227,8 @@ const GeneralSignUp = () => {
         >
           <option value="">구 선택</option>
           {form.city &&
-            regions.districts[form.city]?.map((d, idx) => (
-              <option key={idx} value={d}>
+            regions.districts[form.city]?.map((d) => (
+              <option key={d} value={d}>
                 {d}
               </option>
             ))}

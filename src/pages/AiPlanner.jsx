@@ -2,78 +2,60 @@
 import React, { useState, useRef } from "react";
 import "./AiPlanner.css";
 import Compass from "../image/compass.png";
+import { createPlanApi, updateProposal } from "../api/aiPlannerApi";
 
-/** 폼 → 제안서 더미 생성기 (추후 API 연동 전 임시) */
-function createProposalFromInputs({
-  region,
-  seasons,
-  tags,
-  localSpecialty,
-  noSpecialty,
-  intent,
-  noPlan,
-}) {
-  const seasonLabel = {
-    spring: "봄",
-    summer: "여름",
-    autumn: "가을",
-    winter: "겨울",
-    allYear: "상시운영",
+/** 서버 응답 → 화면 모델로 정규화 */
+function normalizeServerPlan(data = {}) {
+  const title = (data.title || data.name || data.festivalTitle || "").trim();
+
+  const toList = (v) => {
+    if (Array.isArray(v)) return v;
+    if (typeof v === "string")
+      return v
+        .split(/\r?\n|•|- |\u2022/g)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    return [];
   };
-  const seasonList = Object.entries(seasons)
-    .filter(([, v]) => v)
-    .map(([k]) => seasonLabel[k] || "");
 
-  const title =
-    tags && tags.trim()
-      ? `${region || "지역"} ${seasonList.join("·") || ""} 키워드: ${tags}`
-      : `${region || "지역"} ${seasonList.join("·") || ""} 기획`;
+  const overview = toList(data.overview);
+  const intent = (
+    data.intent ||
+    data.intentAndConcept ||
+    data.summary ||
+    ""
+  ).trim();
 
+  const programBlocks = [];
+  const prog = toList(data.program);
+  if (prog.length) programBlocks.push({ heading: "프로그램", items: prog });
+  const side = toList(data.sideEvents);
+  if (side.length) programBlocks.push({ heading: "부대행사", items: side });
+
+  const benefits = toList(data.expectedEffects);
+
+  if (!title && !overview.length && !intent && !programBlocks.length) {
+    const err = new Error("INVALID_RESPONSE");
+    err.reason = "서버 응답 필드 부족";
+    throw err;
+  }
   return {
-    title: (title || "기흥 뮤직 파티: 젊음을 노래하는 여름밤의 축제").trim(),
-    overview: [
-      `• 축제명: ${title || "기흥 뮤직 파티 (Giheung Music Party)"}`,
-      `• 요약: ${(intent && intent.trim()) || "젊음을 노래하는 여름밤의 축제"}`,
-      `• 일시: 2025년 8월 23일(토) ~ 2025년 8월 24일(일) (2일간)`,
-      `• 장소: ${region || "용인시 기흥구"} 시민공원 일대`,
-      `• 타깃: 음악을 사랑하는 20대 남녀노소 (연인, 사회초년생 등)`,
-    ],
-    intent:
-      (intent && intent.trim()) ||
-      `기흥구는 젊은층 유입이 활발한 도시입니다. 하지만 20대들이 즐길 수 있는 문화 콘텐츠가 부족한 상황입니다. 이에 기흥구만의 색을 담은 소규모 음악 페스티벌을 기획하여 통일된 시그니처 프로그램을 선보이고, 지역에 대한 긍정적 자부심을 높이고자 합니다.`,
-    programBlocks: [
-      {
-        heading: "메인 무대 (Main Stage)",
-        items: [
-          "인디/밴드&신진 뮤지션 공연",
-          "DJ 파티: 힙합, 일렉트로닉 등 EDM 중심",
-          "푸드트럭·로컬 베버리지 페어",
-        ],
-      },
-      {
-        heading: "참여형 부대 행사",
-        items: [
-          `느린마켓/로컬마켓: ${
-            noSpecialty ? "지역 상권 연계" : localSpecialty || "특산물"
-          } 특화 부스`,
-          "포토존·관객 참여형 포토콘테스트",
-          "아티스트 사인회/팬미팅",
-        ],
-      },
-    ],
-    benefits: [
-      "젊은층 유입 및 지역 활성화",
-      "도시/브랜드 이미지 제고",
-      "로컬 상권과의 동반 성장",
-      "연례행사로의 확장 가능성",
-    ],
+    id: data.proposalId ?? data.id ?? data.planId ?? data.sessionId,
+    title: title || "무제",
+    overview,
+    intent,
+    programBlocks,
+    benefits,
+    createdAt: data.createdAt || new Date().toISOString(),
   };
 }
 
 export default function AiPlanner() {
-  const [step, setStep] = useState("form");
+  const [step, setStep] = useState("form"); // form | loading | result
   const [isEditing, setIsEditing] = useState(false);
   const [proposal, setProposal] = useState(null);
+  const [error, setError] = useState("");
+  const [loadingMsg, setLoadingMsg] = useState("");
 
   const titleRef = useRef(null);
   const overviewRef = useRef(null);
@@ -81,28 +63,29 @@ export default function AiPlanner() {
   const programsRef = useRef(null);
   const benefitsRef = useRef(null);
 
-  const parseUl = (ulEl) => {
-    if (!ulEl) return [];
-    return Array.from(ulEl.querySelectorAll("li"))
-      .map((li) => li.innerText.trim())
-      .filter(Boolean);
-  };
+  const parseUl = (ulEl) =>
+    ulEl
+      ? Array.from(ulEl.querySelectorAll("li"))
+          .map((li) => li.innerText.trim())
+          .filter(Boolean)
+      : [];
 
-  const parseProgramBlocksFromDOM = (wrapEl) => {
-    if (!wrapEl) return [];
-    return Array.from(wrapEl.querySelectorAll(".program-block")).map((blk) => {
-      const heading = (
-        blk.querySelector(".program-heading")?.innerText || ""
-      ).trim();
-      const items = Array.from(blk.querySelectorAll("ul > li"))
-        .map((li) => li.innerText.trim())
-        .filter(Boolean);
-      return { heading, items };
-    });
-  };
+  const parseProgramBlocksFromDOM = (wrapEl) =>
+    wrapEl
+      ? Array.from(wrapEl.querySelectorAll(".program-block")).map((blk) => {
+          const heading = (
+            blk.querySelector(".program-heading")?.innerText || ""
+          ).trim();
+          const items = Array.from(blk.querySelectorAll("ul > li"))
+            .map((li) => li.innerText.trim())
+            .filter(Boolean);
+          return { heading, items };
+        })
+      : [];
 
-  const saveInlineEdits = () => {
-    if (!proposal) return;
+  const saveInlineEdits = async () => {
+    if (!proposal?.id) return setIsEditing(false);
+
     const next = {
       ...proposal,
       title: (titleRef.current?.innerText || "").trim(),
@@ -111,11 +94,42 @@ export default function AiPlanner() {
       programBlocks: parseProgramBlocksFromDOM(programsRef.current),
       benefits: parseUl(benefitsRef.current),
     };
-    setProposal(next);
-    setIsEditing(false);
+
+    // 서버에 맞춰 summary로 합쳐서 저장
+    const summaryParts = [];
+    if (next.overview?.length)
+      summaryParts.push("[개요]\n" + next.overview.join("\n"));
+    if (next.intent) summaryParts.push("[의도]\n" + next.intent);
+    if (next.programBlocks?.length) {
+      const txt = next.programBlocks
+        .map(
+          (b) =>
+            `- ${b.heading}\n${(b.items || [])
+              .map((x) => `  • ${x}`)
+              .join("\n")}`
+        )
+        .join("\n");
+      summaryParts.push("[프로그램]\n" + txt);
+    }
+    if (next.benefits?.length)
+      summaryParts.push(
+        "[기대효과]\n" + next.benefits.map((x) => `- ${x}`).join("\n")
+      );
+
+    try {
+      await updateProposal(next.id, {
+        title: next.title,
+        summary: summaryParts.join("\n\n"),
+      });
+      setProposal(next);
+      setIsEditing(false);
+      alert("저장되었습니다.");
+    } catch (e) {
+      alert("수정 저장 실패: " + (e?.response?.data?.message || e.message));
+    }
   };
 
-  /* ====== 폼 상태 ====== */
+  // ====== 폼 상태 ======
   const [region, setRegion] = useState("");
   const [seasons, setSeasons] = useState({
     spring: false,
@@ -133,24 +147,45 @@ export default function AiPlanner() {
   const toggleSeason = (key) =>
     setSeasons((prev) => ({ ...prev, [key]: !prev[key] }));
 
-  /* ====== 액션 ====== */
-  const submitForm = (e) => {
+  // ====== 액션(서버 호출) ======
+  const submitForm = async (e) => {
     e.preventDefault();
-    setStep("loading");
+    setError("");
     setIsEditing(false);
-    setTimeout(() => {
-      const p = createProposalFromInputs({
+    setStep("loading");
+    setLoadingMsg("서버에 제안 생성 요청 중…");
+    try {
+      const payload = {
         region,
         seasons,
         tags,
-        localSpecialty,
+        localSpecialty: noSpecialty ? null : localSpecialty,
+        intent: noPlan ? "" : intent,
         noSpecialty,
-        intent,
         noPlan,
-      });
-      setProposal(p);
+      };
+      const res = await createPlanApi(payload);
+      const normalized = normalizeServerPlan(res ?? {});
+      setProposal(normalized);
+
+      // 저장: AiPromo에서 재사용
+      const key = "aiPlanner.plans";
+      const prev = JSON.parse(localStorage.getItem(key) || "[]");
+      const next = [
+        normalized,
+        ...prev.filter((p) => p.id !== normalized.id),
+      ].slice(0, 100);
+      localStorage.setItem(key, JSON.stringify(next));
+
       setStep("result");
-    }, 900);
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message ||
+        err?.reason ||
+        "제안서 생성 실패. 입력값을 확인하거나 다시 시도해 주세요.";
+      setError(msg);
+      setStep("form");
+    }
   };
 
   const download = () => {
@@ -182,9 +217,8 @@ export default function AiPlanner() {
     URL.revokeObjectURL(url);
   };
 
-  // ====== 상단 타이틀/서브타이틀 ======
   const formSubtitle = "기획하고자 하는 축제 정보를 알려주세요";
-  const resultSubtitle = "입력 정보를 바탕으로 기획한 AI 제안서입니다";
+  const resultSubtitle = "서버 응답 기반 AI 제안서입니다";
 
   return (
     <main className="ai-wrap">
@@ -196,13 +230,17 @@ export default function AiPlanner() {
             {step === "result" && proposal && (
               <p className="ai-subtitle">{resultSubtitle}</p>
             )}
+            {error && step === "form" && (
+              <p className="ai-error" role="alert" style={{ color: "#d44" }}>
+                {error}
+              </p>
+            )}
           </>
         ) : (
           <h1 className="ai-title">제안서 수정하기</h1>
         )}
       </header>
 
-      {/* ====== 입력 폼 ====== */}
       {step === "form" && (
         <form className="ai-form" onSubmit={submitForm}>
           <div className="field">
@@ -246,12 +284,12 @@ export default function AiPlanner() {
           </div>
 
           <div className="field">
-            <label className="label">태그</label>
+            <label className="label">태그(콤마구분)</label>
             <input
               type="text"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              placeholder="원하는 태그를 자유롭게 입력…  ex) 연인데이트, 취미, 야경 등"
+              placeholder="예) 가족, 야외공연, 야시장"
             />
           </div>
 
@@ -301,21 +339,16 @@ export default function AiPlanner() {
         </form>
       )}
 
-      {/* ====== 로딩 ====== */}
       {step === "loading" && (
         <section className="ai-loading">
           <img src={Compass} alt="나침반 로딩" />
-          <p className="loading-text">
-            입력하신 바탕으로 AI가 기본 제안서를 만들고 있어요…
-          </p>
+          <p className="loading-text">{loadingMsg || "처리 중…"}</p>
         </section>
       )}
 
-      {/* ====== 결과(보기/인라인수정) ====== */}
       {step === "result" && proposal && (
         <section className="ai-result">
           <div className="paper">
-            {/* 제목 */}
             <h3
               className="paper-title"
               ref={titleRef}
@@ -325,7 +358,6 @@ export default function AiPlanner() {
               {proposal.title}
             </h3>
 
-            {/* 축제 개요 */}
             <div className="paper-box">
               <h4>축제 개요</h4>
               <ul
@@ -333,13 +365,12 @@ export default function AiPlanner() {
                 contentEditable={isEditing}
                 suppressContentEditableWarning
               >
-                {proposal.overview.map((li, i) => (
+                {(proposal.overview || []).map((li, i) => (
                   <li key={i}>{li.replace(/^•\s?/, "")}</li>
                 ))}
               </ul>
             </div>
 
-            {/* 기획 의도 및 배경 */}
             <div className="paper-box">
               <h4>기획 의도 및 배경</h4>
               <p
@@ -352,10 +383,9 @@ export default function AiPlanner() {
               </p>
             </div>
 
-            {/* 프로그램 구성 */}
             <div className="paper-box" ref={programsRef}>
               <h4>프로그램 구성</h4>
-              {proposal.programBlocks.map((b, i) => (
+              {(proposal.programBlocks || []).map((b, i) => (
                 <div key={i} className="program-block">
                   <strong
                     className="program-heading"
@@ -368,7 +398,7 @@ export default function AiPlanner() {
                     contentEditable={isEditing}
                     suppressContentEditableWarning
                   >
-                    {b.items.map((it, j) => (
+                    {(b.items || []).map((it, j) => (
                       <li key={j}>{it}</li>
                     ))}
                   </ul>
@@ -376,7 +406,6 @@ export default function AiPlanner() {
               ))}
             </div>
 
-            {/* 기대효과 */}
             <div className="paper-box">
               <h4>기대효과</h4>
               <ul
@@ -384,14 +413,13 @@ export default function AiPlanner() {
                 contentEditable={isEditing}
                 suppressContentEditableWarning
               >
-                {proposal.benefits.map((li, i) => (
+                {(proposal.benefits || []).map((li, i) => (
                   <li key={i}>{li}</li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* 버튼: 보기/수정 토글 + 저장 */}
           {!isEditing ? (
             <div className="btn-row center paper-actions">
               <button
@@ -401,7 +429,7 @@ export default function AiPlanner() {
                 수정하기
               </button>
               <button className="btn rect primary" onClick={download}>
-                저장하기
+                다운로드
               </button>
             </div>
           ) : (

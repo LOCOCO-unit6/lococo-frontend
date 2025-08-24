@@ -1,6 +1,8 @@
+// src/pages/AiPromoEditor.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AiPromotion.css";
+import { savePromoPickApi } from "../utils/Api";
 
 function parseContent(body = "") {
   const parts = body.split("\n");
@@ -21,16 +23,23 @@ export default function AiPromoEditor() {
       return null;
     }
   }, []);
+  const promotionId = useMemo(
+    () => sessionStorage.getItem("aiPromo.promotionId") || "",
+    []
+  );
 
   const {
     headline: h0,
     detail: d0,
     hashtags: t0,
   } = useMemo(() => parseContent(pick?.body || ""), [pick]);
-
   const [headline, setHeadline] = useState(h0 || "");
   const [detail, setDetail] = useState(d0 || "");
   const [hashtags, setHashtags] = useState(t0 || "");
+
+  useEffect(() => {
+    if (!pick) nav("/organizer/ai-promo/results");
+  }, [pick, nav]);
 
   const preview = useMemo(() => {
     const head = headline?.trim() || h0 || "";
@@ -39,19 +48,24 @@ export default function AiPromoEditor() {
     return [head, det, tag].filter(Boolean).join("\n\n");
   }, [headline, detail, hashtags, h0, d0]);
 
-  useEffect(() => {
-    if (!pick) nav("/organizer/ai-promo/results");
-  }, [pick, nav]);
-
-  const onDone = () => {
-    const next = {
-      ...(pick || {}),
-      body: preview,
-      title: pick?.title || "편집 버전",
-    };
-    sessionStorage.setItem("aiPromo.pick", JSON.stringify(next));
-    alert("수정 내용을 적용했습니다.");
-    nav("/organizer/ai-promo/results");
+  const onDone = async () => {
+    try {
+      await savePromoPickApi(promotionId || pick?.id, {
+        title: pick?.title || "편집 버전",
+        body: preview,
+      });
+      // 세션 갱신
+      const next = {
+        ...(pick || {}),
+        body: preview,
+        title: pick?.title || "편집 버전",
+      };
+      sessionStorage.setItem("aiPromo.pick", JSON.stringify(next));
+      alert("수정 내용을 저장했습니다.");
+      nav("/organizer/ai-promo/results");
+    } catch (e) {
+      alert("저장 실패: " + (e?.response?.data?.message || e.message));
+    }
   };
 
   return (
@@ -61,12 +75,10 @@ export default function AiPromoEditor() {
       </h1>
 
       <section className="editor-grid">
-        {/* 좌측: 미리보기 */}
         <div className="editor-preview">
           <pre className="pre-scroll">{preview}</pre>
         </div>
 
-        {/* 우측: 수정 패널들 */}
         <div className="editor-right">
           <div className="editor-panel">
             <div className="panel-title">대표 글귀 수정</div>
@@ -101,7 +113,6 @@ export default function AiPromoEditor() {
         </div>
       </section>
 
-      {/* 하단 우측 버튼 */}
       <div className="editor-actions right">
         <button className="ai-btn primary square lg" onClick={onDone}>
           수정 완료

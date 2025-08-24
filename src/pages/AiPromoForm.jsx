@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AiPromotion.css";
+import { generatePromoApi } from "../utils/Api";
 
 export default function AiPromoForm() {
   const nav = useNavigate();
@@ -13,10 +14,10 @@ export default function AiPromoForm() {
     }
   }, []);
 
-  // 선택한 기획서로 입력값 프리필
   const [intro, setIntro] = useState("");
   const [headline, setHeadline] = useState("");
   const [detail, setDetail] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!plan) return;
@@ -31,30 +32,45 @@ export default function AiPromoForm() {
     const place = plan.place || plan.venue || region;
     const season = plan.season || plan.seasonality || "미정";
     const target = plan.target || plan.audience || "미정";
-
-    // 상단 요약은 info-box에서 렌더링, 입력 기본값은 깔끔히
     setIntro(`${title} / ${date} / ${place} / 시즌:${season} / 타겟:${target}`);
-    setHeadline(plan.headline || "");
-    setDetail(plan.detail || "");
   }, [plan]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    sessionStorage.setItem(
-      "aiPromo.form",
-      JSON.stringify({ intro, headline, detail })
-    );
-    nav("/organizer/ai-promo/loading");
+    if (!plan?.id && !plan?._id) return setError("선택된 기획서가 없습니다.");
+    setError("");
+    try {
+      const res = await generatePromoApi(plan.id || plan._id, {
+        intro,
+        headline,
+        detail,
+      });
+      // 서버가 반환하는 형식: { promotionId, items: [{id,title,body}, ...] }
+      const data = res?.data ?? res;
+      if (
+        !data?.items ||
+        !Array.isArray(data.items) ||
+        data.items.length === 0
+      ) {
+        throw new Error("생성 결과가 없습니다.");
+      }
+      sessionStorage.setItem("aiPromo.items", JSON.stringify(data.items));
+      sessionStorage.setItem("aiPromo.promotionId", data.promotionId || "");
+      nav("/organizer/ai-promo/results");
+    } catch (err) {
+      setError(
+        err?.response?.data?.message || err.message || "홍보 콘텐츠 생성 실패"
+      );
+    }
   };
 
-  // 상단 요약용 안전 값
   const info = {
     title: plan?.title || plan?.name || plan?.festivalTitle || "무제",
     slogan: plan?.slogan || plan?.tagline || " ",
     date:
       plan?.date ||
       plan?.eventDate ||
-      (plan?.createdAt && String(plan.createdAt).slice(0, 10)) ||
+      (plan?.createdAt && String(plan?.createdAt).slice(0, 10)) ||
       "YYYY-MM-DD",
     place:
       plan?.place || plan?.venue || plan?.region || plan?.location || "미정",
@@ -68,10 +84,14 @@ export default function AiPromoForm() {
         <p className="ai-promo-subtitle">
           생성할 홍보 콘텐츠 정보를 알려주세요
         </p>
+        {error && (
+          <p className="ai-error" style={{ color: "#d44" }}>
+            {error}
+          </p>
+        )}
       </div>
 
       <section className="ai-promo-card" style={{ maxWidth: 880 }}>
-        {/* ✅ 축제 정보 요약 박스 */}
         <div className="info-box">
           <div className="info-title">
             {info.title}
@@ -98,7 +118,6 @@ export default function AiPromoForm() {
           </ul>
         </div>
 
-        {/* ✅ 입력 폼 */}
         <form onSubmit={onSubmit}>
           <div className="form-field">
             <label>
@@ -108,6 +127,7 @@ export default function AiPromoForm() {
               placeholder="들어가길 원하는 문구(키워드)를 작성해 주세요"
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
+              required
             />
           </div>
 

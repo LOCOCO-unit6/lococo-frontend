@@ -62,6 +62,16 @@ function AppChrome() {
       <div className="content-wrap">
         <Routes>
           {/* 일반 */}
+          <Route
+            path="/logout"
+            element={
+              <div>
+                {localStorage.removeItem("token")}
+                {localStorage.removeItem("user")}
+                <Navigate to="/" />
+              </div>
+            }
+          />
           <Route path="/" element={<MainPage />} />
           <Route
             path="/recommended-course/:id"
