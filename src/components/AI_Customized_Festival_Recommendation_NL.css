@@ -1,0 +1,50 @@
+.recommend-page-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.recommend-page-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffa552;
+  margin-bottom: 50px;
+  text-align: left; /* 제목을 왼쪽으로 정렬합니다. */
+}
+
+.recommend-message-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 100px;
+}
+
+.logo-icon {
+  width: 50px; /* 로고 크기를 조정합니다. */
+  height: 50px;
+}
+
+.login-required-text {
+  font-size: 16px;
+  color: #888;
+  margin-top: 30px;
+}
+
+.login-signup-btn {
+  padding: 15px 30px;
+  background-color: #ffa552;
+  color: white;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.login-signup-btn:hover {
+  background-color: #e69548;
+}

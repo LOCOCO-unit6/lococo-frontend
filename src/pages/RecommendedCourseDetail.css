@@ -1,0 +1,191 @@
+.course-detail-page {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.course-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* 코스 정보 섹션 */
+.course-info-section {
+  display: flex;
+  gap: 40px;
+  border-bottom: 2px solid #ddd;
+}
+
+.course-image-container {
+  flex-shrink: 0;
+  width: 400px;
+  height: 400px;
+}
+
+.course-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.course-text-content {
+  flex-grow: 1;
+}
+
+.course-location {
+  font-size: 16px;
+  color: #ffa552;
+  margin: 0;
+}
+
+.course-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.course-description-box {
+  margin-top: 20px;
+}
+
+.course-section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.course-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* 메인 콘텐츠 섹션 (타임라인 + AI 추천) */
+.course-main-content-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* 타임라인 섹션 */
+.course-timeline-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 20px;
+}
+
+/* 세로선을 위한 가상 요소(pseudo-element) */
+.course-timeline-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 20px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ffa552;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+}
+/* 타임라인 시간 텍스트 스타일 */
+.timeline-time {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+  color: #ffa552; /* FFA552 색상 적용 */
+}
+
+.timeline-text {
+  font-size: 14px;
+  margin-left: 20px;
+  color: #333;
+}
+
+/* AI 추천 섹션 */
+.ai-recommend-section {
+  flex-shrink: 0;
+  width: 350px;
+  height: 250px;
+  padding: 30px;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ai-recommend-text {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 10px;
+}
+
+.ai-recommend-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 20px;
+}
+
+.ai-recommend-buttons {
+  display: flex;
+  gap: 10px;
+}
+.ai-btn-primary {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ai-btn-secondary {
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+/* 창 섹션의 텍스트 색상 */
+.text-primary-color {
+  color: #ffa552;
+}
+
+.text-secondary-color {
+  color: #666;
+}
+
+.ai-btn-primary {
+  background-color: #ffffff;
+  color: #ffa552;
+  border: 1px solid #ffa552;
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.ai-btn-primary:hover {
+  background-color: #f5f5f5;
+}
+
+.ai-btn-secondary {
+  background-color: #ffa552;
+  color: #ffffff;
+}
+
+.ai-btn-secondary:hover {
+  background-color: #e48c2a;
+}
