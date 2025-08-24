@@ -3,7 +3,7 @@ import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./OrganizerMyPage.css";
 
-/** 좌측 사이드바 — CSS(.omp-*) 네이밍과 일치 */
+/** 좌측 사이드바  */
 function OmpSidebar({ active, onSelect, userName = "운영자" }) {
   const navItem = (key, label) => (
     <li className={active === key ? "active" : ""}>
@@ -70,7 +70,6 @@ export default function OrganizerMyPage() {
     const next = new URLSearchParams(searchParams);
     next.set("section", section);
     setSearchParams(next, { replace: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [section]);
 
   // ---------- 데모 데이터 ----------

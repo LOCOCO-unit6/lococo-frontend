@@ -71,21 +71,16 @@ function createProposalFromInputs({
 }
 
 export default function AiPlanner() {
-  /* ====== 단계: form | loading | result ====== */
   const [step, setStep] = useState("form");
-  /* ====== 인라인 편집 토글 ====== */
   const [isEditing, setIsEditing] = useState(false);
-  /* ====== 결과(제안서) ====== */
   const [proposal, setProposal] = useState(null);
 
-  /* ====== contentEditable 참조 ====== */
   const titleRef = useRef(null);
   const overviewRef = useRef(null);
   const intentRef = useRef(null);
   const programsRef = useRef(null);
   const benefitsRef = useRef(null);
 
-  // <ul> → string[]
   const parseUl = (ulEl) => {
     if (!ulEl) return [];
     return Array.from(ulEl.querySelectorAll("li"))
@@ -93,7 +88,6 @@ export default function AiPlanner() {
       .filter(Boolean);
   };
 
-  // .program-block 묶음 → [{heading, items}]
   const parseProgramBlocksFromDOM = (wrapEl) => {
     if (!wrapEl) return [];
     return Array.from(wrapEl.querySelectorAll(".program-block")).map((blk) => {
@@ -107,7 +101,6 @@ export default function AiPlanner() {
     });
   };
 
-  // 편집 저장: DOM → state 반영
   const saveInlineEdits = () => {
     if (!proposal) return;
     const next = {

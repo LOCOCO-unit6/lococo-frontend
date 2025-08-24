@@ -1,8 +1,3 @@
-/* =========================================================
-   OrganizerMyPage.css  —  FULL
-   (모든 규칙은 .omp-wrap 하위에만 적용되어 전역과 충돌 최소화)
-   ========================================================= */
-
 /* ====== 색상/토큰 ====== */
 :root {
   --omp-orange: #ff7f30;
@@ -53,7 +48,6 @@
   margin-bottom: 14px;
 }
 
-/* 기존 .my-page-sidebar-box → 현재 구조에 맞게 */
 .omp-side .omp-card.omp-profile {
   width: 250px;
   flex-shrink: 0;
@@ -64,7 +58,6 @@
   height: 400px;
 }
 
-/* .user-info → .omp-profile-info */
 .omp-profile-info {
   padding: 0;
   border-bottom: 1px solid #ddd;
@@ -72,7 +65,6 @@
   padding-bottom: 20px;
 }
 
-/* .user-name → .omp-name */
 .omp-profile-info .omp-name {
   font-size: 24px;
   font-weight: bold;
@@ -80,7 +72,6 @@
   margin-bottom: 5px;
 }
 
-/* .user-status-link → .omp-role(링크면 a로 교체 권장) */
 .omp-profile-info .omp-role {
   font-size: 13px;
   color: #000000;
@@ -92,7 +83,6 @@
   font-weight: bold;
 }
 
-/* .my-page-menu → .omp-menu (a가 없으면 li에 hover 적용) */
 .omp-menu {
   list-style: none;
   padding: 0;
@@ -305,39 +295,76 @@
 }
 
 /* ================ 프로필 폼 ================ */
+.omp-wrap .omp-form-card {
+  background: var(--omp-card);
+  border: 1px solid var(--omp-line);
+  border-radius: 20px;
+  box-shadow: var(--omp-shadow);
+  padding: 26px 28px 30px;
+}
+.omp-wrap .omp-form-card .card-title {
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
 .omp-wrap .profile-form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 14px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 2px;
+}
+.omp-wrap .profile-form .form-row {
+  display: grid;
+  gap: 8px;
 }
 .omp-wrap .profile-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--omp-text);
 }
-.omp-wrap .profile-form input {
+.omp-wrap .profile-form input[type="text"],
+.omp-wrap .profile-form input[type="email"],
+.omp-wrap .profile-form input[type="password"],
+.omp-wrap .profile-form input[type="tel"] {
+  width: 100%;
+  height: 44px;
   border: 1px solid var(--omp-line);
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 0 12px;
   font-size: 14px;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.omp-wrap .profile-form input::placeholder {
+  color: #b6bcc6;
+}
+.omp-wrap .profile-form input:focus {
+  border-color: #ffd7bf;
+  box-shadow: 0 0 0 3px rgba(255, 127, 48, 0.12);
+}
+
+.omp-wrap .profile-form .submit-area {
+  margin-top: 6px;
 }
 .omp-wrap .profile-form .primary-btn {
-  grid-column: 1 / -1;
-  margin-top: 4px;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 12px;
+  width: 240px;
+  height: 46px;
+  border: 0;
+  border-radius: 10px;
   background: var(--omp-orange);
   color: #fff;
   font-weight: 800;
+  font-size: 15px;
   cursor: pointer;
+  transition: background 0.15s ease, transform 0.02s ease;
 }
-@media (max-width: 820px) {
-  .omp-wrap .profile-form {
-    grid-template-columns: 1fr;
-  }
+.omp-wrap .profile-form .primary-btn:hover {
+  background: var(--omp-orange-hover);
+}
+.omp-wrap .profile-form .primary-btn:active {
+  transform: translateY(1px);
 }
 
 /* ================ 리뷰 상세 ================ */
@@ -392,35 +419,27 @@
   margin: 0;
 }
 .omp-wrap .omp-menu-item {
-  list-style: none; /* li 앞 점 제거 */
+  list-style: none;
 }
 
-/* 프로필 박스 안에 실수로 들어간 li(회원 정보 수정)도 점 제거 */
 .omp-wrap .omp-profile-info li {
   list-style: none;
   padding-left: 0;
 }
 
 /* ===== 박스/카드 사이즈 업그레이드 ===== */
-/* 페이지 여백 조금 더 넉넉하게 */
 .omp-wrap {
   padding: 64px 0 96px;
 }
-
-/* 카드(우측/좌측 공통) 더 크게 */
 .omp-wrap .omp-card {
   padding: 24px 28px;
   border-radius: 20px;
 }
-
-/* 리스트 카드 사이즈 업: 패딩/그리드 넓힘 */
 .omp-wrap .omp-list-item {
-  grid-template-columns: 130px 1fr 320px; /* 110|1fr|280 → 130|1fr|320 */
+  grid-template-columns: 130px 1fr 320px;
   gap: 20px;
   padding: 20px;
 }
-
-/* 배지/타이틀/메타 폰트 및 패딩 키움 */
 .omp-wrap .omp-badge {
   font-size: 13px;
   padding: 8px 12px;
@@ -428,26 +447,20 @@
 }
 .omp-wrap .omp-list-title {
   font-size: 18px;
-} /* 제목 조금 더 큼 */
+}
 .omp-wrap .omp-meta-row {
   font-size: 14px;
   padding: 8px 12px;
 }
-
-/* 탭/버튼도 약간 크게 */
 .omp-wrap .omp-tab {
   padding: 10px 16px;
 }
-
-/* 홍보 카드 간격 및 썸네일 비율 확대 */
 .omp-wrap .promo-grid {
   gap: 22px;
 }
 .omp-wrap .promo-thumb {
   aspect-ratio: 16/10;
-} /* 4/3 → 16/10로 조금 더 와이드 */
-
-/* 프로필 폼 입력/버튼도 조금 키움 */
+}
 .omp-wrap .profile-form input {
   padding: 12px 14px;
   border-radius: 12px;
@@ -456,7 +469,6 @@
   padding: 14px 18px;
   font-size: 15px;
 }
-/* SIZE-UP ONLY (스타일 유지, 폭만 확대) */
 .omp-wrap .omp-main {
   max-width: 1440px;
-} /* 기존 1200px → 1440px */
+}

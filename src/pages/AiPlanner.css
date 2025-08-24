@@ -1,13 +1,7 @@
-/* ===========================
-   AI 기획 도우미 — 전체 스타일 (FULL)
-   =========================== */
-
-/* 컨테이너 */
 .ai-wrap {
   padding: 24px 0 56px;
 }
 
-/* 상단 타이틀: 위에서 좀 내려서 시작 */
 .ai-title {
   text-align: center;
   font-size: 22px;
@@ -29,7 +23,6 @@
 }
 
 /* ---------------- 폼(입력) ---------------- */
-/* 카드/테두리/그림자 제거, 가운데 배치 */
 .ai-form {
   max-width: 820px;
   margin: 24px auto 80px;
@@ -54,7 +47,6 @@
   margin-bottom: 8px;
 }
 
-/* 입력요소 공통 */
 .ai-form input[type="text"],
 .ai-form input[type="search"],
 .ai-form input[type="email"],
@@ -72,7 +64,6 @@
   resize: vertical;
 }
 
-/* select */
 .select-wrap {
   position: relative;
   width: 100%;
@@ -92,8 +83,6 @@
   pointer-events: none;
   font-size: 14px;
 }
-
-/* 시즌: 칩 사용 안 함 */
 .chips,
 .chip {
   display: none !important;
@@ -118,7 +107,6 @@
   color: #333;
   cursor: pointer;
 }
-/* 체크 시 주황색 포인트 */
 .check-item input[type="checkbox"] {
   width: 16px;
   height: 16px;
@@ -130,7 +118,6 @@
   font-weight: 700;
 }
 
-/* ‘지역 특산품 없음’, ‘계획 없음’ 등 인라인 체크 좌측 고정 */
 .inline {
   display: flex !important;
   align-items: center;
@@ -183,7 +170,6 @@
 }
 
 /* ---------------- 로딩(나침반) ---------------- */
-/* 박스 제거, 화면 중앙 정렬 */
 .ai-loading {
   display: flex;
   flex-direction: column;
@@ -267,7 +253,7 @@
   display: flex;
   justify-content: center;
   gap: 28px;
-  margin-top: 60px; /* 버튼 더 아래 */
+  margin-top: 60px;
 }
 .ai-result .btn {
   min-width: 160px;

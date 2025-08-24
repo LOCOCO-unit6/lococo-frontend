@@ -17,8 +17,8 @@ function ReviewCarousel() {
   const settings = {
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 0, // 연속 흐름
-    speed: 6000, // 이용자용과 동일 속도
+    autoplaySpeed: 0,
+    speed: 6000,
     cssEase: "linear",
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -56,7 +56,7 @@ function ReviewCarousel() {
   );
 }
 export default function OrganizerMainPage() {
-  const [isAuthed, setIsAuthed] = useState(true); // 데모: 로그인된 상태로 표시
+  const [isAuthed, setIsAuthed] = useState(true);
 
   if (!isAuthed) {
     return (
@@ -71,9 +71,7 @@ export default function OrganizerMainPage() {
 
   return (
     <main className="main-page organizer">
-      {/* ===== Hero: 좌측 카드 + 우측 큰 이미지 ===== */}
       <section className="hero-grid">
-        {/* 좌측 카드 2개 — 진짜 카드 UI */}
         <div className="left-cards">
           <article className="feature-card">
             <div className="feature-card-head">
@@ -103,21 +101,17 @@ export default function OrganizerMainPage() {
           </article>
         </div>
 
-        {/* 우측: 큰 이미지 한 장 */}
         <div className="hero-image">
-          {/* 실제 배너 이미지 경로로 교체 */}
           <img src="/images/organizer-hero.jpg" alt="주최자 메인 비주얼" />
         </div>
       </section>
 
-      {/* ===== 이용후기 (크기 업) ===== */}
+      {/* ===== 이용후기 ===== */}
       <section className="reviews-section">
         <h3>로코코 이용후기</h3>
         <ReviewCarousel />
       </section>
 
-      {/* ===== 기능 설명 3섹션 — Full‑Bleed (양옆 끝까지) ===== */}
-      {/* 1. 시작가이드 (화이트) */}
       <section className="feature-band bleed white">
         <div className="band-inner wide">
           <div className="band-meta">시작가이드</div>
@@ -128,7 +122,7 @@ export default function OrganizerMainPage() {
         </div>
       </section>
 
-      {/* 2. 홍보 콘텐츠 (베이지) */}
+      {/* 2. 홍보 콘텐츠  */}
       <section className="feature-band bleed beige">
         <div className="band-inner wide">
           <div className="band-meta">AI 홍보 콘텐츠 생성</div>
@@ -142,7 +136,7 @@ export default function OrganizerMainPage() {
         </div>
       </section>
 
-      {/* 3. 콘텐츠 등록 (화이트) */}
+      {/* 3. 콘텐츠 등록  */}
       <section className="feature-band bleed white">
         <div className="band-inner wide">
           <div className="band-meta">콘텐츠 등록</div>

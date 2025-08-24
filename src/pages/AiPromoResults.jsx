@@ -2,7 +2,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AiPromotion.css";
-// 탭 공통/활성 스타일 (인라인로 강제 적용)
 const chipBase = {
   border: "1px solid var(--line, #e5e7eb)",
   background: "#fff",
@@ -89,9 +88,7 @@ export default function AiPromoResults() {
     }
   }, []);
 
-  // 탭
   const [mode, setMode] = useState("instagram");
-  // 중앙 카드 인덱스
   const [active, setActive] = useState(0);
   const items = useMemo(() => buildItems(mode, form), [mode, form]);
 
@@ -129,8 +126,8 @@ export default function AiPromoResults() {
       <div
         className="result-tabs"
         style={{
-          top: 84, // 헤더 높이에 맞게 조절
-          zIndex: 10000, // 카드 덱보다 무조건 위
+          top: 84,
+          zIndex: 10000,
           display: "flex",
           justifyContent: "center",
           gap: 8,
@@ -159,7 +156,6 @@ export default function AiPromoResults() {
         </button>
       </div>
 
-      {/* ✅ 메인 박스 제거 → 바로 덱 표시 */}
       <div className="result-deck portrait">
         {items.map((it, i) => {
           let pos = "pos-center";

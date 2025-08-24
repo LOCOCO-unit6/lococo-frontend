@@ -79,7 +79,6 @@ export default function AiPromoStart() {
   const [search] = useSearchParams();
   const [plans, setPlans] = useState([]);
 
-  // 쿼리로 시드/클리어 지원: /organizer/ai-promo?seed=1 | ?clear=1
   useEffect(() => {
     if (search.get("clear") === "1") {
       clearPlans();
@@ -92,7 +91,7 @@ export default function AiPromoStart() {
 
   const list = useMemo(() => plans.map(normalizePlan), [plans]);
 
-  const goPlanner = () => nav("/AiPlanner"); // 프로젝트 라우트에 맞춰 필요시 수정
+  const goPlanner = () => nav("/AiPlanner");
   const goToForm = (plan) => {
     sessionStorage.setItem("aiPromo.plan", JSON.stringify(plan.raw || plan));
     nav("/organizer/ai-promo/form");

@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AiPromotion.css";
 
-/** 본문을 (대표글귀 / 세부내용 / 해시태그)로 가볍게 분리 */
 function parseContent(body = "") {
   const parts = body.split("\n");
   const hashLines = parts.filter((l) => l.trim().startsWith("#"));
@@ -23,7 +22,6 @@ export default function AiPromoEditor() {
     }
   }, []);
 
-  // 초기값 파싱
   const {
     headline: h0,
     detail: d0,
@@ -34,7 +32,6 @@ export default function AiPromoEditor() {
   const [detail, setDetail] = useState(d0 || "");
   const [hashtags, setHashtags] = useState(t0 || "");
 
-  // 미리보기 합성
   const preview = useMemo(() => {
     const head = headline?.trim() || h0 || "";
     const det = detail?.trim() || d0 || "";
@@ -43,7 +40,6 @@ export default function AiPromoEditor() {
   }, [headline, detail, hashtags, h0, d0]);
 
   useEffect(() => {
-    // pick이 없으면 결과로 복귀
     if (!pick) nav("/organizer/ai-promo/results");
   }, [pick, nav]);
 
