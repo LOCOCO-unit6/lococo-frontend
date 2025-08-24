@@ -75,3 +75,33 @@ select {
 .submit-btn:hover {
   background-color: #ffa552;
 }
+/* 이메일 인증 섹션 스타일 */
+.email-confirm-section {
+  display: flex;
+  gap: 10px;
+}
+
+.email-confirm-section input {
+  flex-grow: 1;
+}
+
+.confirm-Button {
+  background-color: #ffa552;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.confirm-btn:hover {
+  background-color: #d8964e;
+}
+
+.confirm-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

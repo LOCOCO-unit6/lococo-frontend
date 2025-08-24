@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "./SignUp_General.css";
-import { registerGeneral } from "../utils/Api.js"; // 방금 만든 API 함수를 가져옵니다.
+import {
+  registerGeneral,
+  requestEmailVerification,
+  confirmEmailVerification,
+} from "../utils/Api.js"; // API 함수를 import합니다.
 
 const GeneralSignUp = () => {
   const [form, setForm] = useState({
@@ -9,127 +13,95 @@ const GeneralSignUp = () => {
     confirmPassword: "",
     name: "",
     region: "",
-    district: "",
     email: "",
     emailCode: "",
     phone: "",
   });
 
-  const regions = {
-    cities: [
-      "서울특별시",
-      "부산광역시",
-      "대구광역시",
-      "인천광역시",
-      "광주광역시",
-      "대전광역시",
-      "울산광역시",
-      "세종특별자치시",
-      "경기도",
-      "강원도",
-      "충청북도",
-      "충청남도",
-      "전라북도",
-      "전라남도",
-      "경상북도",
-      "경상남도",
-      "제주특별자치도",
-    ],
-    districts: {
-      서울특별시: [
-        "종로구",
-        "중구",
-        "용산구",
-        "성동구",
-        "광진구",
-        "동대문구",
-        "중랑구",
-        "성북구",
-        "강북구",
-        "도봉구",
-      ],
-      부산광역시: [
-        "중구",
-        "서구",
-        "동구",
-        "영도구",
-        "부산진구",
-        "동래구",
-        "남구",
-        "북구",
-      ],
-      대구광역시: ["중구", "동구", "서구", "남구", "북구", "수성구", "달서구"],
-      인천광역시: [
-        "중구",
-        "동구",
-        "미추홀구",
-        "연수구",
-        "남동구",
-        "부평구",
-        "계양구",
-      ],
-      광주광역시: ["동구", "서구", "남구", "북구", "광산구"],
-      대전광역시: ["동구", "중구", "서구", "유성구", "대덕구"],
-      울산광역시: ["중구", "남구", "동구", "북구", "울주군"],
-      세종특별자치시: ["세종시"],
-      경기도: [
-        "수원시",
-        "성남시",
-        "의정부시",
-        "안양시",
-        "부천시",
-        "광명시",
-        "평택시",
-      ],
-      강원도: ["춘천시", "원주시", "강릉시", "동해시", "태백시", "속초시"],
-      충청북도: ["청주시", "충주시", "제천시", "보은군", "옥천군", "영동군"],
-      충청남도: ["천안시", "공주시", "보령시", "아산시", "서산시", "논산시"],
-      전라북도: ["전주시", "군산시", "익산시", "정읍시", "남원시"],
-      전라남도: ["목포시", "여수시", "순천시", "나주시", "광양시"],
-      경상북도: ["포항시", "경주시", "김천시", "안동시", "구미시"],
-      경상남도: ["창원시", "진주시", "통영시", "사천시", "김해시"],
-      제주특별자치도: ["제주시", "서귀포시"],
-    },
-  };
+  const regions = [
+    "서울특별시",
+    "부산광역시",
+    "대구광역시",
+    "인천광역시",
+    "광주광역시",
+    "대전광역시",
+    "울산광역시",
+    "세종특별자치시",
+    "경기도",
+    "강원도",
+    "충청북도",
+    "충청남도",
+    "전라북도",
+    "전라남도",
+    "경상북도",
+    "경상남도",
+    "제주특별자치도",
+  ];
+  // 상태와 핸들러를 추가하여 이메일 인증 기능 구현
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCityChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value, district: "" }));
+  const handleEmailAuth = async () => {
+    if (!form.email) {
+      alert("이메일 주소를 입력해 주세요.");
+      return;
+    }
+    try {
+      console.log(form.email);
+      await requestEmailVerification(form.email);
+      setIsEmailSent(true);
+      alert("인증 메일이 전송되었습니다. 이메일을 확인해 주세요.");
+    } catch (error) {
+      console.error("인증요청 실패:", error);
+      alert(`인증요청에 실패했습니다: ${error.message}`);
+    }
   };
 
-  const handleEmailAuth = () => {
-    alert("인증요청이 전송되었습니다.");
+  const handleEmailConfirm = async () => {
+    if (!form.emailCode) {
+      alert("인증번호를 입력해 주세요.");
+      return;
+    }
+    try {
+      await confirmEmailVerification(form.email, form.emailCode);
+      setIsEmailVerified(true);
+      alert("인증이 완료되었습니다!");
+    } catch (error) {
+      console.error("인증번호 확인 실패:", error);
+      alert("인증번호가 올바르지 않습니다.");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 비밀번호와 비밀번호 확인이 일치하는지 먼저 검증합니다.
     if (form.password !== form.confirmPassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
+    if (!isEmailVerified) {
+      alert("이메일 인증을 완료해 주세요.");
+      return;
+    }
 
-    // 명세서에 맞는 데이터 형태로 변환
     const formData = {
       identification: form.id,
       password: form.password,
       email: form.email,
       phoneNumber: form.phone,
-      affiliation: form.region, // 지역 정보를 affiliation으로 매핑
-      role: "general", // 역할은 'general'로 고정
+      affiliation: form.region,
+      role: "USER",
       passwordCheck: form.confirmPassword,
     };
 
     try {
-      const response = await registerGeneral(formData); // API 호출
+      const response = await registerGeneral(formData);
       console.log("회원가입 성공:", response);
       alert("회원가입에 성공했습니다!");
-      // 성공 후 다음 페이지로 이동하거나, 로그인 상태를 변경하는 등의 로직을 추가할 수 있습니다.
     } catch (error) {
       console.error("회원가입 실패:", error);
       alert(`회원가입에 실패했습니다: ${error.message}`);
@@ -176,42 +148,25 @@ const GeneralSignUp = () => {
         <input
           type="text"
           name="name"
-          placeholder="이름 입력"
+          placeholder="성 이름 입력"
           value={form.name}
           onChange={handleChange}
           required
         />
 
-        <label>장소 (시)</label>
+        <label>지역</label>
         <select
           name="region"
           value={form.region}
-          onChange={handleCityChange}
+          onChange={handleChange}
           required
         >
-          <option value="">시 선택</option>
-          {regions.cities.map((r, idx) => (
+          <option value="">거주 지역을 선택해 주세요</option>
+          {regions.map((r, idx) => (
             <option key={idx} value={r}>
               {r}
             </option>
           ))}
-        </select>
-
-        <label>장소 (구)</label>
-        <select
-          name="district"
-          value={form.district}
-          onChange={handleChange}
-          disabled={!form.region}
-          required
-        >
-          <option value="">구 선택</option>
-          {form.region &&
-            regions.districts[form.region]?.map((d, idx) => (
-              <option key={idx} value={d}>
-                {d}
-              </option>
-            ))}
         </select>
 
         <label>이메일</label>
@@ -223,6 +178,7 @@ const GeneralSignUp = () => {
             value={form.email}
             onChange={handleChange}
             required
+            disabled={isEmailSent}
           />
           <button type="button" className="auth-btn" onClick={handleEmailAuth}>
             인증요청
@@ -230,13 +186,24 @@ const GeneralSignUp = () => {
         </div>
 
         <label>이메일 인증</label>
-        <input
-          type="text"
-          name="emailCode"
-          placeholder="인증번호 입력"
-          value={form.emailCode}
-          onChange={handleChange}
-        />
+        <div className="email-confirm-section">
+          <input
+            type="text"
+            name="emailCode"
+            placeholder="인증번호 입력"
+            value={form.emailCode}
+            onChange={handleChange}
+            disabled={isEmailVerified}
+          />
+          <button
+            type="button"
+            className="confirm-Button"
+            onClick={handleEmailConfirm}
+            disabled={!isEmailSent || isEmailVerified}
+          >
+            인증번호 확인
+          </button>
+        </div>
 
         <label>전화번호</label>
         <input
