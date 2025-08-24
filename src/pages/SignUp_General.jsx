@@ -8,33 +8,97 @@ const GeneralSignUp = () => {
     confirmPassword: "",
     name: "",
     region: "",
+    district: "",
     email: "",
     emailCode: "",
     phone: "",
   });
 
-  const regions = [
-    "서울특별시",
-    "부산광역시",
-    "대구광역시",
-    "인천광역시",
-    "광주광역시",
-    "대전광역시",
-    "울산광역시",
-    "세종특별자치시",
-    "경기도",
-    "강원도",
-    "충청북도",
-    "충청남도",
-    "전라북도",
-    "전라남도",
-    "경상북도",
-    "경상남도",
-    "제주특별자치도",
-  ];
+  const regions = {
+    cities: [
+      "서울특별시",
+      "부산광역시",
+      "대구광역시",
+      "인천광역시",
+      "광주광역시",
+      "대전광역시",
+      "울산광역시",
+      "세종특별자치시",
+      "경기도",
+      "강원도",
+      "충청북도",
+      "충청남도",
+      "전라북도",
+      "전라남도",
+      "경상북도",
+      "경상남도",
+      "제주특별자치도",
+    ],
+    districts: {
+      서울특별시: [
+        "종로구",
+        "중구",
+        "용산구",
+        "성동구",
+        "광진구",
+        "동대문구",
+        "중랑구",
+        "성북구",
+        "강북구",
+        "도봉구",
+      ],
+      부산광역시: [
+        "중구",
+        "서구",
+        "동구",
+        "영도구",
+        "부산진구",
+        "동래구",
+        "남구",
+        "북구",
+      ],
+      대구광역시: ["중구", "동구", "서구", "남구", "북구", "수성구", "달서구"],
+      인천광역시: [
+        "중구",
+        "동구",
+        "미추홀구",
+        "연수구",
+        "남동구",
+        "부평구",
+        "계양구",
+      ],
+      광주광역시: ["동구", "서구", "남구", "북구", "광산구"],
+      대전광역시: ["동구", "중구", "서구", "유성구", "대덕구"],
+      울산광역시: ["중구", "남구", "동구", "북구", "울주군"],
+      세종특별자치시: ["세종시"],
+      경기도: [
+        "수원시",
+        "성남시",
+        "의정부시",
+        "안양시",
+        "부천시",
+        "광명시",
+        "평택시",
+      ],
+      강원도: ["춘천시", "원주시", "강릉시", "동해시", "태백시", "속초시"],
+      충청북도: ["청주시", "충주시", "제천시", "보은군", "옥천군", "영동군"],
+      충청남도: ["천안시", "공주시", "보령시", "아산시", "서산시", "논산시"],
+      전라북도: ["전주시", "군산시", "익산시", "정읍시", "남원시"],
+      전라남도: ["목포시", "여수시", "순천시", "나주시", "광양시"],
+      경상북도: ["포항시", "경주시", "김천시", "안동시", "구미시"],
+      경상남도: ["창원시", "진주시", "통영시", "사천시", "김해시"],
+      제주특별자치도: ["제주시", "서귀포시"],
+    },
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCityChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value, district: "" }));
   };
 
   const handleEmailAuth = () => {
@@ -86,26 +150,44 @@ const GeneralSignUp = () => {
         <input
           type="text"
           name="name"
-          placeholder="성 이름 입력"
+          placeholder="이름 입력"
           value={form.name}
           onChange={handleChange}
           required
         />
 
-        <label>지역</label>
+        <label>장소 (시)</label>
         <select
           name="region"
           value={form.region}
-          onChange={handleChange}
+          onChange={handleCityChange}
           required
         >
-          <option value="">거주 지역을 선택해 주세요</option>
-          {regions.map((r, idx) => (
+          <option value="">시 선택</option>
+          {regions.cities.map((r, idx) => (
             <option key={idx} value={r}>
               {r}
             </option>
           ))}
         </select>
+
+        <label>장소 (구)</label>
+        <select
+          name="district"
+          value={form.district}
+          onChange={handleChange}
+          disabled={!form.region}
+          required
+        >
+          <option value="">구 선택</option>
+          {form.region &&
+            regions.districts[form.region]?.map((d, idx) => (
+              <option key={idx} value={d}>
+                {d}
+              </option>
+            ))}
+        </select>
+
         <label>이메일</label>
         <div className="email-section">
           <input
