@@ -6,8 +6,7 @@ import "./Login.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-// Proxy 적용: Vercel vercel.json과 연결
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "/api";
+const API_BASE_URL = "http://3.39.0.20:8080";
 
 const saveToken = (token) => {
   localStorage.setItem("authToken", token);
@@ -32,10 +31,10 @@ export default function Login() {
     setBusy(true);
     setError("");
 
-    // ❌ 기존: "/api/v1/user/login"
-    // ✅ 변경: "/v1/user/login" → baseURL에 /api 붙어서 proxy 통해 전달
     const endpoint =
-      roleTab === "company" ? "/v1/admin/login" : "/v1/user/login";
+      roleTab === "company"
+        ? "/api/v1/admin/login" // 기업회원 전용
+        : "/api/v1/user/login"; // 개인회원 전용
 
     try {
       const res = await axios.post(
@@ -49,11 +48,12 @@ export default function Login() {
 
       const data = res?.data || {};
       const token = data?.token || data?.accessToken || "";
-      const role = data?.user?.role || data?.role || "";
+      const role = data?.user?.role || data?.role || ""; // 백엔드가 어떤 키로 주든 대응
 
+      // ✅ 포털-역할 일치 검사 (개인 → personal, 기업 → company/admin)
       const isCompanyRole = /^(company|admin)$/i.test(role);
       const isPersonalRole =
-        /^(personal|user|member)$/i.test(role) || role === "";
+        /^(personal|user|member)$/i.test(role) || role === ""; // role 안주는 경우도 있음
 
       if (roleTab === "company" && !isCompanyRole) {
         setError(
@@ -72,6 +72,7 @@ export default function Login() {
         return;
       }
 
+      // 저장 & 이동
       saveToken(token);
       if (data?.user) localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -105,6 +106,7 @@ export default function Login() {
 
       <h2 className="login-title">로그인</h2>
 
+      {/* 개인/기업 UI 분리 탭 */}
       <div className="role-switch" role="tablist" aria-label="로그인 유형 선택">
         <button
           type="button"
