@@ -29,3 +29,13 @@ export function logout() {
     localStorage.removeItem(k)
   );
 }
+export function getOrganizerId() {
+  try {
+    const raw = localStorage.getItem("auth");
+    const json = raw ? JSON.parse(raw) : null;
+    return json?.organizerId ?? null; // number|string
+  } catch {
+    return null;
+  }
+}
+localStorage.setItem("auth", JSON.stringify({ organizerId: 1 /* 예시 */ }));

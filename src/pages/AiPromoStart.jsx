@@ -2,10 +2,30 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./AiPromotion.css";
-import { listPlansApi } from "../utils/Api";
+
+/** ---- 저장/로드 유틸 ---- */
+const STORAGE_KEY = "aiPlanner.plans";
+const CANDIDATE_KEYS = [STORAGE_KEY, "aiPlans", "plannerPlans"];
+
+function loadPlans() {
+  for (const k of CANDIDATE_KEYS) {
+    try {
+      const raw = localStorage.getItem(k);
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return arr;
+      }
+    } catch (_) {}
+  }
+  return [];
+}
+function clearPlans() {
+  CANDIDATE_KEYS.forEach((k) => localStorage.removeItem(k));
+}
 
 function normalizePlan(p) {
-  const title = p.title || p.name || p.festivalTitle || "무제";
+  const title =
+    p.title || p.name || p.festivalTitle || p.projectTitle || "무제";
   const region = p.region || p.location || p.city || "미정";
   const season = p.season || p.seasonality || "미정";
   const target = p.target || p.audience || "미정";
@@ -14,7 +34,7 @@ function normalizePlan(p) {
     p.eventDate ||
     (p.createdAt && String(p.createdAt).slice(0, 10)) ||
     "YYYY-MM-DD";
-  const id = p.id || p._id;
+  const id = p.id || p._id || title + "-" + date;
   return { id, title, region, season, target, date, raw: p };
 }
 
@@ -22,33 +42,35 @@ export default function AiPromoStart() {
   const nav = useNavigate();
   const [search] = useSearchParams();
   const [plans, setPlans] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    (async () => {
-      try {
-        setError("");
-        const res = await listPlansApi({ page: 1, size: 50 }); // 필요시 파라미터 조절
-        const list = Array.isArray(res?.data?.items)
-          ? res.data.items
-          : Array.isArray(res?.data)
-          ? res.data
-          : [];
-        setPlans(list);
-      } catch (e) {
-        setError(e?.response?.data?.message || "기획서 목록 조회 실패");
-        setPlans([]);
-      }
-    })();
+    if (search.get("clear") === "1") clearPlans();
+    setPlans(loadPlans());
   }, [search]);
 
   const list = useMemo(() => plans.map(normalizePlan), [plans]);
 
   const goPlanner = () => nav("/AiPlanner");
+
+  // ✅ organizerId 주입
   const goToForm = (plan) => {
-    sessionStorage.setItem("aiPromo.plan", JSON.stringify(plan.raw || plan));
+    const raw = plan.raw || plan;
+    const orgId =
+      raw?.organizerId ??
+      raw?.organizer?.id ??
+      plan?.organizerId ??
+      plan?.organizer?.id ??
+      null;
+
+    if (orgId != null) {
+      localStorage.setItem("organizerId", String(orgId));
+      sessionStorage.setItem("organizerId", String(orgId));
+    }
+
+    sessionStorage.setItem("aiPromo.plan", JSON.stringify(raw));
     nav("/organizer/ai-promo/form");
   };
+
   const goDetail = (plan) =>
     nav(`/AiPlanner?planId=${encodeURIComponent(plan.id)}`);
   const goEdit = (plan) =>
@@ -64,17 +86,11 @@ export default function AiPromoStart() {
           홍보물 생성을 원하는 콘텐츠를 선택 해주세요
         </h3>
 
-        {error && (
-          <p className="ai-error" style={{ color: "#d44" }}>
-            {error}
-          </p>
-        )}
-
-        {list.length === 0 && !error && (
+        {list.length === 0 && (
           <div className="start-empty">
             <div className="start-empty-box">
               <div className="start-empty-text">
-                먼저 기획서를 생성해 주세요
+                콘텐츠를 먼저 생성 해주세요
               </div>
               <button className="ai-btn primary lg" onClick={goPlanner}>
                 기획하러 가기

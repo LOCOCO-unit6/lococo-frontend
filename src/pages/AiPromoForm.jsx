@@ -6,6 +6,8 @@ import { generatePromoApi } from "../utils/Api";
 
 export default function AiPromoForm() {
   const nav = useNavigate();
+
+  // Start에서 넣어둔 선택 기획서(plan)
   const plan = useMemo(() => {
     try {
       return JSON.parse(sessionStorage.getItem("aiPromo.plan") || "null");
@@ -14,15 +16,16 @@ export default function AiPromoForm() {
     }
   }, []);
 
-  const [intro, setIntro] = useState("");
-  const [headline, setHeadline] = useState("");
-  const [detail, setDetail] = useState("");
+  // 입력값
+  const [intro, setIntro] = useState(""); // 해시태그/요약처럼 보이던 필드 (추가문구에 보탤 예정)
+  const [headline, setHeadline] = useState(""); // 대표 문구
+  const [detail, setDetail] = useState(""); // 세부 내용
   const [error, setError] = useState("");
 
+  // 화면 진입 시 기본 안내문 생성(표시용)
   useEffect(() => {
     if (!plan) return;
     const title = plan.title || plan.name || plan.festivalTitle || "무제";
-    const slogan = plan.slogan || plan.tagline || "";
     const date =
       plan.date ||
       plan.eventDate ||
@@ -35,27 +38,32 @@ export default function AiPromoForm() {
     setIntro(`${title} / ${date} / ${place} / 시즌:${season} / 타겟:${target}`);
   }, [plan]);
 
+  // ✅ Swagger에 맞춰 proposalId + additionalText 로 호출
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!plan?.id && !plan?._id) return setError("선택된 기획서가 없습니다.");
     setError("");
+
+    // proposalId는 선택한 기획서 id 사용 (숫자/문자 모두 허용, 서버가 숫자라면 백엔드에서 캐스팅)
+    const proposalId = plan?.id ?? plan?._id;
+    if (!proposalId) {
+      setError("선택된 기획서가 없습니다.");
+      return;
+    }
+
+    // additionalText: 사용자가 입력한 대표문구 + 세부내용 + 화면상 요약을 한 줄로 합침
+    const additionalText = [headline, detail, intro].filter(Boolean).join(" ");
+
     try {
-      const res = await generatePromoApi(plan.id || plan._id, {
-        intro,
-        headline,
-        detail,
-      });
-      // 서버가 반환하는 형식: { promotionId, items: [{id,title,body}, ...] }
-      const data = res?.data ?? res;
-      if (
-        !data?.items ||
-        !Array.isArray(data.items) ||
-        data.items.length === 0
-      ) {
-        throw new Error("생성 결과가 없습니다.");
-      }
-      sessionStorage.setItem("aiPromo.items", JSON.stringify(data.items));
-      sessionStorage.setItem("aiPromo.promotionId", data.promotionId || "");
+      const res = await generatePromoApi(proposalId, additionalText);
+      const data = res?.data ?? res; // { instagramId, title, content, hashtags: [] }
+
+      // Results 화면에서 재사용 (배열 형태로 저장)
+      sessionStorage.setItem("aiPromo.items", JSON.stringify([data]));
+      sessionStorage.setItem(
+        "aiPromo.promotionId",
+        String(data.instagramId ?? data.id ?? "")
+      );
+
       nav("/organizer/ai-promo/results");
     } catch (err) {
       setError(
@@ -121,10 +129,10 @@ export default function AiPromoForm() {
         <form onSubmit={onSubmit}>
           <div className="form-field">
             <label>
-              원하는 대표 글귀 문구(키워드) <span className="req"></span>
+              대표 문구 (추가문구에 포함) <span className="req"></span>
             </label>
             <input
-              placeholder="들어가길 원하는 문구(키워드)를 작성해 주세요"
+              placeholder="대표 문구를 작성해 주세요"
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
               required
@@ -132,13 +140,21 @@ export default function AiPromoForm() {
           </div>
 
           <div className="form-field">
-            <label>원하는 세부 내용 문구(키워드)</label>
+            <label>세부 내용 (추가문구에 포함)</label>
             <textarea
-              placeholder="들어가길 원하는 문구(키워드)를 작성해 주세요"
+              placeholder="세부 내용을 작성해 주세요"
               value={detail}
               onChange={(e) => setDetail(e.target.value)}
             />
-            <div className="note">*미작성시 AI가 알아서 생성</div>
+          </div>
+
+          <div className="form-field">
+            <label>요약/메모 (추가문구에 포함)</label>
+            <textarea
+              placeholder="필요하면 적어주세요"
+              value={intro}
+              onChange={(e) => setIntro(e.target.value)}
+            />
           </div>
 
           <div style={{ textAlign: "center", marginTop: 22 }}>
