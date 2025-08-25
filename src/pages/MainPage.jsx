@@ -3,16 +3,26 @@ import { useNavigate, Link } from "react-router-dom";
 import Slider from "react-slick";
 import "./MainPage.css";
 
+import Rectangle112 from "../image/Rectangle 112.png";
+import Rectangle_120 from "../image/Rectangle_120.png";
+import Rectangle_121 from "../image/Rectangle_121.png";
+import Rectangle_122 from "../image/Rectangle_122.png";
+import Bo from "../image/Bo.png";
+import ulsan from "../image/ulsan.png";
+import qq from "../image/qq.png";
+import fe from "../image/fe.png";
+import qwe from "../image/qwe.png";
+
 function BannerCarousel() {
   const banners = [
     {
       id: 1,
-      img: "/image/banner1.png",
+      img: Rectangle112,
       text: "경기도 용인시 가나다 축제",
     },
-    { id: 2, img: "/image/banner2.jpg", text: "베너 2" },
-    { id: 3, img: "/image/banner3.jpg", text: "베너 3" },
-    { id: 4, img: "/image/banner4.jpg", text: "베너 4" },
+    { id: 2, img: qq, text: "가을 밤 그라제 축제" },
+    { id: 3, img: fe, text: "봄꽃놀이" },
+    { id: 4, img: qwe, text: "걷는 동안, 우리는 봄이다" },
   ];
 
   const settings = {
@@ -103,33 +113,33 @@ export default function MainPage() {
   const recommendedCourses = [
     {
       id: 1,
-      img: "/images/course1.jpg",
+      img: Rectangle_120,
       location: "경기도 수원시",
       title: "행궁동 골목여행",
     },
     {
       id: 2,
-      img: "/images/course2.jpg",
+      img: Rectangle_121,
       location: "경기도 수원시",
-      title: "행궁동 골목여행",
+      title: "수원 연등축제",
     },
     {
       id: 3,
-      img: "/images/course3.jpg",
-      location: "경기도 수원시",
-      title: "행궁동 골목여행",
+      img: Rectangle_122,
+      location: "마포구",
+      title: "사람을 보라 축제",
     },
     {
       id: 4,
-      img: "/images/course4.jpg",
-      location: "경기도 수원시",
-      title: "행궁동 골목여행",
+      img: Bo,
+      location: "전라남도 보성군",
+      title: "보성 다향 대축제",
     },
     {
       id: 5,
-      img: "/images/course5.jpg",
-      location: "경기도 수원시",
-      title: "행궁동 골목여행",
+      img: ulsan,
+      location: "울산",
+      title: "울산 고래 축제",
     },
   ];
 
