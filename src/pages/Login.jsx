@@ -6,7 +6,7 @@ import "./Login.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_BASE_URL = "http://3.39.0.20:8080";
+const API_BASE_URL = "http://13.55.41.77:8080";
 
 const saveToken = (token) => {
   localStorage.setItem("authToken", token);

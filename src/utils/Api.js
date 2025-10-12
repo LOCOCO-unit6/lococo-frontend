@@ -1,7 +1,7 @@
 // src/utils/Api.js
 import axios from "axios";
 import Cookies from "js-cookie";
-export const API_BASE_URL = "http://3.39.0.20:8080";
+export const API_BASE_URL = "http://13.55.41.77:8080";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
