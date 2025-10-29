@@ -1,44 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { fetchFestivals } from "../utils/festivalService";
+import { useNavigate } from "react-router-dom";
 import "./Ai_Festival_Recommend.css";
 
 export default function AiFestivalRecommend() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const nav = useNavigate();
 
   useEffect(() => {
-    const toYMD = (d) =>
-      `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(
-        d.getDate()
-      ).padStart(2, "0")}`;
-
-    // ✅ 현재 연도 전체
     const year = new Date().getFullYear();
     const startYmd = `${year}0101`;
     const endYmd = `${year}1231`;
 
-    console.log("📅 조회 범위:", startYmd, "~", endYmd);
-
     (async () => {
       try {
         setLoading(true);
-        setError(null);
         const data = await fetchFestivals({
           startYmd,
           endYmd,
           arrange: "C",
           numOfRows: 50,
         });
-
-        console.log("✅ 불러온 축제 개수:", data.length);
-        console.log("✅ 첫 번째 축제:", data[0]);
-
-        if (Array.isArray(data) && data.length > 0) {
-          setItems(data);
-        } else {
-          setItems([]);
-        }
+        setItems(Array.isArray(data) ? data : []);
       } catch (e) {
         setError(e);
       } finally {
@@ -48,31 +33,22 @@ export default function AiFestivalRecommend() {
   }, []);
 
   if (loading)
-    return (
-      <div className="recommend-page-container">
-        📡 축제 정보를 불러오는 중…
-      </div>
-    );
+    return <div className="recommend-page-container">📡 불러오는 중…</div>;
   if (error)
-    return (
-      <div className="recommend-page-container">
-        ⚠️ 축제 정보를 가져오지 못했습니다.
-      </div>
-    );
+    return <div className="recommend-page-container">⚠️ 오류 발생</div>;
   if (!items.length)
-    return (
-      <div className="recommend-page-container">
-        😢 해당 기간에 등록된 축제 정보가 없습니다.
-      </div>
-    );
+    return <div className="recommend-page-container">😢 축제 없음</div>;
 
   return (
     <div className="recommend-page-container">
-      <h2 style={{ marginBottom: "20px" }}>AI 맞춤형 축제 추천</h2>
-
+      <h2>AI 맞춤형 축제 추천</h2>
       <div className="festival-grid">
         {items.map((f) => (
-          <div key={f.id} className="festival-card">
+          <div
+            key={f.id}
+            className="festival-card"
+            onClick={() => nav(`/festival/${f.id}`, { state: f })} // ✅ state로 데이터 전달
+          >
             <img
               src={f.image || "/image/default.jpg"}
               alt={f.title}

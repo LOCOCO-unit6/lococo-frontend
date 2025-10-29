@@ -1,7 +1,7 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
-  // 🔹 기존 백엔드 프록시 (그대로 유지)
+  // ✅ 기존 백엔드 프록시 유지
   app.use(
     "/api",
     createProxyMiddleware({
@@ -12,16 +12,23 @@ module.exports = function (app) {
     })
   );
 
-  // 🔹 TourAPI 프록시 (최종 확정 버전)
+  // ✅ TourAPI v2 (CORS 완전 대응)
   app.use(
     "/tourapi",
     createProxyMiddleware({
-      target: "https://apis.data.go.kr/B551011/KorService2", // ✅ KorService2로 직접 지정
+      target: "https://apis.data.go.kr/B551011/KorService2",
       changeOrigin: true,
       secure: true,
       logLevel: "debug",
-      // pathRewrite 제거해야 중복 경로 안 생김
-      // ✅ 절대 pathRewrite 쓰지 마!
+
+      // 🚀 핵심: 중복 Origin 헤더 제거
+      onProxyRes(proxyRes) {
+        const key = "access-control-allow-origin";
+        const header = proxyRes.headers[key];
+        if (header && header.includes(",")) {
+          proxyRes.headers[key] = header.split(",")[0].trim();
+        }
+      },
     })
   );
 };
