@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchFestivalDetail } from "../utils/festivalService";
 import "./FestivalDetail.css";
 
@@ -9,44 +9,26 @@ export default function FestivalDetail() {
   const navigate = useNavigate();
 
   const [festival, setFestival] = useState(state || null);
-  const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(!state);
-  const [error, setError] = useState(null);
 
-  // ✅ state가 없으면 API에서 재요청
   useEffect(() => {
-    if (festival) return;
-
-    (async () => {
-      try {
+    if (!state) {
+      (async () => {
         setLoading(true);
         const data = await fetchFestivalDetail(id);
-        if (!data) throw new Error("데이터 없음");
         setFestival(data);
-      } catch (err) {
-        console.error(err);
-        setError("❌ 축제 정보를 불러오지 못했습니다.");
-      } finally {
         setLoading(false);
-      }
-    })();
-  }, [id, festival]);
+      })();
+    }
+  }, [id, state]);
 
-  const toggleLike = () => {
-    setLiked((prev) => !prev);
-  };
-
-  if (loading)
-    return <div className="festival-detail-container">📡 불러오는 중...</div>;
-  if (error) return <div className="festival-detail-container">{error}</div>;
+  if (loading) return <div className="loading">⏳ 정보를 불러오는 중...</div>;
 
   if (!festival)
     return (
-      <div className="festival-detail-container">
-        <p>❌ 축제 정보를 찾을 수 없습니다.</p>
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          ← 돌아가기
-        </button>
+      <div>
+        ❌ 축제 정보를 찾을 수 없습니다.
+        <button onClick={() => navigate(-1)}>뒤로가기</button>
       </div>
     );
 
@@ -65,26 +47,19 @@ export default function FestivalDetail() {
 
       <div className="festival-detail-body">
         <h2>{festival.title}</h2>
+
         <p>
           <strong>📅 기간:</strong> {festival.startDate} ~ {festival.endDate}
         </p>
         <p>
-          <strong>📍 장소:</strong> {festival.address || "주소 정보 없음"}
+          <strong>📍 장소:</strong> {festival.address}
         </p>
 
         <p>
           <strong>📖 소개:</strong>
           <br />
-          {festival.overview || "소개 정보가 없습니다."}
+          {festival.overview || "😥 소개 정보가 없습니다."}
         </p>
-
-        {/* ✅ 찜 버튼 토글 only UI */}
-        <button
-          className={`like-btn ${liked ? "liked" : ""}`}
-          onClick={toggleLike}
-        >
-          {liked ? "❤️ 찜 완료" : "🤍 찜하기"}
-        </button>
       </div>
     </div>
   );

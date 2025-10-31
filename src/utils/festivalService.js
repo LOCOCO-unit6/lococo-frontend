@@ -1,9 +1,10 @@
 import api from "../api/tourApi";
 
+/* ✅ 축제 목록 조회 (변경 ❌) */
 export async function fetchFestivals({
   startYmd,
   endYmd,
-  arrange = "C", // 수정일 최신순
+  arrange = "C",
   pageNo = 1,
   numOfRows = 30,
 } = {}) {
@@ -15,11 +16,9 @@ export async function fetchFestivals({
         arrange,
         pageNo,
         numOfRows,
-        // ❌ KorService2는 listYN, contentTypeId 파라미터 사용 안 함!
+        _type: "json",
       },
     });
-
-    console.log("🔥 API Raw Data:", data);
 
     const item = data?.response?.body?.items?.item ?? [];
     const items = Array.isArray(item) ? item : [item];
@@ -31,7 +30,6 @@ export async function fetchFestivals({
       startDate: i.eventstartdate ?? "",
       endDate: i.eventenddate ?? "",
       image: i.firstimage || i.firstimage2 || "",
-      tel: i.tel ?? "",
       lat: i.mapy ? Number(i.mapy) : null,
       lng: i.mapx ? Number(i.mapx) : null,
     }));
@@ -40,9 +38,32 @@ export async function fetchFestivals({
     return [];
   }
 }
+
+/* ✅ 소개 정보 조회 */
+async function fetchFestivalIntro(contentId) {
+  try {
+    const { data } = await api.get("detailIntro1", {
+      params: {
+        contentId,
+        MobileOS: "ETC",
+        MobileApp: "LOCOKO",
+        _type: "json",
+      },
+    });
+
+    const item = data?.response?.body?.items?.item;
+    const f = Array.isArray(item) ? item[0] : item;
+
+    return f?.overview || f?.infocenter || f?.eventhomepage || f?.program || "";
+  } catch {
+    return "";
+  }
+}
+
+/* ✅ 상세조회: Common + Intro 병합 */
 export async function fetchFestivalDetail(contentId) {
   try {
-    const { data } = await api.get("detailCommon1", {
+    const { data } = await api.get("detailCommon2", {
       params: {
         contentId,
         overviewYN: "Y",
@@ -50,24 +71,24 @@ export async function fetchFestivalDetail(contentId) {
         mapinfoYN: "Y",
         MobileOS: "ETC",
         MobileApp: "LOCOKO",
-        numOfRows: 1,
-        pageNo: 1,
+        _type: "json",
       },
     });
 
-    console.log("📌 상세 API Raw Data:", data);
-
     const item = data?.response?.body?.items?.item;
     const f = Array.isArray(item) ? item[0] : item;
+
+    // ✅ 소개 데이터 보강
+    const intro = await fetchFestivalIntro(contentId);
 
     return {
       id: contentId,
       title: f?.title ?? "",
       image: f?.firstimage ?? "",
-      overview: f?.overview ?? "",
-      address: f?.addr1 ?? "",
+      address: f?.addr1 ?? "주소 정보 없음",
       startDate: f?.eventstartdate ?? "",
       endDate: f?.eventenddate ?? "",
+      overview: intro || f?.overview || "",
       lat: f?.mapy ? Number(f.mapy) : null,
       lng: f?.mapx ? Number(f.mapx) : null,
     };

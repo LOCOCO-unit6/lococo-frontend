@@ -246,3 +246,76 @@
     width: 86%;
   }
 }
+/* ✅ 추천 코스 영역 */
+.recommend-carousel-container {
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* ✅ 카드 전체 영역 */
+.recommend-card {
+  width: 100%;
+  height: 260px; /* 카드 높이 고정 */
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s ease, box-shadow 0.25s ease;
+}
+
+.recommend-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* ✅ 이미지 비율 고정 */
+.recommend-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ✅ 카드 내부 텍스트 영역 */
+.card-body {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ✅ 장소 */
+.card-body .location {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--brand);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ 제목 — 최대 2줄 */
+.card-body .title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 4px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2줄 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ 기간 */
+.card-body .period {
+  font-size: 11px;
+  color: #777;
+  margin-top: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
