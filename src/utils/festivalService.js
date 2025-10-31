@@ -40,3 +40,39 @@ export async function fetchFestivals({
     return [];
   }
 }
+export async function fetchFestivalDetail(contentId) {
+  try {
+    const { data } = await api.get("detailCommon1", {
+      params: {
+        contentId,
+        overviewYN: "Y",
+        defaultYN: "Y",
+        mapinfoYN: "Y",
+        MobileOS: "ETC",
+        MobileApp: "LOCOKO",
+        numOfRows: 1,
+        pageNo: 1,
+      },
+    });
+
+    console.log("📌 상세 API Raw Data:", data);
+
+    const item = data?.response?.body?.items?.item;
+    const f = Array.isArray(item) ? item[0] : item;
+
+    return {
+      id: contentId,
+      title: f?.title ?? "",
+      image: f?.firstimage ?? "",
+      overview: f?.overview ?? "",
+      address: f?.addr1 ?? "",
+      startDate: f?.eventstartdate ?? "",
+      endDate: f?.eventenddate ?? "",
+      lat: f?.mapy ? Number(f.mapy) : null,
+      lng: f?.mapx ? Number(f.mapx) : null,
+    };
+  } catch (err) {
+    console.error("❌ fetchFestivalDetail 실패:", err);
+    return null;
+  }
+}

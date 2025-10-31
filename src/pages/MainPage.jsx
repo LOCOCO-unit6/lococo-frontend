@@ -126,7 +126,7 @@ function BannerCarousel() {
     <Slider {...settings}>
       {banners.map((banner) => (
         <div key={banner.id}>
-          <Link to={`/festival/${banner.id}`}>
+          <Link to={`/festival/${banner.id}`} state={banner}>
             <div className="banner-slide">
               <img
                 src={banner.image || "/image/default.jpg"}
@@ -230,7 +230,7 @@ export default function MainPage() {
           // 축제 데이터를 코스 데이터로 형식 변환하여 저장
           const courseData = data.map((f) => ({
             id: f.id,
-            img: f.image || "/image/default_course.jpg",
+            image: f.image || "/image/default_course.jpg",
             location: f.address || f.title,
             title: f.title,
           }));
@@ -284,11 +284,12 @@ export default function MainPage() {
           {recommendedCourses.map((course) => (
             <div key={course.id}>
               <Link
-                to={`/recommended-course/${course.id}`}
+                to={`/festival/${course.id}`}
+                state={course}
                 className="recommend-card-link"
               >
                 <div className="recommend-card">
-                  <img src={course.img} alt={course.title} />
+                  <img src={course.image} alt={course.title} />
                   <div className="card-body">
                     <p style={{ color: "var(--brand)", fontSize: 14 }}>
                       {course.location}
