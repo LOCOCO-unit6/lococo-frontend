@@ -65,7 +65,7 @@
   box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 260px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .recommend-card:hover {
@@ -75,6 +75,8 @@
 .recommend-card-link {
   text-decoration: none;
   color: inherit;
+  height: 100%;
+  display: block;
 }
 .recommend-card img {
   width: 100%;
@@ -87,6 +89,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 100px;
 }
 .card-body p {
   margin: 4px 0;

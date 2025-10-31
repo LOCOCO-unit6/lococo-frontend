@@ -122,7 +122,7 @@ const PersonalJourney = () => {
       {showResults && (
         <div className="journey-results-section">
           {recommendedJourneys.length === 0 ? (
-            <p className="no-results">검색 결과가 없습니다 😢</p>
+            <p className="no-results">검색 결과를 찾는중입니다</p>
           ) : (
             recommendedJourneys.map((journey) => (
               <div key={journey.id} className="journey-result-card">
