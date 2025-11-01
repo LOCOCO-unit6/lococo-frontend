@@ -1,5 +1,3 @@
-// src/pages/FestivalDetail.jsx
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchFestivalDetail } from "../utils/festivalService.js";
@@ -59,7 +57,6 @@ export default function FestivalDetail() {
   const displayAddress =
     festival.address || festival.location || "주소 정보 없음";
 
-  // ❤️ 버튼 토글 함수
   const handleLikeToggle = () => {
     setLiked((prev) => !prev);
   };
@@ -70,23 +67,17 @@ export default function FestivalDetail() {
         ← 뒤로가기
       </button>
 
-      <img
-        src={festival.image || festival.imageUrl || "/image/default.jpg"}
-        alt={festival.title}
-        className="festival-detail-img"
-        onError={(e) => (e.currentTarget.src = "/image/default.jpg")}
-      />
+      <div className="festival-detail-image-wrap">
+        <img
+          src={festival.image || festival.imageUrl || "/image/default.jpg"}
+          alt={festival.title}
+          className="festival-detail-img"
+          onError={(e) => (e.currentTarget.src = "/image/default.jpg")}
+        />
+      </div>
 
       <div className="festival-detail-body">
         <h2>{festival.title}</h2>
-
-        {/* ❤️ 찜하기 버튼 */}
-        <button
-          className={`like-btn ${liked ? "liked" : ""}`}
-          onClick={handleLikeToggle}
-        >
-          {liked ? "♥ 찜완료" : "♡ 찜하기"}
-        </button>
 
         <p>
           <strong>📅 기간:</strong> {formatDate(displayStartDate)} ~{" "}
@@ -112,11 +103,19 @@ export default function FestivalDetail() {
           </p>
         )}
 
-        <p>
+        <p className="festival-overview">
           <strong>📖 소개:</strong>
           <br />
           {displayOverview}
         </p>
+
+        {/* ❤️ 소개 박스 우하단 고정 */}
+        <button
+          className={`like-btn ${liked ? "liked" : ""}`}
+          onClick={handleLikeToggle}
+        >
+          {liked ? "♥ 찜완료" : "♡ 찜하기"}
+        </button>
       </div>
     </div>
   );
