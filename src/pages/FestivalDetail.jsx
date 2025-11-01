@@ -18,9 +18,9 @@ export default function FestivalDetail() {
 
   const [festival, setFestival] = useState(state || null);
   const [loading, setLoading] = useState(!state);
+  const [liked, setLiked] = useState(false); // ❤️ 찜 상태
 
   useEffect(() => {
-    // 이미 목록 데이터가 있고, 필요한 정보가 있다면 API 호출을 건너뜁니다.
     if (state && festival?.playtime) {
       setLoading(false);
       return;
@@ -33,7 +33,6 @@ export default function FestivalDetail() {
       const data = await fetchFestivalDetail(id);
 
       if (data && data.title) {
-        // API 상세 데이터로 기존 상태를 덮어씁니다.
         setFestival((prev) => ({
           ...prev,
           ...data,
@@ -53,12 +52,17 @@ export default function FestivalDetail() {
       </div>
     );
 
-  // 🌟 렌더링에 사용할 필드 정리 및 매핑
+  // 🌟 렌더링용 필드
   const displayOverview = festival.overview || "소개 정보가 없습니다.";
   const displayStartDate = festival.startDate || festival.eventstartdate;
   const displayEndDate = festival.endDate || festival.eventenddate;
   const displayAddress =
     festival.address || festival.location || "주소 정보 없음";
+
+  // ❤️ 버튼 토글 함수
+  const handleLikeToggle = () => {
+    setLiked((prev) => !prev);
+  };
 
   return (
     <div className="festival-detail-container">
@@ -76,6 +80,14 @@ export default function FestivalDetail() {
       <div className="festival-detail-body">
         <h2>{festival.title}</h2>
 
+        {/* ❤️ 찜하기 버튼 */}
+        <button
+          className={`like-btn ${liked ? "liked" : ""}`}
+          onClick={handleLikeToggle}
+        >
+          {liked ? "♥ 찜완료" : "♡ 찜하기"}
+        </button>
+
         <p>
           <strong>📅 기간:</strong> {formatDate(displayStartDate)} ~{" "}
           {formatDate(displayEndDate)}
@@ -84,7 +96,6 @@ export default function FestivalDetail() {
           <strong>📍 장소:</strong> {displayAddress}
         </p>
 
-        {/* 🌟🌟🌟 추가 정보: 연락처, 운영 시간, 주최 정보 표시 🌟🌟🌟 */}
         {festival.tel && (
           <p>
             <strong>📞 문의:</strong> {festival.tel}
@@ -101,7 +112,6 @@ export default function FestivalDetail() {
           </p>
         )}
 
-        {/* 소개 정보 (가장 마지막에 표시) */}
         <p>
           <strong>📖 소개:</strong>
           <br />

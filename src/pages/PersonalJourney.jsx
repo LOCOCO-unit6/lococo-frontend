@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./PersonalJourney.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { fetchPersonalJourney } from "../utils/personalJourneyService";
 
 const PersonalJourney = () => {
@@ -13,11 +12,11 @@ const PersonalJourney = () => {
   });
 
   const [showResults, setShowResults] = useState(false);
-  const [expandedJourneys, setExpandedJourneys] = useState({});
   const [recommendedJourneys, setRecommendedJourneys] = useState([]);
 
   const keywordOptions = ["음악", "전통", "꽃", "야경", "음식", "예술"];
 
+  /** ✅ 키워드 버튼 토글 */
   const handleCheckboxClick = (value) => {
     setFormData((prev) => {
       const cur = prev.keywords;
@@ -27,18 +26,20 @@ const PersonalJourney = () => {
     });
   };
 
+  /** ✅ 날짜 선택 */
   const handleDateChange = (dates) => {
     const [start, end] = dates;
     setFormData((prev) => ({ ...prev, startDate: start, endDate: end }));
   };
 
+  /** ✅ 커스텀 날짜 버튼 */
   const CustomDateInput = React.forwardRef(({ value, onClick }, ref) => (
     <button className="custom-date-input-btn" onClick={onClick} ref={ref}>
       {value || "날짜를 선택하세요"}
     </button>
   ));
 
-  // ✅ 검색 실행
+  /** ✅ 검색 실행 */
   const handleSearch = async () => {
     if (formData.keywords.length === 0)
       return alert("키워드를 하나 이상 선택해주세요!");
@@ -53,24 +54,12 @@ const PersonalJourney = () => {
         endDate: formData.endDate,
       });
 
-      setRecommendedJourneys(
-        data.map((f) => ({
-          ...f,
-          timeline: [
-            { time: "10:00", text: "축제 현장 도착" },
-            { time: "13:00", text: "점심 식사 및 주변 관광" },
-            { time: "16:00", text: "체험 프로그램 참여" },
-          ],
-        }))
-      );
+      setRecommendedJourneys(data);
     } catch (err) {
       console.error("❌ fetchPersonalJourney 실패:", err);
       alert("여정 데이터를 불러오는 중 오류가 발생했습니다.");
     }
   };
-
-  const handleToggleExpand = (id) =>
-    setExpandedJourneys((prev) => ({ ...prev, [id]: !prev[id] }));
 
   return (
     <div className="journey-container">
@@ -127,7 +116,11 @@ const PersonalJourney = () => {
             recommendedJourneys.map((journey) => (
               <div key={journey.id} className="journey-result-card">
                 <div className="journey-card-header">
-                  <span className="journey-date">{journey.date}</span>
+                  {journey.date &&
+                    journey.date !== "기간 미정" &&
+                    journey.date.trim() !== "" && (
+                      <span className="journey-date">{journey.date}</span>
+                    )}
                 </div>
 
                 <div className="journey-card-body">
@@ -145,35 +138,7 @@ const PersonalJourney = () => {
                     <h4 className="journey-title">{journey.title}</h4>
                     <p className="journey-description">{journey.description}</p>
                   </div>
-
-                  <button
-                    className="expand-btn"
-                    onClick={() => handleToggleExpand(journey.id)}
-                  >
-                    {expandedJourneys[journey.id] ? (
-                      <>
-                        접기 <FaChevronUp />
-                      </>
-                    ) : (
-                      <>
-                        펼치기 <FaChevronDown />
-                      </>
-                    )}
-                  </button>
                 </div>
-
-                {expandedJourneys[journey.id] && (
-                  <div className="course-timeline-sectionsv1">
-                    {journey.timeline.map((item, index) => (
-                      <div key={index} className="timeline-itemsv1">
-                        <span className="timeline-dot1" />
-                        <span className="timeline-text1">
-                          {item.time} {item.text}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             ))
           )}

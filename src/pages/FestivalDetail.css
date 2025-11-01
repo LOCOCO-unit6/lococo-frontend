@@ -43,3 +43,24 @@
   cursor: pointer;
   margin-bottom: 10px;
 }
+.like-btn {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+
+.like-btn:hover {
+  border-color: #ff5a5a;
+  color: #ff5a5a;
+}
+
+.like-btn.liked {
+  background-color: #ff5a5a;
+  color: white;
+  border-color: #ff5a5a;
+}
