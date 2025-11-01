@@ -1,6 +1,8 @@
-// src/utils/Api.js
+// src/utils/Api.js (최종 완성본)
+
 import axios from "axios";
 import Cookies from "js-cookie";
+
 export const API_BASE_URL = "http://13.55.41.77:8080";
 
 const api = axios.create({
@@ -23,7 +25,6 @@ const normErr = (e) =>
   e?.response?.data || { message: e?.message || "요청 실패" };
 
 /** ===== 회원가입 ===== */
-// 공통 등록 엔드포인트: /api/v1/register (role만 다름) — 기존 유지
 const registerWithRole = async (payload, role) => {
   try {
     const { data } = await api.post("/api/v1/register", { ...payload, role });
@@ -36,7 +37,7 @@ export const registerGeneral = (formData) => registerWithRole(formData, "USER");
 export const registerOrganizer = (formData) =>
   registerWithRole(formData, "ADMIN");
 
-/** ===== 이메일 인증 ===== — 기존 유지 */
+/** ===== 이메일 인증 ===== */
 export const requestEmailVerification = async (email) => {
   try {
     const { data } = await api.post("/api/v1/send-code", null, {
@@ -58,30 +59,94 @@ export const confirmEmailVerification = async (email, code) => {
   }
 };
 
-/** ----- (기존 기타 API 유지) ----- */
+/** ===== 주최자 마이페이지 (Organizer MyPage) ===== */
+
+// 명세: GET /api/v1/organizer/mypage (사용자 이름, 찜 목록 등을 조회)
+export const fetchOrganizerMypage = async () => {
+  try {
+    const response = await api.get("/api/v1/organizer/mypage");
+    // 응답 데이터 구조를 가정합니다.
+    return {
+      userName:
+        response.data?.user?.name ||
+        response.data?.user?.affiliation ||
+        "주최자",
+      likedFestivals: response.data?.likedContents || [],
+      // ... 필요한 기타 필드
+    };
+  } catch (e) {
+    throw normErr(e);
+  }
+};
+
+// 명세: PUT /api/v1/organizer/mypage/users/{organizerId}
+export const updateOrganizerProfile = async (organizerId, payload) => {
+  try {
+    const { data } = await api.put(
+      `/api/v1/organizer/mypage/users/${organizerId}`,
+      payload
+    );
+    return data;
+  } catch (e) {
+    throw normErr(e);
+  }
+};
+
+// ... (다른 API 함수들은 기존대로 유지)
 export const createPlanApi = (payload) => api.post("/plans", payload);
 export const listPlansApi = (params) => api.get("/plans", { params });
 export const getPlanApi = (id) => api.get(`/plans/${id}`);
 export const updatePlanApi = (id, body) => api.put(`/plans/${id}`, body);
-
-/** ===== 홍보 콘텐츠 생성 (인스타그램) =====
- * Swagger:
- * POST /api/v1/organizer/ai/content/instagram
- * Request body: { proposalId: number, additionalText: string }
- * Response: { instagramId, title, content, hashtags: string[] }
- */
 export const generatePromoApi = (proposalId, additionalText) => {
   return api.post(`/api/v1/organizer/ai/content/instagram`, {
     proposalId,
     additionalText,
   });
 };
-
-/** ===== 홍보 콘텐츠 선택 저장 ===== (백엔드 확인 전까지 기존 유지) */
 export const savePromoPickApi = (promotionId, body) =>
   api.post(`/promotions/${promotionId}/save`, body);
-
 export const createContentApi = (formData) =>
   api.post("/contents", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+// src/utils/Api.js (추가)
+
+// 명세: GET /api/v1/user/mypage/userInfo
+export const fetchUserInfo = async () => {
+  try {
+    const { data } = await api.get("/api/v1/user/mypage/userInfo");
+    // 사용자 정보 필드 (name, identification, role 등)를 반환
+    return data;
+  } catch (e) {
+    throw normErr(e);
+  }
+};
+
+// 명세: GET /api/v1/user/mypage/content/favorites (찜 목록)
+export const fetchUserFavorites = async () => {
+  try {
+    const { data } = await api.get("/api/v1/user/mypage/content/favorites");
+    // 찜 목록 배열을 반환한다고 가정
+    return data.contentList || data.favorites || [];
+  } catch (e) {
+    throw normErr(e);
+  }
+};
+// src/utils/Api.js (추가)
+
+// 명세: GET /api/v1/user/mypage/userInfo (개인 사용자 정보 조회)
+// 이 함수는 이미 fetchUserInfo로 추가되어 있다고 가정합니다.
+
+// 명세: PUT /api/v1/user/mypage/users/{userId} (개인 사용자 정보 수정)
+export const updatePersonalProfile = async (userId, payload) => {
+  try {
+    const { data } = await api.put(
+      `/api/v1/user/mypage/users/${userId}`,
+      payload
+    );
+    // 수정 후 업데이트된 사용자 정보를 반환한다고 가정
+    return data;
+  } catch (e) {
+    throw normErr(e);
+  }
+};

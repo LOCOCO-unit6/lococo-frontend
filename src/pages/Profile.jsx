@@ -2,22 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import MyPageSidebar from "../components/MyPageSidebar";
 import "./Profile.css";
+import { fetchUserInfo, updatePersonalProfile } from "../utils/Api.js";
 
 const Profile = () => {
-  const { id } = useParams();
+  // ⚠️ ID는 useParams()로 받지만, API는 로그인된 사용자의 ID를 사용해야 하므로
+  // 실제 로직에서는 localStorage 등에서 userId를 가져오는 것이 일반적입니다.
+  // 여기서는 일단 'user-id'가 경로에 있다고 가정합니다.
+  const { id: userIdFromParam } = useParams();
+
   const [form, setForm] = useState({
-    id: "lococo_user",
+    identification: "", // 'id' 대신 identification 사용 (Login.jsx 참고)
     password: "",
     confirmPassword: "",
-    name: "홍길동",
-    region: "서울특별시",
-    district: "강남구",
-    email: "email@lococo.co.kr",
-    phone: "010-1234-5678",
+    name: "",
+    region: "", // 지역 (시)
+    district: "", // 지역 (구)
+    email: "",
+    phoneNumber: "", // 'phone' 대신 phoneNumber 사용
+    // 🚨 서버에서 userId를 받아서 상태에 저장하여 수정 시 사용합니다.
+    userId: null,
   });
-  const [userName, setUserName] = useState("홍길동");
+  const [loading, setLoading] = useState(true);
+  const [submitError, setSubmitError] = useState(null);
+  const [userName, setUserName] = useState("로딩 중"); // 사이드바용 이름
   const [activeMenu, setActiveMenu] = useState("profile-edit");
-
   const regions = {
     cities: [
       "서울특별시",
@@ -280,33 +288,87 @@ const Profile = () => {
     },
   };
 
+  // 🌟🌟🌟 1. 컴포넌트 마운트 시 사용자 정보 로드 🌟🌟🌟
   useEffect(() => {
-    // 실제로는 id를 사용하여 백엔드에서 사용자 정보를 불러오는 API 호출 로직이 들어갑니다.
-    // fetchUser(id).then(data => {
-    //   setForm({ ...data, confirmPassword: '' });
-    //   setUserName(data.name);
-    // });
-  }, [id]);
+    const loadProfile = async () => {
+      try {
+        // API 호출: 토큰 기반으로 로그인된 사용자 정보 조회
+        const data = await fetchUserInfo();
+
+        // 폼 상태 업데이트
+        setForm({
+          identification: data.identification || "",
+          password: "", // 비밀번호는 보안상 로드하지 않습니다.
+          confirmPassword: "",
+          name: data.name || "",
+          region: data.region || "",
+          district: data.district || "",
+          email: data.email || "",
+          phoneNumber: data.phoneNumber || "",
+          userId: data.id, // 🚨 서버에서 받은 실제 User ID 저장 (수정 시 필요)
+        });
+        setUserName(data.name || data.identification || "회원");
+      } catch (e) {
+        console.error("프로필 정보 로드 실패:", e);
+        setSubmitError("회원 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [userIdFromParam]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // 🌟🌟🌟 2. 회원 정보 수정 (PUT API 호출) 🌟🌟🌟
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
+    setSubmitError(null);
+
+    if (form.password && form.password !== form.confirmPassword) {
+      setSubmitError("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       return;
     }
-    // 여기에 회원 정보 수정 API 호출 로직을 추가합니다.
-    console.log("수정된 회원 정보:", form);
-    alert("회원 정보가 수정되었습니다.");
+
+    // 서버로 보낼 payload 구성
+    const payload = {
+      name: form.name,
+      password: form.password || undefined, // 비어있으면 보내지 않음
+      region: form.region,
+      district: form.district,
+      phoneNumber: form.phoneNumber,
+    };
+
+    try {
+      // API 호출: form.userId (로그인 시 받은 ID)를 사용하여 수정 요청
+      await updatePersonalProfile(form.userId, payload);
+
+      // 성공 피드백
+      alert("회원 정보가 성공적으로 수정되었습니다.");
+
+      // 비밀번호 필드 초기화 (보안 유지)
+      setForm((prev) => ({ ...prev, password: "", confirmPassword: "" }));
+    } catch (e) {
+      console.error("회원 정보 수정 실패:", e);
+      setSubmitError(`수정 실패: ${e.message || "서버 오류"}`);
+    }
   };
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
+
+  if (loading) {
+    return (
+      <div className="profile-container loading-state">
+        📡 회원 정보를 불러오는 중...
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
@@ -323,19 +385,22 @@ const Profile = () => {
         <div className="profile-main-content">
           <h3 className="profile-title">회원 정보 수정</h3>
           <form onSubmit={handleSubmit} className="profile-form">
+            {/* 아이디 (identification) - 수정 불가 */}
             <label className="profile-label">아이디</label>
             <input
               type="text"
-              name="id"
-              value={form.id}
+              name="identification"
+              value={form.identification}
               className="profile-input disabled"
               disabled
             />
+
+            {/* 비밀번호 */}
             <label className="profile-label">비밀번호</label>
             <input
               type="password"
               name="password"
-              placeholder="8~20자리 / 영문, 숫자, 특수문자 조합"
+              placeholder="변경 시에만 입력"
               value={form.password}
               onChange={handleChange}
               className="profile-input"
@@ -344,11 +409,13 @@ const Profile = () => {
             <input
               type="password"
               name="confirmPassword"
-              placeholder="8~20자리 / 영문, 숫자, 특수문자 조합"
+              placeholder="변경 시에만 입력"
               value={form.confirmPassword}
               onChange={handleChange}
               className="profile-input"
             />
+
+            {/* 이름 */}
             <label className="profile-label">이름</label>
             <input
               type="text"
@@ -358,6 +425,8 @@ const Profile = () => {
               onChange={handleChange}
               className="profile-input"
             />
+
+            {/* 지역 선택 */}
             <div className="profile-location-wrap">
               <div className="location-item">
                 <label className="profile-label">지역 (시)</label>
@@ -368,6 +437,7 @@ const Profile = () => {
                   className="profile-select"
                 >
                   <option value="">시 선택</option>
+                  {/* ... (regions.cities map 로직 유지) ... */}
                   {regions.cities.map((city) => (
                     <option key={city} value={city}>
                       {city}
@@ -385,6 +455,7 @@ const Profile = () => {
                   disabled={!form.region}
                 >
                   <option value="">구 선택</option>
+                  {/* ... (regions.districts map 로직 유지) ... */}
                   {form.region &&
                     regions.districts[form.region]?.map((district) => (
                       <option key={district} value={district}>
@@ -394,23 +465,33 @@ const Profile = () => {
                 </select>
               </div>
             </div>
+
+            {/* 이메일 (수정 불가) */}
             <label className="profile-label">이메일</label>
             <input
               type="email"
               name="email"
               value={form.email}
-              onChange={handleChange}
-              className="profile-input"
+              className="profile-input disabled"
               disabled
             />
+
+            {/* 전화번호 */}
             <label className="profile-label">전화번호</label>
             <input
               type="text"
-              name="phone"
-              value={form.phone}
+              name="phoneNumber" // 🚨 name 필드를 phoneNumber로 수정
+              value={form.phoneNumber} // 🚨 value 필드도 phoneNumber로 수정
               onChange={handleChange}
               className="profile-input"
             />
+
+            {submitError && (
+              <div style={{ color: "#d32f2f", margin: "10px 0" }}>
+                {submitError}
+              </div>
+            )}
+
             <button type="submit" className="profile-submit-btn">
               회원정보 수정
             </button>

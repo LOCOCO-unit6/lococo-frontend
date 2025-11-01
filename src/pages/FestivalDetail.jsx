@@ -58,7 +58,7 @@ export default function FestivalDetail() {
         <p>
           <strong>📖 소개:</strong>
           <br />
-          {festival.overview || "😥 소개 정보가 없습니다."}
+          {festival.overview || "소개 정보가 없습니다."}
         </p>
       </div>
     </div>
