@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./OrganizerMainPage.css";
+import mainVisual from "../image/main.png";
 
 function ReviewCarousel() {
   const base = [
@@ -102,7 +103,7 @@ export default function OrganizerMainPage() {
         </div>
 
         <div className="hero-image">
-          <img src="/images/organizer-hero.jpg" alt="주최자 메인 비주얼" />
+          <img src={mainVisual} alt="주최자 메인 비주얼" />
         </div>
       </section>
 
