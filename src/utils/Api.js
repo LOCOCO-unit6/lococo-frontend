@@ -150,3 +150,27 @@ export const updatePersonalProfile = async (userId, payload) => {
     throw normErr(e);
   }
 };
+export const addFavoriteFestival = async (contentId) => {
+  try {
+    // 🚨 찜하기는 POST 요청이며, contentId를 경로에 포함합니다.
+    const { data } = await api.post(
+      `/api/v1/user/mypage/content/favorites/${contentId}`
+    );
+    return data;
+  } catch (e) {
+    throw normErr(e);
+  }
+};
+
+// 명세: DELETE /api/v1/user/mypage/content/favorites/{contentId} (찜 취소)
+export const removeFavoriteFestival = async (contentId) => {
+  try {
+    // 🚨 찜 취소는 DELETE 요청이며, contentId를 경로에 포함합니다.
+    const { data } = await api.delete(
+      `/api/v1/user/mypage/content/favorites/${contentId}`
+    );
+    return data;
+  } catch (e) {
+    throw normErr(e);
+  }
+};
