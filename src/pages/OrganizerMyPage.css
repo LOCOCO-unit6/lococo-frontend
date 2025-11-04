@@ -1,474 +1,240 @@
-/* ====== 색상/토큰 ====== */
-:root {
-  --omp-orange: #ff7f30;
-  --omp-orange-weak: #fff2e8;
-  --omp-line: #e9e9ee;
-  --omp-sub: #8a8a96;
-  --omp-text: #222;
-}
+/* ===========================
+   Organizer MyPage Layout
+=========================== */
 
-/* ====== 페이지 래퍼/레이아웃 ====== */
 .omp-wrap {
-  padding: 48px 0 72px;
-}
-.omp-wrap .omp-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-.omp-wrap .omp-grid {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
-  align-items: start;
-}
-@media (max-width: 980px) {
-  .omp-wrap .omp-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ====== 카드 공통 ====== */
-.omp-wrap .omp-card {
-  background: #fff;
-  border: 1px solid var(--omp-line);
-  border-radius: 16px;
-  padding: 18px 20px;
-}
-
-/* ====== 섹션 타이틀 ====== */
-.omp-wrap .omp-title {
-  font-size: 22px;
-  font-weight: 900;
-  margin: 4px 0 6px;
-  color: var(--omp-text);
-}
-.omp-wrap .omp-sub {
-  color: var(--omp-sub);
-  margin-bottom: 14px;
-}
-
-.omp-side .omp-card.omp-profile {
-  width: 250px;
-  flex-shrink: 0;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #ffffff;
-  padding: 20px;
-  height: 400px;
-}
-
-.omp-profile-info {
-  padding: 0;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-}
-
-.omp-profile-info .omp-name {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.omp-profile-info .omp-role {
-  font-size: 13px;
-  color: #000000;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.omp-profile-info .omp-role:hover {
-  color: #ffa552;
-  font-weight: bold;
-}
-
-.omp-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-}
-.omp-menu li {
-  margin-bottom: 10px;
-}
-.omp-menu a {
-  display: block;
-  padding: 10px 20px;
-  text-decoration: none;
-  color: #000000;
-  font-weight: 400;
-  border-radius: 20px;
-  transition: all 0.2s;
-}
-.omp-menu li:hover a {
-  color: #ffa552;
-  font-weight: bold;
-}
-.omp-menu .active a {
-  color: #ffa552;
-  font-weight: bold;
-}
-
-/* ====== 좌측 메뉴 ====== */
-.omp-wrap .omp-menu {
-  margin-top: 16px;
-}
-.omp-wrap .omp-menu-head {
-  color: var(--omp-sub);
-  font-size: 13px;
-  margin: 12px 0 6px;
-}
-.omp-wrap .omp-menu-item {
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-.omp-wrap .omp-menu-item:hover {
-  background: #f7f7fb;
-}
-.omp-wrap .omp-menu-item.is-active {
-  background: var(--omp-orange-weak);
-  color: var(--omp-orange);
-  font-weight: 700;
-}
-
-/* ====== 우측 콘텐츠 컨테이너 간격 ====== */
-.omp-wrap .omp-content > .omp-card + .omp-card {
-  margin-top: 18px;
-}
-
-/* ================== 탭/링크 공통 ================== */
-.omp-wrap .omp-tabs {
   display: flex;
-  gap: 10px;
-  margin: 18px 0;
-  flex-wrap: wrap;
-}
-.omp-wrap .omp-tab {
-  padding: 8px 14px;
-  border: 1px solid var(--omp-line);
-  border-radius: 999px;
-  background: #fff;
-  color: #555;
-  font-weight: 600;
-  cursor: pointer;
-}
-.omp-wrap .omp-tab.is-active {
-  background: var(--omp-orange-weak);
-  color: var(--omp-orange);
-  border-color: var(--omp-orange);
-}
-.omp-wrap .omp-link {
-  border: none;
-  background: transparent;
-  padding: 0;
-  margin-right: 12px;
-  color: #666;
-  font-weight: 600;
-  cursor: pointer;
-}
-.omp-wrap .omp-link:hover {
-  text-decoration: underline;
-}
-.omp-wrap .omp-link.danger {
-  color: #c0392b;
+  justify-content: center;
+  background: #fafafa;
+  min-height: 100vh;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
 }
 
-/* ====== 리스트 레이아웃(카드) ====== */
-.omp-wrap .omp-list {
+.omp-main {
+  display: flex;
+  gap: 40px;
+  padding: 40px 60px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   Sidebar Menu
+=========================== */
+.omp-menu {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 12px;
+  width: 220px;
+  gap: 10px;
 }
-.omp-wrap .omp-list-item {
-  display: grid;
-  grid-template-columns: 110px 1fr 280px;
-  gap: 16px;
-  padding: 16px;
-  border: 1px solid var(--omp-line);
-  border-radius: 12px;
+
+.omp-menu button {
   background: #fff;
-}
-@media (max-width: 980px) {
-  .omp-wrap .omp-list-item {
-    grid-template-columns: 1fr;
-  }
-}
-
-.omp-wrap .omp-badge {
-  align-self: start;
-  background: var(--omp-orange-weak);
-  color: var(--omp-orange);
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-}
-.omp-wrap .omp-list-title {
-  font-weight: 800;
-}
-.omp-wrap .omp-list-desc {
-  color: var(--omp-sub);
-}
-.omp-wrap .omp-list-actions {
-  margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* ====== 메타 정보 박스 ====== */
-.omp-wrap .omp-meta {
-  display: grid;
-  gap: 8px;
-  align-content: start;
-}
-.omp-wrap .omp-meta-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  padding: 6px 10px;
-  background: #fafafa;
-  border: 1px solid var(--omp-line);
-  border-radius: 8px;
-}
-.omp-wrap .omp-meta-row span {
-  color: var(--omp-sub);
-}
-
-/* ================ 홍보 콘텐츠 그리드 ================ */
-.omp-wrap .promo-grid {
-  margin-top: 6px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-@media (max-width: 1100px) {
-  .omp-wrap .promo-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 640px) {
-  .omp-wrap .promo-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.omp-wrap .promo-card {
-  border: 1px solid var(--omp-line);
+  border: 1px solid #ddd;
   border-radius: 12px;
-  overflow: hidden;
-  background: #fff;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: all 0.2s ease-in-out;
 }
-.omp-wrap .promo-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+
+.omp-menu button:hover {
+  background: #f2f2f2;
 }
-.omp-wrap .promo-thumb {
-  aspect-ratio: 4/3;
+
+.omp-menu button.active {
+  background: #ff7f50;
+  color: #fff;
+  border-color: #ff7f50;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 127, 80, 0.3);
+}
+
+/* ===========================
+   Content Section
+=========================== */
+.omp-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.omp-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.omp-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-left: 4px solid #ff7f50;
+  padding-left: 10px;
+  color: #333;
+}
+
+/* ===========================
+   List Section (제안 / 리뷰)
+=========================== */
+.omp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.omp-list-item {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  background: #fafafa;
+  transition: all 0.2s ease;
+}
+
+.omp-list-item:hover {
+  background: #fff;
+  border-color: #ff7f50;
+  box-shadow: 0 2px 8px rgba(255, 127, 80, 0.2);
+}
+
+.omp-list-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #222;
+}
+
+.omp-list-desc {
+  font-size: 14px;
+  color: #666;
+  margin-top: 6px;
+}
+
+/* ===========================
+   Promotion Grid
+=========================== */
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.promo-card {
+  position: relative;
+  border-radius: 12px;
   overflow: hidden;
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease;
 }
-.omp-wrap .promo-thumb img {
+
+.promo-card:hover {
+  transform: translateY(-5px);
+}
+
+.promo-card img {
   width: 100%;
-  height: 100%;
+  height: 150px;
   object-fit: cover;
   display: block;
 }
-.omp-wrap .promo-kind {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--omp-orange);
-  margin: 10px 12px 2px;
-}
-.omp-wrap .promo-title {
-  font-weight: 800;
-  margin: 0 12px;
-}
-.omp-wrap .promo-date {
-  color: var(--omp-sub);
-  font-size: 12px;
-  margin: 8px 12px 12px;
-}
 
-/* ================ 프로필 폼 ================ */
-.omp-wrap .omp-form-card {
-  background: var(--omp-card);
-  border: 1px solid var(--omp-line);
-  border-radius: 20px;
-  box-shadow: var(--omp-shadow);
-  padding: 26px 28px 30px;
-}
-.omp-wrap .omp-form-card .card-title {
-  font-size: 20px;
-  font-weight: 900;
-  margin-bottom: 18px;
-}
-
-.omp-wrap .profile-form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  margin-top: 2px;
-}
-.omp-wrap .profile-form .form-row {
-  display: grid;
-  gap: 8px;
-}
-.omp-wrap .profile-form label {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--omp-text);
-}
-.omp-wrap .profile-form input[type="text"],
-.omp-wrap .profile-form input[type="email"],
-.omp-wrap .profile-form input[type="password"],
-.omp-wrap .profile-form input[type="tel"] {
-  width: 100%;
-  height: 44px;
-  border: 1px solid var(--omp-line);
-  border-radius: 10px;
-  padding: 0 12px;
-  font-size: 14px;
-  background: #fff;
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-.omp-wrap .profile-form input::placeholder {
-  color: #b6bcc6;
-}
-.omp-wrap .profile-form input:focus {
-  border-color: #ffd7bf;
-  box-shadow: 0 0 0 3px rgba(255, 127, 48, 0.12);
-}
-
-.omp-wrap .profile-form .submit-area {
-  margin-top: 6px;
-}
-.omp-wrap .profile-form .primary-btn {
-  width: 240px;
-  height: 46px;
-  border: 0;
-  border-radius: 10px;
-  background: var(--omp-orange);
-  color: #fff;
-  font-weight: 800;
+.promo-title {
+  padding: 10px;
   font-size: 15px;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.02s ease;
-}
-.omp-wrap .profile-form .primary-btn:hover {
-  background: var(--omp-orange-hover);
-}
-.omp-wrap .profile-form .primary-btn:active {
-  transform: translateY(1px);
+  font-weight: 500;
+  text-align: center;
+  color: #333;
 }
 
-/* ================ 리뷰 상세 ================ */
-.omp-wrap .review-list {
+/* ===========================
+   Profile Form
+=========================== */
+.profile-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 18px;
+  max-width: 480px;
 }
-.omp-wrap .review-item {
-  border: 1px solid var(--omp-line);
-  border-radius: 12px;
-  background: #fff;
-  padding: 14px;
-}
-.omp-wrap .stars {
+
+.profile-form label {
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
-  color: #ddd;
+  font-weight: 500;
+  color: #333;
 }
-.omp-wrap .star.on {
-  color: #ffb400;
-}
-.omp-wrap .review-user {
-  font-weight: 800;
-  margin-top: 6px;
-}
-.omp-wrap .review-text {
+
+.profile-form input {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
   margin-top: 4px;
-  color: var(--omp-text);
-}
-.omp-wrap .review-date {
-  color: var(--omp-sub);
-  font-size: 12px;
-  margin-top: 6px;
+  transition: border-color 0.2s ease;
 }
 
-/* ================ 상세 부가요소 ================ */
-.omp-wrap .detail-meta {
-  display: grid;
-  gap: 8px;
-  margin-top: 10px;
-  max-width: 360px;
-}
-.omp-wrap .detail-actions .primary-btn {
-  margin-right: 10px;
-}
-/* ===== 불릿(점) 제거 & 좌측 메뉴 여백 초기화 ===== */
-.omp-wrap .omp-menu,
-.omp-wrap .omp-menu ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-.omp-wrap .omp-menu-item {
-  list-style: none;
+.profile-form input:focus {
+  outline: none;
+  border-color: #ff7f50;
+  box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.15);
 }
 
-.omp-wrap .omp-profile-info li {
-  list-style: none;
-  padding-left: 0;
-}
-
-/* ===== 박스/카드 사이즈 업그레이드 ===== */
-.omp-wrap {
-  padding: 64px 0 96px;
-}
-.omp-wrap .omp-card {
-  padding: 24px 28px;
-  border-radius: 20px;
-}
-.omp-wrap .omp-list-item {
-  grid-template-columns: 130px 1fr 320px;
-  gap: 20px;
-  padding: 20px;
-}
-.omp-wrap .omp-badge {
-  font-size: 13px;
-  padding: 8px 12px;
-  border-radius: 12px;
-}
-.omp-wrap .omp-list-title {
-  font-size: 18px;
-}
-.omp-wrap .omp-meta-row {
-  font-size: 14px;
-  padding: 8px 12px;
-}
-.omp-wrap .omp-tab {
-  padding: 10px 16px;
-}
-.omp-wrap .promo-grid {
-  gap: 22px;
-}
-.omp-wrap .promo-thumb {
-  aspect-ratio: 16/10;
-}
-.omp-wrap .profile-form input {
-  padding: 12px 14px;
-  border-radius: 12px;
-}
-.omp-wrap .profile-form .primary-btn {
-  padding: 14px 18px;
+.primary-btn {
+  background: #ff7f50;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
   font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
 }
-.omp-wrap .omp-main {
-  max-width: 1440px;
+
+.primary-btn:hover {
+  background: #ff956b;
+}
+
+/* ===========================
+   Responsive (모바일)
+=========================== */
+@media (max-width: 768px) {
+  .omp-main {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .omp-menu {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .omp-menu button {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .omp-card {
+    padding: 20px;
+  }
+
+  .profile-form {
+    max-width: 100%;
+  }
 }
