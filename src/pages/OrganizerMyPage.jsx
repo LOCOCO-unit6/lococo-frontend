@@ -4,44 +4,64 @@ import { fetchOrganizerMypage, updateOrganizerProfile } from "../utils/Api";
 
 export default function OrganizerMyPage() {
   const [section, setSection] = useState("profile");
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState({
+    displayName: "",
+    affiliation: "",
+    phoneNumber: "",
+  });
+  const [loading, setLoading] = useState(true);
   const [promotions, setPromotions] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [proposals, setProposals] = useState([]);
 
   const organizerId = localStorage.getItem("organizerId");
 
-  /** ✅ 페이지 로드시 주최자 마이페이지 정보 불러오기 */
+  /** ✅ 페이지 로드시 주최자 정보 불러오기 */
   useEffect(() => {
     const load = async () => {
       try {
+        setLoading(true);
         const data = await fetchOrganizerMypage();
         setProfile({
-          displayName: data.userName,
+          displayName: data.userName || "",
           affiliation: data.affiliation || "",
           phoneNumber: data.phoneNumber || "",
         });
         if (data.likedFestivals) setPromotions(data.likedFestivals);
       } catch (err) {
         console.error("❌ 주최자 정보 로드 실패:", err);
+      } finally {
+        setLoading(false);
       }
     };
     load();
   }, []);
 
-  /** ✅ 프로필 수정 */
+  /** ✅ 입력 변경 핸들러 (입력 즉시 상태에 반영) */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+  };
+
+  /** ✅ 프로필 저장 */
   const handleSaveProfile = async (e) => {
     e.preventDefault();
-    const form = new FormData(e.target);
-    const payload = Object.fromEntries(form.entries());
+
+    if (!organizerId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
     try {
-      await updateOrganizerProfile(organizerId, payload);
-      alert("프로필이 성공적으로 수정되었습니다!");
+      await updateOrganizerProfile(organizerId, profile);
+      alert("✅ 프로필이 성공적으로 수정되었습니다!");
     } catch (err) {
-      console.error(err);
-      alert("프로필 수정 실패");
+      console.error("❌ 프로필 수정 실패:", err);
+      alert("프로필 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
+
+  if (loading) return <div className="omp-wrap">로딩 중...</div>;
 
   return (
     <div className="omp-wrap">
@@ -79,7 +99,7 @@ export default function OrganizerMyPage() {
         {/* 오른쪽 콘텐츠 */}
         <section className="omp-content">
           {/* ✅ 회원 정보 수정 */}
-          {section === "profile" && profile && (
+          {section === "profile" && (
             <div className="omp-card">
               <h1 className="omp-title">회원 정보 수정</h1>
               <form onSubmit={handleSaveProfile} className="profile-form">
@@ -87,21 +107,24 @@ export default function OrganizerMyPage() {
                   표시 이름
                   <input
                     name="displayName"
-                    defaultValue={profile.displayName}
+                    value={profile.displayName}
+                    onChange={handleChange}
                   />
                 </label>
                 <label>
                   소속
                   <input
                     name="affiliation"
-                    defaultValue={profile.affiliation}
+                    value={profile.affiliation}
+                    onChange={handleChange}
                   />
                 </label>
                 <label>
                   전화번호
                   <input
                     name="phoneNumber"
-                    defaultValue={profile.phoneNumber}
+                    value={profile.phoneNumber}
+                    onChange={handleChange}
                   />
                 </label>
                 <label>
@@ -110,6 +133,7 @@ export default function OrganizerMyPage() {
                     name="password"
                     type="password"
                     placeholder="새 비밀번호"
+                    onChange={handleChange}
                   />
                 </label>
                 <label>
@@ -118,6 +142,7 @@ export default function OrganizerMyPage() {
                     name="passwordCheck"
                     type="password"
                     placeholder="비밀번호 확인"
+                    onChange={handleChange}
                   />
                 </label>
                 <button type="submit" className="primary-btn">

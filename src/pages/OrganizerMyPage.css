@@ -1,140 +1,143 @@
-/* ===========================
-   Organizer MyPage Layout
-=========================== */
-
+/* 전체 래퍼 */
 .omp-wrap {
   display: flex;
   justify-content: center;
-  background: #fafafa;
-  min-height: 100vh;
-  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  align-items: flex-start;
+  min-height: 90vh;
+  background-color: #fafafa;
+  padding: 40px 0;
+  font-family: "Pretendard", sans-serif;
 }
 
+/* 메인 구조 */
 .omp-main {
   display: flex;
   gap: 40px;
-  padding: 40px 60px;
-  width: 100%;
-  max-width: 1200px;
-  box-sizing: border-box;
+  width: 90%;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  padding: 40px 50px;
 }
 
-/* ===========================
-   Sidebar Menu
-=========================== */
+/* 왼쪽 메뉴 */
 .omp-menu {
   display: flex;
   flex-direction: column;
   width: 220px;
-  gap: 10px;
-}
-
-.omp-menu button {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 12px 14px;
-  text-align: left;
-  font-size: 15px;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.omp-menu button:hover {
-  background: #f2f2f2;
-}
-
-.omp-menu button.active {
-  background: #ff7f50;
-  color: #fff;
-  border-color: #ff7f50;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(255, 127, 80, 0.3);
-}
-
-/* ===========================
-   Content Section
-=========================== */
-.omp-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.omp-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  padding: 30px;
-  box-sizing: border-box;
-}
-
-.omp-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  border-left: 4px solid #ff7f50;
-  padding-left: 10px;
-  color: #333;
-}
-
-/* ===========================
-   List Section (제안 / 리뷰)
-=========================== */
-.omp-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+  border-right: 1px solid #eaeaea;
+  padding-right: 20px;
   gap: 15px;
 }
 
-.omp-list-item {
-  border: 1px solid #eee;
-  border-radius: 10px;
-  padding: 15px;
-  background: #fafafa;
-  transition: all 0.2s ease;
+.omp-menu button {
+  background: none;
+  border: none;
+  padding: 10px 0;
+  font-size: 17px;
+  text-align: left;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
 }
 
-.omp-list-item:hover {
+.omp-menu button:hover {
+  color: #f97316;
+}
+
+.omp-menu button.active {
+  font-weight: bold;
+  color: #f97316;
+}
+
+/* 오른쪽 콘텐츠 */
+.omp-content {
+  flex: 1;
+  padding-left: 20px;
+}
+
+/* 카드 공통 */
+.omp-card {
   background: #fff;
-  border-color: #ff7f50;
-  box-shadow: 0 2px 8px rgba(255, 127, 80, 0.2);
+  border: 1px solid #eee;
+  border-radius: 15px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease;
 }
 
-.omp-list-title {
-  font-weight: 600;
-  font-size: 16px;
-  color: #222;
+.omp-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #333;
 }
 
-.omp-list-desc {
-  font-size: 14px;
-  color: #666;
+/* 프로필 폼 */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.profile-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 15px;
+  color: #333;
+}
+
+.profile-form input {
   margin-top: 6px;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
 }
 
-/* ===========================
-   Promotion Grid
-=========================== */
+.profile-form input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
+}
+
+/* 저장 버튼 */
+.primary-btn {
+  margin-top: 10px;
+  background: #f97316;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  background: #ea580c;
+}
+
+/* 홍보 카드 */
 .promo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
 }
 
 .promo-card {
-  position: relative;
-  border-radius: 12px;
+  border: 1px solid #eee;
+  border-radius: 10px;
   overflow: hidden;
+  transition: transform 0.2s;
+  cursor: pointer;
   background: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.25s ease;
 }
 
 .promo-card:hover {
@@ -143,98 +146,47 @@
 
 .promo-card img {
   width: 100%;
-  height: 150px;
+  height: 130px;
   object-fit: cover;
-  display: block;
 }
 
 .promo-title {
-  padding: 10px;
   font-size: 15px;
   font-weight: 500;
+  padding: 10px;
   text-align: center;
-  color: #333;
 }
 
-/* ===========================
-   Profile Form
-=========================== */
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  max-width: 480px;
+/* 리스트 */
+.omp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.profile-form label {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+.omp-list-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.profile-form input {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 14px;
-  margin-top: 4px;
-  transition: border-color 0.2s ease;
-}
-
-.profile-form input:focus {
-  outline: none;
-  border-color: #ff7f50;
-  box-shadow: 0 0 0 2px rgba(255, 127, 80, 0.15);
-}
-
-.primary-btn {
-  background: #ff7f50;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 12px;
-  font-size: 15px;
+.omp-list-title {
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 10px;
+  color: #333;
 }
 
-.primary-btn:hover {
-  background: #ff956b;
+.omp-list-desc {
+  font-size: 14px;
+  color: #777;
 }
 
-/* ===========================
-   Responsive (모바일)
-=========================== */
-@media (max-width: 768px) {
-  .omp-main {
-    flex-direction: column;
-    padding: 20px;
-    gap: 20px;
+/* 간단한 등장 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-
-  .omp-menu {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .omp-menu button {
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .omp-card {
-    padding: 20px;
-  }
-
-  .profile-form {
-    max-width: 100%;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
