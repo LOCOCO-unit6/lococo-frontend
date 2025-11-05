@@ -209,11 +209,11 @@ export default function MainPage() {
         {renderRecommendedCourses()}
       </section>
 
-      <section className="ai-section">
+      {/* <section className="ai-section">
         <h3>AI 사용자 맞춤 추천</h3>
         <p>로그인 후 개인 추천 여행지를 받아보세요!</p>
         <button onClick={() => navigate("/login")}>로그인 / 가입</button>
-      </section>
+      </section> */}
 
       <section className="review-section">
         <h3>로코코 이용 후기</h3>
