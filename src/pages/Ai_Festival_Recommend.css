@@ -95,3 +95,33 @@
   margin-top: 10px;
   line-height: 1.5;
 }
+.recommend-header-wrap {
+  display: flex;
+  justify-content: space-between; /* 양쪽 끝 정렬 */
+  align-items: center;
+  margin-bottom: 25px; /* 아래 목록과 분리 */
+}
+
+.recommend-header-wrap .page-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ff7f50; /* 이미지처럼 주황색으로 강조 */
+  margin: 0;
+}
+
+.survey-restart-btn {
+  /* 이미지에 맞춘 버튼 스타일 */
+  background: #ffaa66; /* 주황색 톤 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.survey-restart-btn:hover {
+  background: #ff956b;
+}

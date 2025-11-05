@@ -12,9 +12,9 @@ import {
 const MyPage_My_Journey_Management = () => {
   const [activeMenu, setActiveMenu] = useState("my-journey");
   const [activeTab, setActiveTab] = useState("past");
-  const [currentDate, setCurrentDate] = useState(new Date("2025-08-11"));
+  const [currentDate, setCurrentDate] = useState(new Date("2025-11-6"));
   const [selectedDate, setSelectedDate] = useState(
-    new Date("2025-08-11").getDate()
+    new Date("2025-11-06").getDate()
   );
   const [userName, setUserName] = useState("홍길동");
 
@@ -108,7 +108,7 @@ const MyPage_My_Journey_Management = () => {
         i === new Date().getDate();
       const isSelected =
         i === selectedDate &&
-        currentDate.getMonth() === new Date("2025-08-11").getMonth();
+        currentDate.getMonth() === new Date("2025-11-06").getMonth();
 
       days.push(
         <div

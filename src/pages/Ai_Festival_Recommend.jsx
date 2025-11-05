@@ -41,7 +41,15 @@ export default function AiFestivalRecommend() {
 
   return (
     <div className="recommend-page-container">
-      <h2>AI 맞춤형 축제 추천</h2>
+      <div className="recommend-header-wrap">
+        <h2 className="page-title">AI 맞춤형 축제 추천</h2>
+
+        {/* 🌟 설문조사 다시 하기 버튼 🌟 */}
+        <button className="survey-restart-btn" onClick={() => nav("/survey")}>
+          설문조사 하러 가기
+        </button>
+      </div>
+
       <div className="festival-grid">
         {items.map((f) => (
           <div
